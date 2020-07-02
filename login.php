@@ -32,8 +32,9 @@ else
 			{
 				$_SESSION['email'] = $email;
 				$_SESSION['pword'] = $pword;
-				$_SESSION['fname'] = $fname;
-				$_SESSION['lname'] = $lname;
+				$_SESSION['fname'] = $res['fname'];
+				$_SESSION['lname'] = $res['lname'];
+				$_SESSION['user'] = $res['id'];
 				
 				$msg = "You are Logged In now";
 				echo <<<_END

@@ -17,8 +17,8 @@
 					<li class="nav-item"><a class="nav-link" href="./contactus.html"><span class="fa fa-address-card fa-lg"></span> Contact</a></li>
 				</ul>
 				<span class="navbar-text">
-					<a id="loginModalBtn">
-						<span class="fa fa-sign-in"></span> Login
+					<a href="logout.php">
+						<span class="fa fa-sign-in"></span> Logout
 					</a>
 				</span>
 			</div>
