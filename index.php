@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <html>
     <head>
         <title>FarmDB</title>
@@ -8,13 +12,13 @@
     <body>
         <nav class="navbar navbar-dark navbar-expand-sm fixed-top bg-success">
 		<div class="container">
-			<a class="navbar-brand" href="#">FarmDB</a>
+			<a class="navbar-brand" href="index.php">FarmDB</a>
 			<div class="collapse navbar-collapse" id="Navbar">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link" href="#"><span class="fa fa-home fa-lg"></span> Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="./aboutus.html"><span class="fa fa-info fa-lg"></span> About</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"><span class="fa fa-list fa-lg"></span> Menu</a></li>
-					<li class="nav-item"><a class="nav-link" href="./contactus.html"><span class="fa fa-address-card fa-lg"></span> Contact</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"><span class="fa fa-home fa-lg"></span> Areas</a></li>
+					<li class="nav-item"><a class="nav-link" href="./aboutus.html"><span class="fa fa-info fa-lg"></span> People</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"><span class="fa fa-list fa-lg"></span> Assets</a></li>
+					<li class="nav-item"><a class="nav-link" href="./contactus.html"><span class="fa fa-address-card fa-lg"></span> Logs</a></li>
 				</ul>
 				<span class="navbar-text">
 					<a href="logout.php">
@@ -30,6 +34,19 @@
 	
 		<div class="container">
 			<div class="row">
+			<?php
+			
+				if(isset($_SESSION['user']))
+				{
+					echo <<<_END
+					<div class="col-lg-6">
+						Add logs of day to day activities...
+					</div>
+_END;
+				}
+				else
+				{
+				echo <<<_END
 				<div class="col-lg-6">
 					<h2>Login</h2>
 					<form action="login.php" method="post">
@@ -45,6 +62,10 @@
 						<button type="submit" class="btn btn-primary">Login</button>
 					</form>
 				</div>
+_END;
+				}
+
+			?>
 			</div>
 		</div>
 
