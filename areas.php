@@ -24,7 +24,7 @@ echo <<<_END
 			<div class="row">
                 <div class="col-lg-6">
                     <h2>Areas</h2>
-                    <form action="login.php" method="post">
+                    <form action="areas_add.php" method="post">
 						<div class="form-group">
 							<label for="sitename">Site Name</label>
 							<input type="text" name="sitename" class="form-control">
@@ -35,12 +35,30 @@ echo <<<_END
 						</div>
                         <div class="form-group">
 							<label for="area">Size</label>
-							<input type="text" name="location" class="form-control" placeholder="sq. mtr.">
+							<input type="text" name="areasize" class="form-control" placeholder="sq. mtr.">
 						</div>
                         <div class="form-group">
                             <label for="Manager">Manager</label>
                             <select class="form-control" name="manager">
                                 <option value="">--Select Manager--</option>
+_END;
+
+$q = "SELECT people.id,fname,lname,phone,d.desig FROM `people` INNER JOIN designation d ON people.designation=d.id";
+$r = mysqli_query($db,$q);
+
+while($res = mysqli_fetch_assoc($r))
+{
+    $sn = $res['id'];
+    $name = $res['fname'] . ' ' . $res['lname'];
+    $desig = $res['desig'];
+    $phone = $res['phone'];
+    
+    echo <<<_END
+    <option value="$sn">$name - $phone ($dwsig)</option>
+_END;
+}
+
+echo <<<_END
                             </select>
                         </div>
                         <div class="form-group">
@@ -67,9 +85,29 @@ echo <<<_END
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td colspan="4">-</td>
-                                </tr>
+_END;
+
+$q = "SELECT areas.id,sitename,people.fname,people.lname FROM `areas` INNER JOIN people on people.id=areas.manager";
+$r = mysqli_query($db,$q);
+
+while($res = mysqli_fetch_assoc($r))
+{
+    $sn = $res['id'];
+    $sitename = $res['sitename'];
+    $fname = $res['fname'];
+    $lname = $res['lname'];
+    
+    echo <<<_END
+    <tr>
+        <td>$sn</td>
+        <td>$sitename</td>
+        <td>$fname $lname</td>
+        <td><a href="#">Updates</a></td>
+    </tr>
+_END;
+}
+
+echo <<<_END
                             </tbody>
                         </table>
                     </div>
