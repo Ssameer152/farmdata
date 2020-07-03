@@ -29,6 +29,10 @@ echo <<<_END
                             <label for="resourcename">Title</label>
                             <input type="text" name="resource" class="form-control">
                         </div>
+                        <div class="form-group">
+                            <label for="unit">Measuring Unit</label>
+                            <input type="text" name="unit" class="form-control" placeholder="kg/packet/piece/litre">
+                        </div>
 						<button type="submit" class="btn btn-primary">Add Resource</button>
                     </form>
                 </div>
@@ -39,6 +43,7 @@ echo <<<_END
                                 <tr>
                                     <th>S.No.</th>
                                     <th>Name</th>
+                                    <th>Unit</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -51,11 +56,12 @@ while($res = mysqli_fetch_assoc($r))
 {
     $sn = $res['id'];
     $name = $res['resourcename'];
-    
+    $unit = $res['unit'];
     echo <<<_END
     <tr>
         <td>$sn</td>
         <td>$name</td>
+        <td>$unit</td>
     </tr>
 _END;
 }

@@ -66,6 +66,8 @@ CREATE TABLE IF NOT EXISTS `resources` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+ALTER TABLE `resources` ADD `unit` VARCHAR(10) NULL DEFAULT NULL AFTER `resourcename`;
+
 
 CREATE TABLE IF NOT EXISTS `activities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
