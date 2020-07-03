@@ -75,8 +75,8 @@ echo <<<_END
                             <input type="text" name="phone" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="leaseduntil">Joined On</label>
-                            <input type="date" name="leased_until" class="form-control">
+                            <label for="joinedon">Joined On</label>
+                            <input type="date" name="joined_on" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
@@ -98,9 +98,29 @@ echo <<<_END
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td colspan="4">-</td>
-                                </tr>
+_END;
+
+$q = "SELECT people.id,fname,lname,phone,d.desig FROM `people` INNER JOIN designation d ON people.designation=d.id";
+$r = mysqli_query($db,$q);
+
+while($res = mysqli_fetch_assoc($r))
+{
+    $sn = $res['id'];
+    $name = $res['fname'] . ' ' . $res['lname'];
+    $desig = $res['desig'];
+    $phone = $res['phone'];
+    
+    echo <<<_END
+    <tr>
+        <td>$sn</td>
+        <td>$name</td>
+        <td>$desig</td>
+        <td>$phone</td>
+    </tr>
+_END;
+}
+
+echo <<<_END
                             </tbody>
                         </table>
                     </div>
