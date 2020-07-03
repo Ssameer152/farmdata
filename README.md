@@ -50,4 +50,11 @@ CREATE TABLE IF NOT EXISTS `people` (
 COMMIT;
 
 
+CREATE TABLE IF NOT EXISTS `assets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `doe` timestamp NOT NULL DEFAULT current_timestamp(),
+  `assetname` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 '''
