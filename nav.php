@@ -6,6 +6,8 @@
 					<li class="nav-item"><a class="nav-link" href="areas.php"><span class="fa fa-home fa-lg"></span> Areas</a></li>
 					<li class="nav-item"><a class="nav-link" href="people.php"><span class="fa fa-info fa-lg"></span> People</a></li>
 					<li class="nav-item"><a class="nav-link" href="#"><span class="fa fa-list fa-lg"></span> Assets</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"><span class="fa fa-list fa-lg"></span> Resources</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"><span class="fa fa-list fa-lg"></span> Activities</a></li>
 					<li class="nav-item"><a class="nav-link" href="./contactus.html"><span class="fa fa-address-card fa-lg"></span> Logs</a></li>
 				</ul>
 				<span class="navbar-text">
