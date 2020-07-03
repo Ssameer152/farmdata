@@ -57,4 +57,23 @@ CREATE TABLE IF NOT EXISTS `assets` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+
+
+CREATE TABLE IF NOT EXISTS `resources` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `doe` timestamp NOT NULL DEFAULT current_timestamp(),
+  `resourcename` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE IF NOT EXISTS `activities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `doe` timestamp NOT NULL DEFAULT current_timestamp(),
+  `activity` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
 '''
