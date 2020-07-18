@@ -33,36 +33,77 @@ $display_resources = 0;
 $display_activities = 0;
 $display_log = 0;
 
-if(isset($_GET['area']) && $_GET['area']!='' && isset()){}
-else if()
+if(isset($_GET['assets']) && $_GET['assets']!='')
 {
-$
+    $display_resources = 1;
+}
+if(isset($_GET['resources']) && $_GET['resources']!='')
+{
+    $display_activities = 1;
+}
+if(isset($_GET['people']) && $_GET['people']!='')
+{
+    $display_assets = 1;
+}
+if(isset($_GET['area']) && $_GET['area']!='')
+{
+    $display_people = 1;
 }
 
     echo <<<_END
-                        <form action="logs.php" method="get">
+                        <form action="logs_add.php" method="post">
                         <div class="form-group">
-                            <label for="activityname">Area</label>
-                            <input type="text" name="activity" class="form-control">
-                        </div>
-						<button type="submit" class="btn btn-primary">Add Activity</button>
-                    </form>
+                            <label for="area">Area</label>
+                            <select name="area" class="form-control">
+                                <option value="">--Select Area--</option>
 _END;
 
+$q = "SELECT * FROM areas";
+$r = mysqli_query($db,$q);
+
+while($res = mysqli_fetch_assoc($r))
+{
+    $sid = $res['id'];
+    $sitename = $res['sitename'];
+    $location = $res['location'];
+    
+    echo <<<_END
+    <option value="$sid">$sitename ($location)</option>
+_END;
+
+}
 
 echo <<<_END
-                </div>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="people">Authorised By</label>
+                            <select name="people" class="form-control">
+                                <option value="">--Select People--</option>
+_END;
 
-                <div class="col-lg-6">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>S.No.</th>
-                                    <th>Name</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+$q = "SELECT * FROM people";
+$r = mysqli_query($db,$q);
+
+while($res = mysqli_fetch_assoc($r))
+{
+    $sid = $res['id'];
+    $fname = $res['fname'];
+    $lname = $res['lname'];
+    
+    echo <<<_END
+    <option value="$sid">$fname $lname</option>
+_END;
+
+}
+
+echo <<<_END
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="activity">Activity</label>
+                            <select name="activity" class="form-control">
+                                <option value="">--Select Activity--</option>
 _END;
 
 $q = "SELECT * FROM activities";
@@ -70,22 +111,26 @@ $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
 {
-    $sn = $res['id'];
-    $name = $res['activity'];
+    $sid = $res['id'];
+    $activity = $res['activity'];
     
     echo <<<_END
-    <tr>
-        <td>$sn</td>
-        <td>$name</td>
-    </tr>
+    <option value="$sid">$activity</option>
 _END;
+
 }
 
 echo <<<_END
-                            </tbody>
-                        </table>
-                    </div>
+                            </select>
+                        </div>
+						<button type="submit" class="btn btn-primary">Add WorkLog</button>
+                    </form>
+_END;
+
+
+echo <<<_END
                 </div>
+
                 
             </div>
         </div>
