@@ -15,7 +15,14 @@ session_start();
 	
 		<div class="container">
 			<div class="row">
-                <h2>Work Log</h2>
+                
+			<?php
+			
+				if(isset($_SESSION['user']))
+				{
+                    
+                    echo <<<_END
+                    <h2>Work Log</h2>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -31,10 +38,7 @@ session_start();
                             </tr>
                         </thead>
                         <tbody>
-			<?php
-			
-				if(isset($_SESSION['user']))
-				{
+_END;
                     include_once 'db.php';
                     
                     $q = "SELECT * FROM logs ORDER BY doe DESC";
