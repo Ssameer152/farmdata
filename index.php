@@ -102,7 +102,7 @@ _END;
                             <td>$people</td>
                             <td>$status</td>
                             <td>$dou</td>
-                            <td><a href="#logid=$sid">Add Resource Usage</a></td>
+                            <td><a href="log_resource.php?logid=$sid">Add Resource Usage</a></td>
                         </tr>
 _END;
                     }
