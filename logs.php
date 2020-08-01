@@ -119,9 +119,13 @@ while($res = mysqli_fetch_assoc($r))
 _END;
 
 }
-
+$d = date("Y-m-d");
 echo <<<_END
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Start Date</label>
+                            <input type="date" name="startdate" value="$d" class="form-control">
                         </div>
 						<button type="submit" class="btn btn-primary">Add WorkLog</button>
                     </form>

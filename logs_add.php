@@ -11,9 +11,16 @@ if(isset($_SESSION['user']))
         $people = mysqli_real_escape_string($db,$_POST['people']);
         $activity = mysqli_real_escape_string($db,$_POST['activity']);
         
-        $q = "INSERT INTO logs(area,activity,people) VALUES('$area','$activity','$people')";
+        $sd = mysqli_real_escape_string($db,$_POST['startdate']);
+        
+        $q = "INSERT INTO logs(area,activity,people,doe) VALUES('$area','$activity','$people','$sd')";
         $r = mysqli_query($db,$q);
         
+        if(!$r)
+        {
+            echo mysqli_error($db);
+        }
+    
         $msg = "Work Log Added";
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
