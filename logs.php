@@ -11,6 +11,7 @@ if(isset($_SESSION['user']))
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
     </head>
     
     <body>    
@@ -58,7 +59,7 @@ if(isset($_GET['area']) && $_GET['area']!='')
                                 <option value="">--Select Area--</option>
 _END;
 
-$q = "SELECT * FROM areas";
+$q = "SELECT * FROM areas WHERE is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -82,7 +83,7 @@ echo <<<_END
                                 <option value="">--Select People--</option>
 _END;
 
-$q = "SELECT * FROM people";
+$q = "SELECT * FROM people WHERE is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -106,7 +107,7 @@ echo <<<_END
                                 <option value="">--Select Activity--</option>
 _END;
 
-$q = "SELECT * FROM activities";
+$q = "SELECT * FROM activities WHERE is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))

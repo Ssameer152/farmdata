@@ -11,6 +11,7 @@ if(isset($_SESSION['user']))
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
     </head>
     
     <body>    
@@ -39,6 +40,7 @@ echo <<<_END
                                 <tr>
                                     <th>S.No.</th>
                                     <th>Name</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -56,6 +58,7 @@ while($res = mysqli_fetch_assoc($r))
     <tr>
         <td>$sn</td>
         <td>$name</td>
+        <td><a href="delete.php?table=activities&rid=$sn&return=activity"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }

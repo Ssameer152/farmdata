@@ -11,6 +11,7 @@ if(isset($_SESSION['user']))
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
     </head>
     
     <body>    
@@ -87,7 +88,7 @@ echo <<<_END
                             <tbody>
 _END;
 
-$q = "SELECT areas.id,sitename,people.fname,people.lname FROM `areas` INNER JOIN people on people.id=areas.manager";
+$q = "SELECT areas.id,sitename,people.fname,people.lname FROM `areas` INNER JOIN people on people.id=areas.manager WHERE areas.is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -102,7 +103,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$sn</td>
         <td>$sitename</td>
         <td>$fname $lname</td>
-        <td><a href="#">Updates</a></td>
+        <td><a href="delete.php?table=areas&rid=$sn&return=areas"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }

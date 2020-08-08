@@ -11,6 +11,7 @@ if(isset($_SESSION['user']))
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
     </head>
     
     <body>    
@@ -55,7 +56,7 @@ echo <<<_END
                                 <option value="">--Select Designation--</option>
 _END;
 
-$q = "SELECT * FROM designation";
+$q = "SELECT * FROM designation WHERE is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -95,12 +96,13 @@ echo <<<_END
                                     <th>Name</th>
                                     <th>Designation</th>
                                     <th>Phone</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
 _END;
 
-$q = "SELECT people.id,fname,lname,phone,d.desig FROM `people` INNER JOIN designation d ON people.designation=d.id";
+$q = "SELECT people.id,fname,lname,phone,d.desig FROM `people` INNER JOIN designation d ON people.designation=d.id WHERE people.is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -116,6 +118,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$name</td>
         <td>$desig</td>
         <td>$phone</td>
+        <td><a href="delete.php?table=people&rid=$sn&return=people"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }

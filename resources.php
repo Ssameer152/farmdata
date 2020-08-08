@@ -11,6 +11,7 @@ if(isset($_SESSION['user']))
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
     </head>
     
     <body>    
@@ -44,12 +45,13 @@ echo <<<_END
                                     <th>S.No.</th>
                                     <th>Name</th>
                                     <th>Unit</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
 _END;
 
-$q = "SELECT * FROM resources";
+$q = "SELECT * FROM resources WHERE is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -62,6 +64,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$sn</td>
         <td>$name</td>
         <td>$unit</td>
+        <td><a href="delete.php?table=resources&rid=$sn&return=resources"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }
