@@ -22,7 +22,17 @@ session_start();
 				{
                     
                     echo <<<_END
-                    <h2>Work Log</h2>
+                        <h2 class="display-5">Work Log</h2>
+                        <form method="get" class="form-inline" action="index.php">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div class="form-group col-md-5"><input type="date" name="start_date" placeholder="Start Date"></div>
+                                    <div class="form-group col-md-5"><input type="date" name="end_date" placeholder="End Date"></div>
+                                    <div class="col"><input type="submit" class="btn btn-primary"></div>
+                                </div>
+                            </div>
+                        </form>
+                    
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -41,7 +51,20 @@ session_start();
 _END;
                     include_once 'db.php';
                     
-                    $q = "SELECT * FROM logs ORDER BY doe DESC";
+                    if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']!='' && $_GET['end_date']!='')
+                    {
+                        $start_date = $_GET['start_date'];
+                        $end_date = $_GET['end_date'];
+                        
+                        $q = "SELECT * FROM logs WHERE cast(doe as date) between '$start_date' and '$end_date' ORDER BY doe DESC";
+                    }
+                    else if(isset($_GET['start_date']) && $_GET['start_date']!=''){
+                        $start_date = $_GET['start_date'];
+                        $q = "SELECT * FROM logs WHERE cast(doe as date)='$start_date' ORDER BY doe DESC";
+                    }
+                    else{
+                        $q = "SELECT * FROM logs ORDER BY doe DESC";
+                    }
                     $r = mysqli_query($db,$q);
                     
                     while($res = mysqli_fetch_assoc($r))
