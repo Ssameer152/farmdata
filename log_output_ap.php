@@ -11,8 +11,9 @@ if(isset($_SESSION['user']))
         $qty = mysqli_real_escape_string($db,$_POST['qty']);
         $logid = mysqli_real_escape_string($db,$_POST['logid']);
         $person = mysqli_real_escape_string($db,$_POST['person']);
-        
-        $q = "INSERT INTO log_output(logid,resourceid,qty,person) VALUES('$logid','$area','$qty','$person')";
+        $comments = mysqli_real_escape_string($db,$_POST['comments']);
+
+        $q = "INSERT INTO log_output(logid,resourceid,qty,person,comments) VALUES('$logid','$area','$qty','$person','$comments')";
         $r = mysqli_query($db,$q);
         
         $msg = "Log Added";
