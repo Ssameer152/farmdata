@@ -85,6 +85,10 @@ echo <<<_END
                             <label for="quantity">Quantity</label>
                             <input type="text" name="qty" class="form-control">
                         </div>
+                        <div class="form-group">
+                        <label for="comments">Comments</label>
+                        <input type="text" name="comments" class="form-control">
+                        </div>
                         <input type="hidden" name="logid" value="$logid">
 						<button type="submit" class="btn btn-primary">Add Resource</button>
                     </form>
