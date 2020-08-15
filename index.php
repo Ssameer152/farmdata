@@ -117,10 +117,12 @@ _END;
                         $doe = $res['doe'];
                         $dou = $res['dou'];
                         
+                        $link = 'report_viewer.php?area=' . $area .' &date=' . explode(' ',$doe)[0];
+                        
                         echo <<<_END
                         <tr>
                             <td>$sid</td>
-                            <td>$doe</td>
+                            <td><a href="$link">$doe</a></td>
                             <td>$sitename ($location)</td>
                             <td>$activity</td>
                             <td>$people</td>
