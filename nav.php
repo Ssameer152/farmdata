@@ -9,6 +9,7 @@
 					<li class="nav-item"><a class="nav-link" href="resources.php"><span class="fa fa-list fa-lg"></span> Resources</a></li>
 					<li class="nav-item"><a class="nav-link" href="activity.php"><span class="fa fa-list fa-lg"></span> Activities</a></li>
 					<li class="nav-item"><a class="nav-link" href="logs.php"><span class="fa fa-address-card fa-lg"></span> Logs</a></li>
+					<li class="nav-item"><a class="nav-link" href="stats.php"><span class="fa fa-info fa-lg"></span> Stats</a></li>
                     <li class="nav-item"><a class="nav-link" href="reports.php"><span class="fa fa-list fa-lg"></span> Report</a></li>
 				</ul>
 				<span class="navbar-text">

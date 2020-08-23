@@ -38,7 +38,7 @@ _END;
                         <label for="person">Person</label>
                         <select name="person" class="form-control">
                             <option value="">--Select Person--</option>
-        _END;
+_END;
 
         $q = "SELECT * FROM people WHERE is_deleted=0";
         $r = mysqli_query($db,$q);
@@ -47,9 +47,9 @@ _END;
             $sid = $res['id'];
             $rname = $res['fname'] . ' ' . $res['lname'];
             
-            echo <<<_END
+        echo <<<_END
             <option value="$sid">$rname</option>
-        _END;
+_END;
         
         }    
         

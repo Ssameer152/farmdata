@@ -1,6 +1,19 @@
 <?php
 session_start();
 
+
+function getDimensionValue($db,$table,$gid,$name){
+    $q = "SELECT * FROM $table WHERE id=$gid";
+    $r = mysqli_query($db,$q);
+    
+    $res = mysqli_fetch_assoc($r);
+    
+    $value = $res[$name];
+    
+    return $value;
+}
+
+
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
@@ -87,27 +100,14 @@ echo <<<_END
 _END;
 
 
-if(isset($_GET['start_date']) && isset($_GET['end_date']) && isset($_GET['activity']) && isset($_GET['person']) && $_GET['start_date']!='' && $_GET['end_date']!='' && $_GET['activity']!='' && $_GET['person']!='')
+if(isset($_GET['start_date']) && isset($_GET['end_date']) && isset($_GET['activity']) && isset($_GET['person']) && $_GET['start_date']!='' && $_GET['end_date']!='' && $_GET['activity']!='')
 {
     $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
     $activity = mysqli_real_escape_string($db,$_GET['activity']);
-    $person = mysqli_real_escape_string($db,$_GET['person']);
-    
-    $q = "SELECT * FROM logs WHERE cast(doe as date)>='$start_date' AND cast(doe as date)<='$end_date' AND activity='$activity'";
-    $r = mysqli_query($db,$q);
     
     
-    
-    
-    
-}
-else if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']!='' && $_GET['end_date']!='')
-{
-    $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
-    $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
-    
-    $q = "SELECT cast(doe as date) as d, activity,people FROM logs WHERE cast(doe as date)>='$start_date' AND cast(doe as date)<='$end_date' ORDER BY doe";
+    $q = "SELECT id,cast(doe as date) as d, activity,people FROM logs WHERE cast(doe as date)>='$start_date' AND cast(doe as date)<='$end_date' AND activity='$activity'";
     $r = mysqli_query($db,$q);
     
     if(mysqli_num_rows($r)>0){
@@ -128,6 +128,7 @@ _END;
 
 $date = '';
 while($res = mysqli_fetch_assoc($r)){
+    $logid = $res['id'];
     $d = $res['d'];
     $activity = $res['activity'];
     $people = $res['people'];
@@ -149,17 +150,272 @@ while($res = mysqli_fetch_assoc($r)){
     if($d != $date){
         echo <<<_END
         <tr>
-            <td>$d</td><td>$ac</td><td>$people</td>
+            <th>$d</th><th>$ac</th><th>$people</th>
         </tr>
 _END;
     }
     else{
         echo <<<_END
         <tr>
-            <td></td><td>$ac</td><td>$people</td>
+            <td></td><th>$ac</th><th>$people</th>
+        </tr>
+_END;
+
+}
+// activity details
+echo '<tr>';
+    
+    
+    $q4 = "select * from log_resource WHERE logid='$logid'";
+    $r4 = mysqli_query($db,$q4);
+    $row4 = mysqli_num_rows($r4);
+    
+    echo '<td>';
+    if(mysqli_num_rows($r4)>0)
+    {
+        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        while($re4 = mysqli_fetch_assoc($r4)){
+            $resourceId = getDimensionValue($db,'resources',$re4['resourceid'],'resourcename');
+            $qty = $re4['qty'] . ' ' . getDimensionValue($db,'resources',$re4['resourceid'],'unit');
+            
+            echo <<<_END
+     <tr>
+        <td>$resourceId</td>
+        <td>$qty</td>
+     </tr>       
+_END;
+        }
+        echo '</table>';
+
+    }
+    else{
+        echo '<p>No resources utilized</p>';
+    }
+    echo '</td>';
+    
+    $q5 = "select * from log_output WHERE logid='$logid'";
+    $r5 = mysqli_query($db,$q5);
+    echo '<td width="33%">';
+    if(mysqli_num_rows($r5)>0)
+    {
+        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        while($re5 = mysqli_fetch_assoc($r5)){
+            $resourceId = getDimensionValue($db,'resources',$re5['resourceid'],'resourcename');
+            $qty = $re5['qty'] . ' ' . getDimensionValue($db,'resources',$re5['resourceid'],'unit');
+            
+            echo <<<_END
+     <tr>
+        <td>$resourceId</td>
+        <td>$qty</td>
+     </tr>       
+_END;
+        }
+        echo '</table>';
+
+    }
+    else{
+        echo '<p>No output</p>';
+    }    
+    
+    echo '</td>';
+
+
+    $q6 = "select * from log_assets WHERE logid='$logid'";
+    $r6 = mysqli_query($db,$q6);
+    echo '<td>';
+
+    if(mysqli_num_rows($r6)>0)
+    {
+        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        while($re6 = mysqli_fetch_assoc($r6)){
+            $resourceId = getDimensionValue($db,'assets',$re6['assetid'],'assetname');
+            $qty = $re6['usage_time'];
+            
+            echo <<<_END
+     <tr>
+        <td>$resourceId</td>
+        <td>$qty</td>
+     </tr>       
+_END;
+        }
+        echo '</table>';
+
+    }
+    else{
+        echo '<p>No Assets</p>';
+    }    
+    
+    echo '</td>';
+
+echo '</tr>';
+// end of activity details
+
+
+    $date = $d;
+}
+
+echo <<<_END
+                </tbody>
+            </table>
+        </div>
+    </div>    
+        
+_END;
+    
+    }
+    
+    
+    
+}
+else if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']!='' && $_GET['end_date']!='')
+{
+    $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
+    $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
+    
+    $q = "SELECT id,cast(doe as date) as d, activity,people FROM logs WHERE cast(doe as date)>='$start_date' AND cast(doe as date)<='$end_date' ORDER BY doe";
+    $r = mysqli_query($db,$q);
+    
+    if(mysqli_num_rows($r)>0){
+        echo <<<_END
+    <div class="col-lg-12">
+        <h2>Data</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Activity</th>
+                        <th>Authorized By</th>
+                    </tr>
+                </thead>
+                <tbody>
+_END;
+
+$date = '';
+while($res = mysqli_fetch_assoc($r)){
+    $logid = $res['id'];
+    $d = $res['d'];
+    $activity = $res['activity'];
+    $people = $res['people'];
+    
+    $q2 = "SELECT activity FROM activities WHERE id='$activity'";
+    $r2 = mysqli_query($db,$q2);
+    
+    $re2 = mysqli_fetch_assoc($r2);
+    
+    $ac = $re2['activity'];
+    
+    $q3 = "SELECT fname, lname FROM people WHERE id='$people'";
+    $r3 = mysqli_query($db,$q3);
+    
+    $re3 = mysqli_fetch_assoc($r3);
+    
+    $people = $re3['fname'] . ' ' . $re3['lname'];
+    
+    if($d != $date){
+        echo <<<_END
+        <tr>
+            <th>$d</th><th>$ac</th><th>$people</th>
         </tr>
 _END;
     }
+    else{
+        echo <<<_END
+        <tr>
+            <td></td><th>$ac</th><th>$people</th>
+        </tr>
+_END;
+
+}
+// activity details
+echo '<tr>';
+    
+    
+    $q4 = "select * from log_resource WHERE logid='$logid'";
+    $r4 = mysqli_query($db,$q4);
+    $row4 = mysqli_num_rows($r4);
+    
+    echo '<td>';
+    if(mysqli_num_rows($r4)>0)
+    {
+        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        while($re4 = mysqli_fetch_assoc($r4)){
+            $resourceId = getDimensionValue($db,'resources',$re4['resourceid'],'resourcename');
+            $qty = $re4['qty'] . ' ' . getDimensionValue($db,'resources',$re4['resourceid'],'unit');
+            
+            echo <<<_END
+     <tr>
+        <td>$resourceId</td>
+        <td>$qty</td>
+     </tr>       
+_END;
+        }
+        echo '</table>';
+
+    }
+    else{
+        echo '<p>No resources utilized</p>';
+    }
+    echo '</td>';
+    
+    $q5 = "select * from log_output WHERE logid='$logid'";
+    $r5 = mysqli_query($db,$q5);
+    echo '<td width="33%">';
+    if(mysqli_num_rows($r5)>0)
+    {
+        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        while($re5 = mysqli_fetch_assoc($r5)){
+            $resourceId = getDimensionValue($db,'resources',$re5['resourceid'],'resourcename');
+            $qty = $re5['qty'] . ' ' . getDimensionValue($db,'resources',$re5['resourceid'],'unit');
+            
+            echo <<<_END
+     <tr>
+        <td>$resourceId</td>
+        <td>$qty</td>
+     </tr>       
+_END;
+        }
+        echo '</table>';
+
+    }
+    else{
+        echo '<p>No output</p>';
+    }    
+    
+    echo '</td>';
+
+
+    $q6 = "select * from log_assets WHERE logid='$logid'";
+    $r6 = mysqli_query($db,$q6);
+    echo '<td>';
+
+    if(mysqli_num_rows($r6)>0)
+    {
+        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        while($re6 = mysqli_fetch_assoc($r6)){
+            $resourceId = getDimensionValue($db,'assets',$re6['assetid'],'assetname');
+            $qty = $re6['usage_time'];
+            
+            echo <<<_END
+     <tr>
+        <td>$resourceId</td>
+        <td>$qty</td>
+     </tr>       
+_END;
+        }
+        echo '</table>';
+
+    }
+    else{
+        echo '<p>No Assets</p>';
+    }    
+    
+    echo '</td>';
+
+echo '</tr>';
+// end of activity details
+
+
     $date = $d;
 }
 
