@@ -81,7 +81,7 @@ echo <<<_END
 _END;
 
 
-if(isset($_GET['start_date']) && isset($_GET['end_date']) && isset($_GET['activity']) && isset($_GET['person']) && $_GET['start_date']!='' && $_GET['end_date']!='' && $_GET['activity']!='')
+if(isset($_GET['start_date']) && isset($_GET['end_date']) && isset($_GET['activity']) && $_GET['start_date']!='' && $_GET['end_date']!='' && $_GET['activity']!='')
 {
     $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
