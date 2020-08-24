@@ -13,18 +13,32 @@ if(isset($_SESSION['user']))
         
         $sd = mysqli_real_escape_string($db,$_POST['startdate']);
         
-        $q = "INSERT INTO logs(area,activity,people,doe) VALUES('$area','$activity','$people','$sd')";
-        $r = mysqli_query($db,$q);
+        $qc = "SELECT * FROM logs WHERE activity='$activity' and cast(doe as date)='$sd'";
+        $rc = mysqli_query($db,$qc);
         
-        if(!$r)
+        if(mysqli_num_rows($rc)>0)
         {
-            echo mysqli_error($db);
-        }
-    
-        $msg = "Work Log Added";
-        echo <<<_END
-        <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
+            $msg = "Work log already exists!";
+            echo <<<_END
+            <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
 _END;
+        }
+        else
+        {
+            
+            $q = "INSERT INTO logs(area,activity,people,doe) VALUES('$area','$activity','$people','$sd')";
+            $r = mysqli_query($db,$q);
+            
+            if(!$r)
+            {
+                echo mysqli_error($db);
+            }
+        
+            $msg = "Work Log Added";
+            echo <<<_END
+            <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
+_END;
+        }
     }
     else
     {
