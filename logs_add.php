@@ -15,7 +15,12 @@ if(isset($_SESSION['user']))
         
         $q = "INSERT INTO logs(area,activity,people,doe) VALUES('$area','$activity','$people','$sd')";
         $r = mysqli_query($db,$q);
-        
+        $c="SELECT * from logs where activity='$activity' and cast(doe as date)='$sd'";
+$check=mysqli_query($db,$c);
+if(mysqli_num_rows($check)==0){
+        $q = "INSERT INTO logs(area,activity,people,doe) VALUES('$area','$activity','$people','$sd')";
+        $r = mysqli_query($db,$q);
+
         if(!$r)
         {
             echo mysqli_error($db);
@@ -25,6 +30,11 @@ if(isset($_SESSION['user']))
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
 _END;
+}
+    $msg= "Activity already exists";
+    echo <<<_END
+<meta http-equiv='refresh' content='0;url=logs.php?msg=$msg'>
+_END;      
     }
     else
     {
