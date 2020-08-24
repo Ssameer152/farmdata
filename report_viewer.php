@@ -82,6 +82,7 @@ if($row2>0)
             <thead>
                 <tr>
                     <th>S.No.</th>
+                    <th>Person</th>
                     <th>Resource</th>
                     <th>Quantity</th>
                     <th>Cost Per Unit</th>
@@ -92,12 +93,14 @@ _END;
 $sn = 0;
 while($re2 = mysqli_fetch_assoc($r2)){
     $resourceid = getDimensionValue($db,'resources',$re2['resourceid'],'resourcename');
+    $person = getDimensionValue($db,'people', $re2['person'],'fname') . ' ' . getDimensionValue($db,'people', $re2['person'],'lname');
     $qty = $re2['qty'] . ' ' .  getDimensionValue($db,'resources',$re2['resourceid'],'unit');
     $costperunit = $re2['costperunit'];
     $sn = $sn + 1;
     echo <<<_END
     <tr>
         <td>$sn</td>
+        <td>$person</td>
         <td>$resourceid</td>
         <td>$qty</td>
         <td>&#8377; $costperunit</td>
