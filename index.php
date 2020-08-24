@@ -33,7 +33,20 @@ session_start();
                                 </div>
                             </div>
                         </form>
-                    
+_END;
+
+if(isset($_GET['msg']) && $_GET['msg']!=''){
+    $msg = $_GET['msg'];
+    echo<<<_END
+<div class="col-lg-12">
+    <div class="alert alert-primary" role="alert">
+$msg
+</div>
+</div>
+_END;
+}
+
+echo <<<_END
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>

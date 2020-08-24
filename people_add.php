@@ -4,7 +4,7 @@ session_start();
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    if(isset($_POST['fname']) && $_POST['fname']!='' && isset($_POST['desig']) && $_POST['desig']!='' && isset($_POST['lname']) && isset($_POST['email']) && $_POST['lname']!='' && $_POST['email']!='' && isset($_POST['phone']) && $_POST['phone']!='' && isset($_POST['joined_on']) && isset($_POST['pword']) && $_POST['joined_on']!='' && $_POST['pword']!='')
+    if(isset($_POST['fname']) && $_POST['fname']!='' && isset($_POST['desig']) && $_POST['desig']!='' && isset($_POST['lname']) && isset($_POST['email']) && $_POST['email']!='' && isset($_POST['phone']) && $_POST['phone']!='' && isset($_POST['joined_on']) && isset($_POST['pword']) && $_POST['joined_on']!='' && $_POST['pword']!='')
     {
         $fname = mysqli_real_escape_string($db,$_POST['fname']);
         $desig = mysqli_real_escape_string($db,$_POST['desig']);
