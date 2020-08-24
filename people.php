@@ -22,6 +22,20 @@ include_once 'nav.php';
 echo <<<_END
 
 		<div class="container">
+_END;
+
+if(isset($_GET['msg']) && $_GET['msg']!=''){
+    $msg = $_GET['msg'];
+    echo<<<_END
+<div class="col-lg-12">
+    <div class="alert alert-primary" role="alert">
+$msg
+</div>
+</div>
+_END;
+}
+
+echo <<<_END
             <div class="row">
                 <div class="col-lg-6">
                     <h2>Designation</h2>
