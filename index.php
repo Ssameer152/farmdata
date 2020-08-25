@@ -70,14 +70,14 @@ _END;
                         $start_date = $_GET['start_date'];
                         $end_date = $_GET['end_date'];
                         
-                        $q = "SELECT * FROM logs WHERE cast(doe as date) between '$start_date' and '$end_date' ORDER BY doe DESC";
+                        $q = "SELECT * FROM logs WHERE cast(doe as date) between '$start_date' and '$end_date' ORDER BY doe DESC LIMIT 50";
                     }
                     else if(isset($_GET['start_date']) && $_GET['start_date']!=''){
                         $start_date = $_GET['start_date'];
-                        $q = "SELECT * FROM logs WHERE cast(doe as date)='$start_date' ORDER BY doe DESC";
+                        $q = "SELECT * FROM logs WHERE cast(doe as date)='$start_date' ORDER BY doe DESC LIMIT 50";
                     }
                     else{
-                        $q = "SELECT * FROM logs ORDER BY doe DESC";
+                        $q = "SELECT * FROM logs ORDER BY doe DESC LIMIT 50";
                     }
                     $r = mysqli_query($db,$q);
                     
@@ -142,7 +142,7 @@ _END;
                             <td>$status</td>
                             <td>$dou</td>
                             <td><a href="log_resource.php?logid=$sid">Add Resource Usage</a> | <a href="log_output.php?logid=$sid">Add Output</a> |
-                             <a href="log_asset.php?logid=$sid">Add Asset Usage</a>
+                             <a href="log_asset.php?logid=$sid">Add Asset Usage</a> | <a href="log_estimate_output.php?logid=$sid">Estimate Output</a> | <a href="log_estimate_resource.php?logid=$sid">Estimate Resource Usage</a>
                             </td>
                         </tr>
 _END;
