@@ -142,7 +142,7 @@ _END;
                             <td>$status</td>
                             <td>$dou</td>
                             <td><a href="log_resource.php?logid=$sid">Add Resource Usage</a> | <a href="log_output.php?logid=$sid">Add Output</a> |
-                             <a href="log_asset.php?logid=$sid">Add Asset Usage</a> | <a href="log_estimate_output.php?logid=$sid">Estimate Output</a>
+                             <a href="log_asset.php?logid=$sid">Add Asset Usage</a> | <a href="log_estimate_output.php?logid=$sid">Estimate Output</a> | <a href="log_estimate_resource.php?logid=$sid">Estimate Resource Usage</a>
                             </td>
                         </tr>
 _END;
