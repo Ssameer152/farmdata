@@ -13,7 +13,7 @@
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Reports 
 					</a>
-					<div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
+					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
 					 <a class="dropdown-item" href="reports.php">Individual Report</a>
 					 <a class="dropdown-item" href="stats.php">Stats</a>
 					</div>
