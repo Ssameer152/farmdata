@@ -166,25 +166,34 @@ _END;
 echo '<tr>';
     
     
-    $q4 = "select * from log_resource WHERE logid='$logid'";
+    $q4 = "SELECT * from log_resource lr inner join people pe on lr.person=pe.id WHERE logid='$logid'";
     $r4 = mysqli_query($db,$q4);
     $row4 = mysqli_num_rows($r4);
-    
+    $q7="SELECT SUM(lr.qty) as total,r.unit as unit from log_resource lr inner join resources r on r.id=lr.resourceid WHERE lr.logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by lr.logid";
+    $r7=mysqli_query($db,$q7);
+$re7=mysqli_fetch_assoc($r7);
+$total=$re7['total'].''.$re7['unit'];
     echo '<td>';
     if(mysqli_num_rows($r4)>0)
     {
-        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th><th>Person</th></tr>';
         while($re4 = mysqli_fetch_assoc($r4)){
             $resourceId = getDimensionValue($db,'resources',$re4['resourceid'],'resourcename');
             $qty = $re4['qty'] . ' ' . getDimensionValue($db,'resources',$re4['resourceid'],'unit');
-            
+            $pname=$re4['fname'] . ' ' . $re4['lname'];
             echo <<<_END
      <tr>
         <td>$resourceId</td>
         <td>$qty</td>
+        <td>$pname</td>
      </tr>       
 _END;
         }
+        echo <<<_END
+        <tr>
+        <td><b>Total:<b>$total</td>
+        </tr>
+_END;
         echo '</table>';
 
     }
@@ -193,23 +202,33 @@ _END;
     }
     echo '</td>';
     
-    $q5 = "select * from log_output WHERE logid='$logid'";
+    $q8="SELECT SUM(lo.qty) as total ,r.unit as unit from log_output lo inner join resources r on r.id=lo.resourceid WHERE lo.logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by lo.logid";
+    $r8=mysqli_query($db,$q8);
+    $re8=mysqli_fetch_assoc($r8);
+    $total=$re8['total']. '' . $re8['unit'];
+    $q5 = "SELECT * from log_output lo inner join people pe on lo.person=pe.id WHERE logid='$logid'";
     $r5 = mysqli_query($db,$q5);
     echo '<td width="33%">';
     if(mysqli_num_rows($r5)>0)
     {
-        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th><th>Person</th></tr>';
         while($re5 = mysqli_fetch_assoc($r5)){
             $resourceId = getDimensionValue($db,'resources',$re5['resourceid'],'resourcename');
             $qty = $re5['qty'] . ' ' . getDimensionValue($db,'resources',$re5['resourceid'],'unit');
-            
+            $pname=$re5['fname']. ' ' . $re5['lname'];
             echo <<<_END
      <tr>
         <td>$resourceId</td>
         <td>$qty</td>
+        <td>$pname</td>
      </tr>       
 _END;
         }
+        echo <<<_END
+        <tr>
+        <td><b>Total:</b>$total</td>
+        </tr>
+_END;
         echo '</table>';
 
     }
@@ -219,25 +238,34 @@ _END;
     
     echo '</td>';
 
-
-    $q6 = "select * from log_assets WHERE logid='$logid'";
+    $q9="SELECT SUM(usage_time) as total from log_assets WHERE logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by logid";
+    $r9=mysqli_query($db,$q9);
+    $re9=mysqli_fetch_assoc($r9);
+    $total=$re9['total'];
+    $q6 = "SELECT * from log_assets la inner join people pe on la.person=pe.id WHERE logid='$logid'";
     $r6 = mysqli_query($db,$q6);
     echo '<td>';
 
     if(mysqli_num_rows($r6)>0)
     {
-        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th><th>Person</th></tr>';
         while($re6 = mysqli_fetch_assoc($r6)){
             $resourceId = getDimensionValue($db,'assets',$re6['assetid'],'assetname');
             $qty = $re6['usage_time'];
-            
+            $pname=$re6['fname']. ' ' . $re6['lname'];
             echo <<<_END
      <tr>
         <td>$resourceId</td>
         <td>$qty</td>
+        <td>$pname</td>
      </tr>       
 _END;
         }
+        echo <<<_END
+        <tr>
+        <td><b>Total:</b>$total</td>
+        </tr>
+_END;
         echo '</table>';
 
     }
