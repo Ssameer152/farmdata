@@ -106,12 +106,13 @@ echo <<<_END
                     <th>Person</th>
                     <th>Asset</th>
                     <th>Total Usage</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
 _END;
 
-$q = "SELECT sum(usage_time) as qty,assetid,person FROM log_assets WHERE logid='$logid' GROUP BY assetid,person";
+$q = "SELECT id,sum(usage_time) as qty,assetid,person FROM log_assets WHERE logid='$logid' GROUP BY assetid,person";
 $r = mysqli_query($db,$q);
 
 if(!$r){
@@ -121,6 +122,7 @@ if(!$r){
 $sn = 0;
 while($res = mysqli_fetch_assoc($r))
 {
+    $sid= $res['id'];
     $qty = $res['qty'];
     $rid = $res['assetid'];
     
@@ -148,6 +150,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$fullname</td>
         <td>$resourcename</td>
         <td>$qty</td>
+        <td><a href="delete.php?table=log_assetst&rid=$sid&return=log_output.php?logid=$logid"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }

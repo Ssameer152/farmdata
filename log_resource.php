@@ -104,6 +104,7 @@ echo <<<_END
                     <th>S.No.</th>
                     <th>Resource</th>
                     <th>Quantity</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -130,6 +131,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$sn</td>
         <td>$resourcename</td>
         <td>$qty $unit</td>
+        <td><a href="delete.php?table=log_resource&rid=$sid&return=log_resource&logid=$logid"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }
