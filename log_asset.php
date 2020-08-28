@@ -112,7 +112,7 @@ echo <<<_END
             <tbody>
 _END;
 
-$q = "SELECT id,sum(usage_time) as qty,assetid,person FROM log_assets WHERE logid='$logid' GROUP BY assetid,person";
+$q = "SELECT sum(usage_time) as qty,assetid,person FROM log_assets WHERE logid='$logid' AND is_deleted=0 GROUP BY assetid,person";
 $r = mysqli_query($db,$q);
 
 if(!$r){
@@ -161,6 +161,74 @@ echo <<<_END
     </div>
 
 </div>
+<h2>Details</h2>
+<div class="col-lg-12">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Person</th>
+                    <th>Asset</th>
+                    <th>Total Usage</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+_END;
+
+$q = "SELECT id,usage_time as qty,assetid,person FROM log_assets WHERE logid='$logid' AND is_deleted=0 GROUP BY assetid,person";
+$r = mysqli_query($db,$q);
+
+if(!$r){
+    echo mysqli_error($db);
+}
+
+$sn = 0;
+while($res = mysqli_fetch_assoc($r))
+{
+    $qty = $res['qty'];
+    $rid = $res['assetid'];
+    $id = $res['id'];
+    $q2 = "SELECT assetname FROM assets WHERE id='$rid'";
+    $r2 = mysqli_query($db,$q2);
+    
+    $re2 = mysqli_fetch_assoc($r2);
+    
+
+    $resourcename  = $re2['assetname'];
+    $sn = $sn + 1;
+    
+    $person = $res['person'];
+    
+    $q3 = "SELECT * FROM people WHERE id='$person'";
+    $r3 = mysqli_query($db,$q3);
+    
+    $re3 = mysqli_fetch_assoc($r3);
+    
+    $fullname = $re3['fname'] . ' ' . $re3['lname'];
+    
+    echo <<<_END
+    <tr>
+        <td>$sn</td>
+        <td>$fullname</td>
+        <td>$resourcename</td>
+        <td>$qty</td>
+        <td><a href="delete.php?table=log_assets&return=log_asset&rid=$id&logid=$logid">Delete</a></td>
+    </tr>
+_END;
+}
+
+echo <<<_END
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+
                 
             </div>
         </div>
