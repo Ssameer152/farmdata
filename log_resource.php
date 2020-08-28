@@ -109,7 +109,7 @@ echo <<<_END
             <tbody>
 _END;
 
-$q = "SELECT sum(qty) as qty,resourceid FROM log_resource WHERE logid='$logid' GROUP BY resourceid";
+$q = "SELECT sum(qty) as qty,resourceid FROM log_resource WHERE logid='$logid' AND is_deleted=0 GROUP BY resourceid";
 $r = mysqli_query($db,$q);
 $sn = 0;
 while($res = mysqli_fetch_assoc($r))
@@ -140,6 +140,57 @@ echo <<<_END
     </div>
 
 </div>
+
+
+<div class="col-lg-12">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Resource</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+_END;
+
+$q = "SELECT id,qty,resourceid FROM log_resource WHERE logid='$logid' AND is_deleted=0";
+$r = mysqli_query($db,$q);
+$sn = 0;
+while($res = mysqli_fetch_assoc($r))
+{
+    $qty = $res['qty'];
+    $rid = $res['resourceid'];
+    
+    $id = $res['id'];
+    
+    $q2 = "SELECT resourcename,unit FROM resources WHERE id='$rid'";
+    $r2 = mysqli_query($db,$q2);
+    
+    $re2 = mysqli_fetch_assoc($r2);
+    
+    $unit = $re2['unit'];
+    $resourcename  = $re2['resourcename'];
+    $sn = $sn + 1;
+    echo <<<_END
+    <tr>
+        <td>$sn</td>
+        <td>$resourcename</td>
+        <td>$qty $unit</td>
+        <td><a href="delete.php?table=log_resource&return=log_resource&rid=$id&logid=$logid">Delete</a></td>
+    </tr>
+_END;
+}
+
+echo <<<_END
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
                 
             </div>
         </div>
