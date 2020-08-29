@@ -9,6 +9,28 @@ if(isset($_SESSION['user']))
 if(isset($_GET['logid']) && $_GET['logid']!='')
 {    
     $logid = $_GET['logid'];
+    
+    if(isset($_GET['id']) && $_GET['id']!=''){
+        $mid = $_GET['id'];
+        $q = "select * from log_resource WHERE id='$mid'";
+        $r = mysqli_query($db,$q);
+        
+        $res = mysqli_fetch_assoc($r);
+        
+        $db_person = $res['person'];
+        $db_resource = $res['resourceid'];
+        $db_qty = $res['qty'];
+        $db_cpu = $res['costperunit'];
+        
+    }
+    else
+    {
+        $db_person = '';
+        $db_resource = '';
+        $db_qty = '';
+        $db_cpu = '';
+    }
+    
     echo <<<_END
 <html>
     <head>
@@ -46,11 +68,16 @@ _END;
         {
             $sid = $res['id'];
             $rname = $res['fname'] . ' ' . $res['lname'];
-            
+            if($sid == $db_person){
+                echo <<<_END
+            <option value="$sid" selected="selected">$rname</option>
+_END;
+            }
+            else{
         echo <<<_END
             <option value="$sid">$rname</option>
 _END;
-        
+            }
         }    
         
         echo <<<_END
@@ -71,9 +98,16 @@ while($res = mysqli_fetch_assoc($r))
     $rname = $res['resourcename'];
     $unit = $res['unit'];
     
+    if($sid == $db_resource){
+        echo <<<_END
+    <option value="$sid" selected="selected">$rname ($unit)</option>
+_END;
+    }
+    else{
     echo <<<_END
     <option value="$sid">$rname ($unit)</option>
 _END;
+    }
 
 }
 
@@ -82,13 +116,22 @@ echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
-                            <input type="text" name="qty" class="form-control">
+                            <input type="text" name="qty" value="$db_qty" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="Cost">Cost Per Unit(if resource is measured in kg then cost of 1 kg)</label>
-                            <input type="text" name="cpu" class="form-control">
+                            <input type="text" name="cpu" value="$db_cpu" class="form-control">
                         </div>
                         <input type="hidden" name="logid" value="$logid">
+_END;
+
+if(isset($mid)){
+    echo <<<_END
+    <input type="hidden" name="mid" value="$mid">
+_END;
+}
+
+echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Resource</button>
                     </form>
 _END;
@@ -179,7 +222,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$sn</td>
         <td>$resourcename</td>
         <td>$qty $unit</td>
-        <td><a href="delete.php?table=log_resource&return=log_resource&rid=$id&logid=$logid">Delete</a></td>
+        <td><a href="log_resource.php?logid=$logid&id=$id">Modify</a> | <a href="delete.php?table=log_resource&return=log_resource&rid=$id&logid=$logid">Delete</a></td>
     </tr>
 _END;
 }
