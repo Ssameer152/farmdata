@@ -9,6 +9,28 @@ if(isset($_SESSION['user']))
 if(isset($_GET['logid']) && $_GET['logid']!='')
 {    
     $logid = $_GET['logid'];
+    
+    if(isset($_GET['id']) && $_GET['id']!=''){
+        $mid = $_GET['id'];
+        $q = "select * from log_assets WHERE id='$mid'";
+        $r = mysqli_query($db,$q);
+        
+        $res = mysqli_fetch_assoc($r);
+        
+        $db_person = $res['person'];
+        $db_asset = $res['assetid'];
+        $db_usageTime = $res['usage_time'];
+        $db_comments = $res['comments'];
+        
+    }
+    else
+    {
+        $db_person = '';
+        $db_asset = '';
+        $db_usageTime = '';
+        $db_comments = '';
+    }
+    
     echo <<<_END
 <html>
     <head>
@@ -48,9 +70,18 @@ while($res = mysqli_fetch_assoc($r))
     $sid = $res['id'];
     $rname = $res['fname'] . ' ' . $res['lname'];
     
-    echo <<<_END
-    <option value="$sid">$rname</option>
+    if($sid == $db_person)
+    {
+            echo <<<_END
+    <option value="$sid" selected="selected">$rname</option>
 _END;
+    }
+    else{
+        echo <<<_END
+        <option value="$sid">$rname</option>
+_END;
+
+}
 
 }
 
@@ -71,10 +102,17 @@ while($res = mysqli_fetch_assoc($r))
     $sid = $res['id'];
     $rname = $res['assetname'];
     
-    
+    if($sid == $db_asset){
     echo <<<_END
+    <option value="$sid" selected="selected">$rname</option>
+_END;
+    }
+    else{
+        echo <<<_END
     <option value="$sid">$rname</option>
 _END;
+    }
+
 
 }
 
@@ -83,12 +121,21 @@ echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="quantity">Usage Time(6 mins = 0.1)</label>
-                            <input type="text" name="qty" class="form-control">
+                            <input type="text" name="qty" class="form-control" value="$db_usageTime">
                         </div>
                         <div class="form-group">
                             <label for="comments">Comments</label>
-                            <input type="text" name="comments" class="form-control">
+                            <input type="text" name="comments" class="form-control" value="$db_comments">
                         </div>
+_END;
+
+if(isset($mid)){
+    echo <<<_END
+    <input type="hidden" name="mid" value="$mid">
+_END;
+}
+
+echo <<<_END
                         <input type="hidden" name="logid" value="$logid">
 						<button type="submit" class="btn btn-primary">Add Log</button>
                     </form>
@@ -214,7 +261,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$fullname</td>
         <td>$resourcename</td>
         <td>$qty</td>
-        <td><a href="delete.php?table=log_assets&return=log_asset&rid=$id&logid=$logid">Delete</a></td>
+        <td><a href="log_asset.php?logid=$logid&id=$id">Modify</a> | <a href="delete.php?table=log_assets&return=log_asset&rid=$id&logid=$logid">Delete</a></td>
     </tr>
 _END;
 }
