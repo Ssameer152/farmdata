@@ -64,7 +64,7 @@ _END;
                                 <option value="">--Select Person--</option>
 _END;
 
-$q = "SELECT * FROM people WHERE is_deleted=0";
+$q = "SELECT * FROM people WHERE is_deleted=0 order by fname asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -95,7 +95,7 @@ echo <<<_END
                                 <option value="">--Select Resource--</option>
 _END;
 
-$q = "SELECT * FROM resources WHERE is_deleted=0";
+$q = "SELECT * FROM resources WHERE is_deleted=0 order by resourcename asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -154,7 +154,6 @@ echo <<<_END
                     <th>Person</th>
                     <th>Resource</th>
                     <th>Quantity</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -192,7 +191,6 @@ while($res = mysqli_fetch_assoc($r))
         <td>$fullname</td>
         <td>$resourcename</td>
         <td>$qty $unit</td>
-        <td><a href="delete.php?table=log_output&rid=$sid&return=log_output.php?logid=$logid"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }

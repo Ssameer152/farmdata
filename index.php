@@ -8,6 +8,13 @@ session_start();
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <script>
+            function ask(anchor){
+                var conf=confirm("Do you want to delete?");
+                if(conf) 
+                window.location=anchor.attr("href");
+            }
+        </script>
     </head>
     
     <body>
@@ -142,7 +149,7 @@ _END;
                             <td>$status</td>
                             <td>$dou</td>
                             <td><a href="log_resource.php?logid=$sid">Add Resource Usage</a> | <a href="log_output.php?logid=$sid">Add Output</a> |
-                             <a href="log_asset.php?logid=$sid">Add Asset Usage</a> | <a href="log_estimate_output.php?logid=$sid">Estimate Output</a> | <a href="log_estimate_resource.php?logid=$sid">Estimate Resource Usage</a> | <a href="delete.php?table=logs&return=index&rid=$sid">Delete</a>
+                             <a href="log_asset.php?logid=$sid">Add Asset Usage</a> | <a href="log_estimate_output.php?logid=$sid">Estimate Output</a> | <a href="log_estimate_resource.php?logid=$sid">Estimate Resource Usage</a> | <a onclick='javascript:ask($(this));return false;' href="delete.php?table=logs&return=index&rid=$sid">Delete</a>
                             </td>
                         </tr>
 _END;

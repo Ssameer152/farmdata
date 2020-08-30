@@ -166,10 +166,10 @@ _END;
 echo '<tr>';
     
     
-    $q4 = "SELECT * from log_resource lr inner join people pe on lr.person=pe.id WHERE logid='$logid'";
+    $q4 = "SELECT * from log_resource lr inner join people pe on lr.person=pe.id WHERE lr.is_deleted=0 and logid='$logid'";
     $r4 = mysqli_query($db,$q4);
     $row4 = mysqli_num_rows($r4);
-    $q7="SELECT SUM(lr.qty) as total,r.unit as unit from log_resource lr inner join resources r on r.id=lr.resourceid WHERE lr.logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by lr.logid";
+    $q7="SELECT SUM(lr.qty) as total,r.unit as unit from log_resource lr inner join resources r on r.id=lr.resourceid WHERE lr.is_deleted=0 and lr.logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by lr.logid";
     $r7=mysqli_query($db,$q7);
 $re7=mysqli_fetch_assoc($r7);
 $total=$re7['total'].''.$re7['unit'];
@@ -202,11 +202,11 @@ _END;
     }
     echo '</td>';
     
-    $q8="SELECT SUM(lo.qty) as total ,r.unit as unit from log_output lo inner join resources r on r.id=lo.resourceid WHERE lo.logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by lo.logid";
+    $q8="SELECT SUM(lo.qty) as total ,r.unit as unit from log_output lo inner join resources r on r.id=lo.resourceid WHERE lo.is_deleted=0 and lo.logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by lo.logid";
     $r8=mysqli_query($db,$q8);
     $re8=mysqli_fetch_assoc($r8);
     $total=$re8['total']. '' . $re8['unit'];
-    $q5 = "SELECT * from log_output lo inner join people pe on lo.person=pe.id WHERE logid='$logid'";
+    $q5 = "SELECT * from log_output lo inner join people pe on lo.person=pe.id WHERE lo.is_deleted=0 and logid='$logid'";
     $r5 = mysqli_query($db,$q5);
     echo '<td width="33%">';
     if(mysqli_num_rows($r5)>0)
@@ -238,11 +238,11 @@ _END;
     
     echo '</td>';
 
-    $q9="SELECT SUM(usage_time) as total from log_assets WHERE logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by logid";
+    $q9="SELECT SUM(usage_time) as total from log_assets WHERE is_deleted=0 and logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by logid";
     $r9=mysqli_query($db,$q9);
     $re9=mysqli_fetch_assoc($r9);
     $total=$re9['total'];
-    $q6 = "SELECT * from log_assets la inner join people pe on la.person=pe.id WHERE logid='$logid'";
+    $q6 = "SELECT * from log_assets la inner join people pe on la.person=pe.id WHERE la.is_deleted=0 and logid='$logid'";
     $r6 = mysqli_query($db,$q6);
     echo '<td>';
 
@@ -359,7 +359,7 @@ _END;
 echo '<tr>';
     
     
-    $q4 = "select * from log_resource WHERE logid='$logid'";
+    $q4 = "SELECT * from log_resource WHERE logid='$logid' and is_deleted=0";
     $r4 = mysqli_query($db,$q4);
     $row4 = mysqli_num_rows($r4);
     
@@ -386,7 +386,7 @@ _END;
     }
     echo '</td>';
     
-    $q5 = "select * from log_output WHERE logid='$logid'";
+    $q5 = "SELECT * from log_output WHERE logid='$logid' and is_deleted=0";
     $r5 = mysqli_query($db,$q5);
     echo '<td width="33%">';
     if(mysqli_num_rows($r5)>0)
@@ -413,7 +413,7 @@ _END;
     echo '</td>';
 
 
-    $q6 = "select * from log_assets WHERE logid='$logid'";
+    $q6 = "SELECT * from log_assets WHERE logid='$logid' and is_deleted=0";
     $r6 = mysqli_query($db,$q6);
     echo '<td>';
 

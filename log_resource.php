@@ -62,7 +62,7 @@ _END;
                             <option value="">--Select Person--</option>
 _END;
 
-        $q = "SELECT * FROM people WHERE is_deleted=0";
+        $q = "SELECT * FROM people WHERE is_deleted=0 order by fname asc";
         $r = mysqli_query($db,$q);
         while($res = mysqli_fetch_assoc($r))
         {
@@ -89,7 +89,7 @@ _END;
             <option value="">--Select Resource--</option>
 _END;
 
-$q = "SELECT * FROM resources WHERE is_deleted=0";
+$q = "SELECT * FROM resources WHERE is_deleted=0 order by resourcename asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -145,15 +145,15 @@ echo <<<_END
             <thead>
                 <tr>
                     <th>S.No.</th>
+                    <th>Person</th>
                     <th>Resource</th>
                     <th>Quantity</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
 _END;
 
-$q = "SELECT sum(qty) as qty,resourceid FROM log_resource WHERE logid='$logid' AND is_deleted=0 GROUP BY resourceid";
+$q = "SELECT sum(qty) as qty,resourceid,person FROM log_resource WHERE logid='$logid' AND is_deleted=0 GROUP BY resourceid,person";
 $r = mysqli_query($db,$q);
 $sn = 0;
 while($res = mysqli_fetch_assoc($r))
@@ -169,12 +169,22 @@ while($res = mysqli_fetch_assoc($r))
     $unit = $re2['unit'];
     $resourcename  = $re2['resourcename'];
     $sn = $sn + 1;
+
+    $person = $res['person'];
+    
+    $q3 = "SELECT * FROM people WHERE id='$person'";
+    $r3 = mysqli_query($db,$q3);
+    
+    $re3 = mysqli_fetch_assoc($r3);
+    
+    $fullname = $re3['fname'] . ' ' . $re3['lname'];
+
     echo <<<_END
     <tr>
         <td>$sn</td>
+        <td>$fullname</td>
         <td>$resourcename</td>
         <td>$qty $unit</td>
-        <td><a href="delete.php?table=log_resource&rid=$sid&return=log_resource&logid=$logid"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }
@@ -193,6 +203,7 @@ echo <<<_END
             <thead>
                 <tr>
                     <th>S.No.</th>
+                    <th>Person</th>
                     <th>Resource</th>
                     <th>Quantity</th>
                     <th>Action</th>
@@ -201,7 +212,7 @@ echo <<<_END
             <tbody>
 _END;
 
-$q = "SELECT id,qty,resourceid FROM log_resource WHERE logid='$logid' AND is_deleted=0";
+$q = "SELECT id,qty,resourceid,person FROM log_resource WHERE logid='$logid' AND is_deleted=0";
 $r = mysqli_query($db,$q);
 $sn = 0;
 while($res = mysqli_fetch_assoc($r))
@@ -219,9 +230,19 @@ while($res = mysqli_fetch_assoc($r))
     $unit = $re2['unit'];
     $resourcename  = $re2['resourcename'];
     $sn = $sn + 1;
+
+    $person = $res['person'];
+    
+    $q3 = "SELECT * FROM people WHERE id='$person'";
+    $r3 = mysqli_query($db,$q3);
+    
+    $re3 = mysqli_fetch_assoc($r3);
+    
+    $fullname = $re3['fname'] . ' ' . $re3['lname'];
     echo <<<_END
     <tr>
         <td>$sn</td>
+        <td>$fullname</td>
         <td>$resourcename</td>
         <td>$qty $unit</td>
         <td><a href="log_resource.php?logid=$logid&id=$id">Modify</a> | <a href="delete.php?table=log_resource&return=log_resource&rid=$id&logid=$logid">Delete</a></td>

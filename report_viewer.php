@@ -66,7 +66,7 @@ if($row>0)
                 <hr>
 _END;
 
-$q2 = "SELECT * FROM log_resource WHERE logid='$logid'";
+$q2 = "SELECT * FROM log_resource WHERE logid='$logid' and is_deleted=0";
 $r2 = mysqli_query($db,$q2);
 
 $row2 = mysqli_num_rows($r2);
@@ -126,7 +126,7 @@ _END;
 
 // output
 
-$q2 = "SELECT * FROM log_output WHERE logid='$logid'";
+$q2 = "SELECT * FROM log_output WHERE logid='$logid' and is_deleted=0";
 $r2 = mysqli_query($db,$q2);
 
 $row2 = mysqli_num_rows($r2);
@@ -188,7 +188,7 @@ _END;
 
 // assets
 
-$q2 = "SELECT * FROM log_assets WHERE logid='$logid'";
+$q2 = "SELECT * FROM log_assets WHERE logid='$logid' and is_deleted=0";
 $r2 = mysqli_query($db,$q2);
 
 $row2 = mysqli_num_rows($r2);
