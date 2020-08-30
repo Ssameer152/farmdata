@@ -64,7 +64,7 @@ _END;
                                 <option value="">--Select Person--</option>
 _END;
 
-$q = "SELECT * FROM people WHERE is_deleted=0";
+$q = "SELECT * FROM people WHERE is_deleted=0 order by fname asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -95,7 +95,7 @@ echo <<<_END
                                 <option value="">--Select Resource--</option>
 _END;
 
-$q = "SELECT * FROM resources WHERE is_deleted=0";
+$q = "SELECT * FROM resources WHERE is_deleted=0 order by resourcename asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))

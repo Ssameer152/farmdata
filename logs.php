@@ -59,7 +59,7 @@ if(isset($_GET['area']) && $_GET['area']!='')
                                 <option value="">--Select Area--</option>
 _END;
 
-$q = "SELECT * FROM areas WHERE is_deleted=0";
+$q = "SELECT * FROM areas WHERE is_deleted=0 order by sitename asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -83,7 +83,7 @@ echo <<<_END
                                 <option value="">--Select People--</option>
 _END;
 
-$q = "SELECT * FROM people WHERE is_deleted=0";
+$q = "SELECT * FROM people WHERE is_deleted=0 order by fname asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -107,7 +107,7 @@ echo <<<_END
                                 <option value="">--Select Activity--</option>
 _END;
 
-$q = "SELECT * FROM activities WHERE is_deleted=0";
+$q = "SELECT * FROM activities WHERE is_deleted=0 order by activity asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))

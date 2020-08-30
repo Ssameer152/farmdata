@@ -166,7 +166,7 @@ _END;
 echo '<tr>';
     
     
-    $q4 = "select * from log_resource WHERE logid='$logid'";
+    $q4 = "SELECT * from log_resource WHERE logid='$logid' and is_deleted=0";
     $r4 = mysqli_query($db,$q4);
     $row4 = mysqli_num_rows($r4);
     
@@ -193,7 +193,7 @@ _END;
     }
     echo '</td>';
     
-    $q5 = "select * from log_output WHERE logid='$logid'";
+    $q5 = "SELECT * from log_output WHERE logid='$logid' and is_deleted=0";
     $r5 = mysqli_query($db,$q5);
     echo '<td width="33%">';
     if(mysqli_num_rows($r5)>0)
@@ -220,7 +220,7 @@ _END;
     echo '</td>';
 
 
-    $q6 = "select * from log_assets WHERE logid='$logid'";
+    $q6 = "SELECT * from log_assets WHERE logid='$logid' and is_deleted=0";
     $r6 = mysqli_query($db,$q6);
     echo '<td>';
 
@@ -331,7 +331,7 @@ _END;
 echo '<tr>';
     
     
-    $q4 = "select * from log_resource WHERE logid='$logid'";
+    $q4 = "SELECT * from log_resource WHERE logid='$logid' and is_deleted=0";
     $r4 = mysqli_query($db,$q4);
     $row4 = mysqli_num_rows($r4);
     
@@ -358,7 +358,7 @@ _END;
     }
     echo '</td>';
     
-    $q5 = "select * from log_output WHERE logid='$logid'";
+    $q5 = "SELECT * from log_output WHERE logid='$logid' and is_deleted=0";
     $r5 = mysqli_query($db,$q5);
     echo '<td width="33%">';
     if(mysqli_num_rows($r5)>0)
@@ -385,7 +385,7 @@ _END;
     echo '</td>';
 
 
-    $q6 = "select * from log_assets WHERE logid='$logid'";
+    $q6 = "SELECT * from log_assets WHERE logid='$logid' and is_deleted=0";
     $r6 = mysqli_query($db,$q6);
     echo '<td>';
 

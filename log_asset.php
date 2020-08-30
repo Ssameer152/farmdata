@@ -62,7 +62,7 @@ _END;
                                 <option value="">--Select Person--</option>
 _END;
 
-$q = "SELECT * FROM people WHERE is_deleted=0";
+$q = "SELECT * FROM people WHERE is_deleted=0 order by fname asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -94,7 +94,7 @@ echo <<<_END
                                 <option value="">--Select Asset--</option>
 _END;
 
-$q = "SELECT * FROM assets WHERE is_deleted=0";
+$q = "SELECT * FROM assets WHERE is_deleted=0 order by assetname asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -153,6 +153,7 @@ echo <<<_END
                     <th>Person</th>
                     <th>Asset</th>
                     <th>Total Usage</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -168,6 +169,7 @@ if(!$r){
 $sn = 0;
 while($res = mysqli_fetch_assoc($r))
 {
+    $sid= $res['id'];
     $qty = $res['qty'];
     $rid = $res['assetid'];
     

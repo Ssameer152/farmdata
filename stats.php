@@ -125,7 +125,7 @@ if(isset($_GET['start_date']))
         
         
         // query for resource stats
-        $q2 = "SELECT resourceid,sum(qty) as q FROM log_resource WHERE logid in ($logid) GROUP BY resourceid ORDER BY q DESC";
+        $q2 = "SELECT resourceid,sum(qty) as q FROM log_resource WHERE is_deleted=0 and logid in ($logid) GROUP BY resourceid ORDER BY q DESC";
         $r2 = mysqli_query($db,$q2);
         
         echo <<<_END
@@ -162,7 +162,7 @@ _END;
 
 // query for output
 
-        $q2 = "SELECT resourceid,sum(qty) as q FROM log_output WHERE logid in ($logid) GROUP BY resourceid ORDER BY q DESC";
+        $q2 = "SELECT resourceid,sum(qty) as q FROM log_output WHERE is_deleted=0 and logid in ($logid) GROUP BY resourceid ORDER BY q DESC";
         $r2 = mysqli_query($db,$q2);
         
         echo <<<_END
