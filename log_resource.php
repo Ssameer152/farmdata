@@ -120,7 +120,7 @@ echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="Cost">Cost Per Unit(if resource is measured in kg then cost of 1 kg)</label>
-                            <input type="text" name="cpu" value="$db_cpu" class="form-control">
+                            <input type="text" name="cpu" value="0.00" class="form-control">
                         </div>
                         <input type="hidden" name="logid" value="$logid">
 _END;
