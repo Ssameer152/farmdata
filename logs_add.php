@@ -13,7 +13,7 @@ if(isset($_SESSION['user']))
         
         $sd = mysqli_real_escape_string($db,$_POST['startdate']);
         
-        $qc = "SELECT * FROM logs WHERE activity='$activity' and cast(doe as date)='$sd'";
+        $qc = "SELECT * FROM logs WHERE activity='$activity' and cast(doe as date)='$sd' and is_deleted=0";
         $rc = mysqli_query($db,$qc);
         
         if(mysqli_num_rows($rc)>0)
