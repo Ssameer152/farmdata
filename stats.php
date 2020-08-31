@@ -87,7 +87,7 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && isset($_GET['activi
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
     $activity = mysqli_real_escape_string($db,$_GET['activity']);
     
-    $q = "SELECT id, activity FROM logs WHERE cast(doe as date)>='$start_date' AND cast(doe as date)<='$end_date' AND activity='$activity'";
+    $q = "SELECT id, activity FROM logs WHERE cast(doe as date)>='$start_date' AND cast(doe as date)<='$end_date' AND activity='$activity' AND is_deleted=0";
     $r = mysqli_query($db,$q);
     
 }
@@ -96,7 +96,7 @@ else if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_d
     $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
     
-    $q = "SELECT id, activity FROM logs WHERE cast(doe as date)>='$start_date' AND cast(doe as date)<='$end_date' ORDER BY doe";
+    $q = "SELECT id, activity FROM logs WHERE cast(doe as date)>='$start_date' AND cast(doe as date)<='$end_date' and is_deleted=0 ORDER BY doe";
     $r = mysqli_query($db,$q);
     
     if(!$r){
