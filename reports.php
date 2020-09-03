@@ -113,7 +113,10 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && isset($_GET['activi
     if(mysqli_num_rows($r)>0){
         echo <<<_END
     <div class="col-lg-12">
-        <h2>Data</h2>
+        <div class="row">
+        <h2 style="margin-left:16px">Data</h2>
+        <button class="btn btn-primary" style="position: absolute; right:10;" onclick="window.print()">Print Report</button>
+        <div>
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -286,6 +289,7 @@ echo <<<_END
                 </tbody>
             </table>
         </div>
+    
     </div>    
         
 _END;
@@ -306,7 +310,10 @@ else if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_d
     if(mysqli_num_rows($r)>0){
         echo <<<_END
     <div class="col-lg-12">
-        <h2>Data</h2>
+        <div class="row">
+        <h2 style="margin-left:16px">Data</h2>
+        <button style="position: absolute; right:10;" class="btn btn-primary" onclick="window.print()">Print Report</button>
+        </div>
         <div class="table-responsive">
             <table class="table">
                 <thead>
