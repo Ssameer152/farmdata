@@ -130,6 +130,7 @@ if(isset($_GET['start_date']))
         
         echo <<<_END
             <div class="col-lg-6">
+            <h4>Start date: $start_date    End date : $end_date </h4>
                 <h2>Consumption Stats</h2>
                 <div class="table table-responsive">
                     <table class="table-striped">

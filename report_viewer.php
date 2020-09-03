@@ -48,6 +48,7 @@ echo <<<_END
 
 		<div class="container">
             <div class="row">
+            <h3>$date</h3>
 _END;
 
 $row = mysqli_num_rows($r);
