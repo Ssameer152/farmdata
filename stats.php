@@ -200,7 +200,7 @@ echo <<<_END
                 </div>
                
             </div>
-            <button style="position: absolute; bottom:35; right:550;" class="btn btn-primary" onclick="window.print()">Print Report</button>
+            <button style="position:relative;left:570;" class="btn btn-primary" onclick="window.print()">Print Report</button>
 _END;
 
 
