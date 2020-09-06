@@ -127,10 +127,12 @@ if(isset($_GET['start_date']))
         // query for resource stats
         $q2 = "SELECT resourceid,sum(qty) as q FROM log_resource WHERE is_deleted=0 and logid in ($logid) GROUP BY resourceid ORDER BY q DESC";
         $r2 = mysqli_query($db,$q2);
+        $sdt=date("d-m-Y", strtotime($start_date));
+        $edt=date("d-m-Y", strtotime($end_date));
         
         echo <<<_END
             <div class="col-lg-6">
-            <h4>Start date: $start_date    End date : $end_date </h4>
+            <h4>Start date: $sdt</h4>
                 <h2>Consumption Stats</h2>
                 <div class="table table-responsive">
                     <table class="table-striped">
@@ -163,17 +165,17 @@ _END;
 
 // query for output
 
-        $q2 = "SELECT resourceid,sum(qty) as q FROM log_output WHERE is_deleted=0 and logid in ($logid) GROUP BY resourceid ORDER BY q DESC";
+        $q2 = "SELECT resourceid,sum(qty) as q, count(person) as ct FROM log_output WHERE is_deleted=0 and logid in ($logid) GROUP BY resourceid ORDER BY q DESC";
         $r2 = mysqli_query($db,$q2);
-        
         echo <<<_END
             <div class="col-lg-6">
+                <h4>End date : $edt </h4>
                 <h2>Output Stats</h2>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Resource</th><th>Production</th>
+                            <th>Resource</th><th>Production</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -187,14 +189,18 @@ _END;
                 <td>$rid</td>
                 <td>$qty</td>
             </tr>
+          
 _END;
         }
-
 echo <<<_END
+
                         </tbody>
                     </table>
+        
                 </div>
+               
             </div>
+            <button style="position: absolute; bottom:35; right:550;" class="btn btn-primary" onclick="window.print()">Print Report</button>
 _END;
 
 

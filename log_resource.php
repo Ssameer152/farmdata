@@ -169,6 +169,11 @@ _END;
 $q = "SELECT sum(qty) as qty,resourceid,person FROM log_resource WHERE logid='$logid' AND is_deleted=0 GROUP BY resourceid,person";
 $r = mysqli_query($db,$q);
 $sn = 0;
+$q1="SELECT sum(qty) as total FROM log_resource WHERE logid='$logid' AND is_deleted=0";
+$r1=mysqli_query($db,$q1);
+$res1=mysqli_fetch_assoc($r1);
+$total=$res1['total'];
+
 while($res = mysqli_fetch_assoc($r))
 {
     $qty = $res['qty'];
@@ -198,13 +203,13 @@ while($res = mysqli_fetch_assoc($r))
         <td>$fullname</td>
         <td>$resourcename</td>
         <td>$qty $unit</td>
-    </tr>
+    </tr>  
 _END;
 }
-
 echo <<<_END
             </tbody>
         </table>
+        <h6 class="text-primary" style="float:right; padding-right:200px"><b>Total : $total $unit</b></h6>
     </div>
 
 </div>

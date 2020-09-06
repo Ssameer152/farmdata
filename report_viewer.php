@@ -42,13 +42,14 @@ _END;
 
 include_once 'nav.php';
 
-
-
+$dt=date("d-m-Y", strtotime($date));
 echo <<<_END
 
 		<div class="container">
             <div class="row">
-            <h3>$date</h3>
+            <h3>$dt</h3>
+            <button class="btn btn-primary"  style="position: absolute; right:120;" onclick="window.print()">Print Report</button>
+        
 _END;
 
 $row = mysqli_num_rows($r);

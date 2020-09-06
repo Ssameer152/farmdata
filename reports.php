@@ -113,7 +113,10 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && isset($_GET['activi
     if(mysqli_num_rows($r)>0){
         echo <<<_END
     <div class="col-lg-12">
-        <h2>Data</h2>
+        <div class="row mb-3">
+        <h2 style="margin-left:16px">Data</h2>
+        <button class="btn btn-primary" style="position: absolute; right:10;" onclick="window.print()">Print Report</button>
+        </div>
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -171,8 +174,10 @@ echo '<tr>';
     $row4 = mysqli_num_rows($r4);
     $q7="SELECT SUM(lr.qty) as total,r.unit as unit from log_resource lr inner join resources r on r.id=lr.resourceid WHERE lr.is_deleted=0 and lr.logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by lr.logid";
     $r7=mysqli_query($db,$q7);
+    if(mysqli_num_rows($r7)>0){
 $re7=mysqli_fetch_assoc($r7);
 $total=$re7['total'].''.$re7['unit'];
+    }
     echo '<td>';
     if(mysqli_num_rows($r4)>0)
     {
@@ -204,8 +209,10 @@ _END;
     
     $q8="SELECT SUM(lo.qty) as total ,r.unit as unit from log_output lo inner join resources r on r.id=lo.resourceid WHERE lo.is_deleted=0 and lo.logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by lo.logid";
     $r8=mysqli_query($db,$q8);
+    if(mysqli_num_rows($r8)){
     $re8=mysqli_fetch_assoc($r8);
     $total=$re8['total']. '' . $re8['unit'];
+    }
     $q5 = "SELECT * from log_output lo inner join people pe on lo.person=pe.id WHERE lo.is_deleted=0 and logid='$logid'";
     $r5 = mysqli_query($db,$q5);
     echo '<td width="33%">';
@@ -240,8 +247,10 @@ _END;
 
     $q9="SELECT SUM(usage_time) as total from log_assets WHERE is_deleted=0 and logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity') group by logid";
     $r9=mysqli_query($db,$q9);
+    if(mysqli_num_rows($r9)){
     $re9=mysqli_fetch_assoc($r9);
     $total=$re9['total'];
+    }
     $q6 = "SELECT * from log_assets la inner join people pe on la.person=pe.id WHERE la.is_deleted=0 and logid='$logid'";
     $r6 = mysqli_query($db,$q6);
     echo '<td>';
@@ -286,6 +295,7 @@ echo <<<_END
                 </tbody>
             </table>
         </div>
+    
     </div>    
         
 _END;
@@ -306,7 +316,10 @@ else if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_d
     if(mysqli_num_rows($r)>0){
         echo <<<_END
     <div class="col-lg-12">
-        <h2>Data</h2>
+        <div class="row">
+        <h2 style="margin-left:16px">Data</h2>
+        <button style="position: absolute; right:10;" class="btn btn-primary" onclick="window.print()">Print Report</button>
+        </div>
         <div class="table-responsive">
             <table class="table">
                 <thead>
