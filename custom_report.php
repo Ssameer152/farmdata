@@ -162,7 +162,7 @@ _END;
         <tr>
         <th>Resource Total</th>
         </tr>
-    _END;
+_END;
     while($re1=mysqli_fetch_assoc($r1)){
         $rid = getDimensionValue($db,'resources',$re1['resourceid'],'resourcename');
         $qty1 = $re1['q'] . ' ' . getDimensionValue($db,'resources',$re1['resourceid'],'unit');
