@@ -27,8 +27,8 @@
                         <div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown2">
                             <a class="dropdown-item" href="#">Add Purchase</a>
                             <a class="dropdown-item" href="#">View Purchases</a>
-                            <a class="dropdown-item" href="#">Add Vendor</a>
-                            <a class="dropdown-item" href="#">View Vendors</a>
+                            <a class="dropdown-item" href="vendor.php">Add Vendor</a>
+                            <a class="dropdown-item" href="vendor.php">View Vendors</a>
                         </div>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="transactions.php"><span class="fa fa-list fa-lg"></span> Transactions</a></li>

@@ -26,7 +26,7 @@ _END;
     {
         $msg = "Please enter the details";
         echo <<<_END
-        <meta http-equiv='refresh' content='0;url=areas.php?msg=$msg'>   
+        <meta http-equiv='refresh' content='0;url=transactions.php?msg=$msg'>   
 _END;
     }
 }
