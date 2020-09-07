@@ -15,7 +15,7 @@ if(isset($_SESSION['user']))
         $q = "INSERT INTO transactions(dot,particular,amt_paid,amt_received) VALUES('$dot','$particular','$paid','$rec')";
         $r = mysqli_query($db,$q);
         
-        $msg = "User Added";
+        $msg = "Record Added";
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=transactions.php?msg=$msg'>
 _END;

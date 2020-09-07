@@ -58,6 +58,7 @@ echo <<<_END
                                     <th>Particular</th>
                                     <th>Received</th>
                                     <th>Paid</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,8 +79,9 @@ while($res = mysqli_fetch_assoc($r))
         <td>$sn</td>
         <td>$dot</td>
         <td>$part</td>
-        <td>$received</td>
-        <td>$paid</td>
+        <td>&#8377; $received</td>
+        <td>&#8377; $paid</td>
+        <td><a href="delete.php?table=transactions&rid=$sn&return=transactions">Delete</a></td>
     </tr>
 _END;
 }
