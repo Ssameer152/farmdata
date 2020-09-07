@@ -16,6 +16,7 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
 					 <a class="dropdown-item" href="reports.php">Individual Report</a>
+					 <a class="dropdown-item" href="custom_report.php">Custom Report</a>
 					 <a class="dropdown-item" href="stats.php">Stats</a>
                      <a class="dropdown-item" href="reports_v1.php">Report<sup>Beta</sup></a>
 					</div>
