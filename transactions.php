@@ -25,24 +25,24 @@ echo <<<_END
 			<div class="row">
                 <div class="col-lg-12">
                     <h2>Transactions</h2>
-                    <form action="areas_add.php" method="post">
+                    <form action="transactions_add.php" method="post">
 						<div class="form-group">
 							<label for="particular">Particular</label>
-							<input type="text" name="sitename" class="form-control">
+							<input type="text" name="particular" class="form-control">
 						</div>
                         <div class="form-row">
                             <div class="col">
                                 <label for="particular">Amount Received</label>
-                                <input type="text" class="form-control" value="0">
+                                <input type="text" class="form-control" name="rec" value="0">
                             </div>
                             <div class="col">
                                 <label for="particular">Amount Paid</label>
-                                <input type="text" class="form-control" value="0">
+                                <input type="text" class="form-control" name="paid" value="0">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="leaseduntil">Date of Transaction</label>
-                            <input type="date" name="leased_until" class="form-control">
+                            <input type="date" name="dot" class="form-control">
                         </div>
 						<button type="submit" class="btn btn-primary">Add Transaction</button>
 					</form>
@@ -54,30 +54,32 @@ echo <<<_END
                             <thead>
                                 <tr>
                                     <th>S.No.</th>
-                                    <th>Site Name</th>
-                                    <th>Manager</th>
-                                    <th>Action</th>
+                                    <th>Date</th>
+                                    <th>Particular</th>
+                                    <th>Received</th>
+                                    <th>Paid</th>
                                 </tr>
                             </thead>
                             <tbody>
 _END;
 
-$q = "SELECT areas.id,sitename,people.fname,people.lname FROM `areas` INNER JOIN people on people.id=areas.manager WHERE areas.is_deleted=0";
+$q = "SELECT * FROM transactions WHERE is_deleted=0 ORDER BY id DESC";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
 {
     $sn = $res['id'];
-    $sitename = $res['sitename'];
-    $fname = $res['fname'];
-    $lname = $res['lname'];
-    
+    $dot = $res['dot'];
+    $paid = $res['amt_paid'];
+    $received = $res['amt_received'];
+    $part = $res['particular'];
     echo <<<_END
     <tr>
         <td>$sn</td>
-        <td>$sitename</td>
-        <td>$fname $lname</td>
-        <td><a href="delete.php?table=areas&rid=$sn&return=areas"><span class="fa fa-trash fa-lg"></a></td>
+        <td>$dot</td>
+        <td>$part</td>
+        <td>$received</td>
+        <td>$paid</td>
     </tr>
 _END;
 }
