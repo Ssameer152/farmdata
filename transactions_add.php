@@ -5,14 +5,15 @@ if(isset($_SESSION['user']))
 {
     include_once 'db.php';
     
-    if(isset($_POST['particular']) && isset($_POST['rec']) && isset($_POST['paid']) && isset($_POST['dot']) && $_POST['particular']!='' && $_POST['rec']!='' && $_POST['paid']!='' && $_POST['dot']!='')
+    if(isset($_POST['particular']) && isset($_POST['rec']) && isset($_POST['paid']) && isset($_POST['dot']) && $_POST['particular']!='' && $_POST['rec']!='' && $_POST['paid']!='' && $_POST['dot']!='' && isset($_POST['area']) && $_POST['area']!='')
     {
+        $area = mysqli_real_escape_string($db,$_POST['area']);
         $particular = mysqli_real_escape_string($db,$_POST['particular']);
         $rec = mysqli_real_escape_string($db,$_POST['rec']);
         $paid = mysqli_real_escape_string($db,$_POST['paid']);
         $dot = mysqli_real_escape_string($db,$_POST['dot']);
         
-        $q = "INSERT INTO transactions(dot,particular,amt_paid,amt_received) VALUES('$dot','$particular','$paid','$rec')";
+        $q = "INSERT INTO transactions(area,dot,particular,amt_paid,amt_received) VALUES('$area','$dot','$particular','$paid','$rec')";
         $r = mysqli_query($db,$q);
         
         $msg = "Record Added";

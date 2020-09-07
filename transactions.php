@@ -1,6 +1,19 @@
 <?php
 session_start();
 
+
+function getDimensionValue($db,$table,$gid,$name){
+    $q = "SELECT * FROM $table WHERE id=$gid";
+    $r = mysqli_query($db,$q);
+    
+    $res = mysqli_fetch_assoc($r);
+    
+    $value = $res[$name];
+    
+    return $value;
+}
+
+
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
@@ -26,6 +39,30 @@ echo <<<_END
                 <div class="col-lg-12">
                     <h2>Transactions</h2>
                     <form action="transactions_add.php" method="post">
+                        <div class="form-group">
+                            <label for="area">Area</label>
+                            <select name="area" class="form-control">
+                                <option value="">--Select Area--</option>
+_END;
+
+$q = "SELECT * FROM areas WHERE is_deleted=0 order by sitename asc";
+$r = mysqli_query($db,$q);
+
+while($res = mysqli_fetch_assoc($r))
+{
+    $sid = $res['id'];
+    $sitename = $res['sitename'];
+    $location = $res['location'];
+    
+    echo <<<_END
+    <option value="$sid">$sitename ($location)</option>
+_END;
+
+}
+
+echo <<<_END
+                            </select>
+                        </div>
 						<div class="form-group">
 							<label for="particular">Particular</label>
 							<input type="text" name="particular" class="form-control">
@@ -55,6 +92,7 @@ echo <<<_END
                                 <tr>
                                     <th>S.No.</th>
                                     <th>Date</th>
+                                    <th>Area</th>
                                     <th>Particular</th>
                                     <th>Received</th>
                                     <th>Paid</th>
@@ -74,10 +112,12 @@ while($res = mysqli_fetch_assoc($r))
     $paid = $res['amt_paid'];
     $received = $res['amt_received'];
     $part = $res['particular'];
+    $area = getDimensionValue($db,'areas',$res['area'],'sitename');
     echo <<<_END
     <tr>
         <td>$sn</td>
         <td>$dot</td>
+        <td>$area</td>
         <td>$part</td>
         <td>&#8377; $received</td>
         <td>&#8377; $paid</td>
