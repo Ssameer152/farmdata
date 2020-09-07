@@ -26,8 +26,14 @@ echo <<<_END
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <style>
+        @media print { 
+            #report { 
+               display:none; 
+            } 
+         } 
+         </style>
     </head>
-    
     <body>    
 _END;
 
@@ -35,9 +41,9 @@ include_once 'nav.php';
 
 echo <<<_END
 
-		<div class="container">
-            <div class="row">
-                <div class="col-lg-12">
+		<div class="container" >
+            <div class="row" >
+                <div class="col-lg-12" id="report">
                     <h2 class="h2">Stats Viewer</h2><br>
                     <form action="stats.php" method="get">
                         <div class="row">

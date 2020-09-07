@@ -23,7 +23,7 @@ if(isset($_GET['date']) && $_GET['date']!='' && isset($_GET['area']) && $_GET['a
     $date = $_GET['date'];
     $area = $_GET['area'];
     
-    $q = "SELECT * FROM logs WHERE cast(doe as date)='$date' AND area='$area'";
+    $q = "SELECT * FROM logs WHERE cast(doe as date)='$date' AND area='$area' and is_deleted=0";
     $r = mysqli_query($db,$q);
     
     
