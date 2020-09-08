@@ -171,7 +171,7 @@ _END;
         <td>$rid</td>
         <td>$qty1</td>
         </tr>
-        _END;
+_END;
     }
 
         echo '</table>';
@@ -215,7 +215,7 @@ _END;
         <tr>
         <th>Total Output</th>
         </tr>
-    _END;
+_END;
 
     $q11="SELECT resourceid,sum(qty) as q FROM log_output WHERE is_deleted=0 and logid in ($logid) GROUP BY resourceid ORDER BY q DESC";
     $r11=mysqli_query($db,$q11);
@@ -228,7 +228,7 @@ _END;
         <td>$rid</td>
         <td>$qty11</td>
         </tr>
-        _END;
+_END;
     }
         echo '</table>';
 
