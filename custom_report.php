@@ -190,7 +190,9 @@ _END;
     $re8=mysqli_fetch_assoc($r8);
     $total=$re8['total']. '' . $re8['unit'];
     }
-    echo '<td width="34%"><h5>Output</h5>';
+
+    echo '<td><h5>Output</h5>';
+
     if(mysqli_num_rows($r5)>0)
     {
         echo '<table border="1" cellspacing="1"><tr><th>Person</th><th>Resource</th><th>Qty</th></tr>';
@@ -214,8 +216,10 @@ _END;
         <th>Total Output</th>
         </tr>
     _END;
+
     $q11="SELECT resourceid,sum(qty) as q FROM log_output WHERE is_deleted=0 and logid in ($logid) GROUP BY resourceid ORDER BY q DESC";
     $r11=mysqli_query($db,$q11);
+
     while($re11=mysqli_fetch_assoc($r11)){
         $rid = getDimensionValue($db,'resources',$re11['resourceid'],'resourcename');
         $qty11 = $re11['q'] . ' ' . getDimensionValue($db,'resources',$re11['resourceid'],'unit');
@@ -244,6 +248,7 @@ _END;
     $re9=mysqli_fetch_assoc($r9);
     $total=$re9['total'];
     }
+    
     echo '<td><h5>Assets</h5>';
 
     if(mysqli_num_rows($r6)>0)
