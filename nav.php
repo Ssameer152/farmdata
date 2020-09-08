@@ -25,8 +25,8 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Purchases</a>
                         <div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown2">
-                            <a class="dropdown-item" href="#">Add Purchase</a>
-                            <a class="dropdown-item" href="#">View Purchases</a>
+                            <a class="dropdown-item" href="purchases.php">Add Purchase</a>
+                            <a class="dropdown-item" href="purchases.php">View Purchases</a>
                             <a class="dropdown-item" href="vendor.php">Add Vendor</a>
                             <a class="dropdown-item" href="vendor.php">View Vendors</a>
                         </div>
