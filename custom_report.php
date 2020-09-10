@@ -27,7 +27,7 @@ echo <<<_END
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <style>
         @media print { 
-            #report { 
+            header,#report { 
                display:none; 
             } 
          } 
@@ -44,7 +44,7 @@ echo <<<_END
 		<div class="container">
             <div class="row">
                 <div class="col-lg-12" id="report">
-                    <h2 class="h2">Report</h2><br>
+                    <h2 class="h2">Custom Report</h2><br>
                     <form action="custom_report.php" method="get">
                         <div class="row">
                             <div class="col-lg">
@@ -141,16 +141,16 @@ $total=$re7['total'].''.$re7['unit'];
     echo '<td><h5>Resources</h5>';
     if(mysqli_num_rows($r4)>0)
     {
-        echo '<table border="1" cellspacing="1"><tr><th>Person</th><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="0" class="table-striped table-responsive" cellspacing="0"><tr><th>Person</th><th>Resource</th><th>Qty</th></tr>';
         while($re4 = mysqli_fetch_assoc($r4)){
             $resourceId = getDimensionValue($db,'resources',$re4['resourceid'],'resourcename');
-            $qty = $re4['qty'] . ' ' . getDimensionValue($db,'resources',$re4['resourceid'],'unit');
+            $qty = $re4['qty'] . '' . getDimensionValue($db,'resources',$re4['resourceid'],'unit');
             $pname=$re4['fname'] . ' ' . $re4['lname'];
             echo <<<_END
      <tr>
-        <td>$pname</td>
-        <td>$resourceId</td>
-        <td>$qty</td>
+        <td style="white-space:nowrap;">$pname</td>
+        <td style="white-space:nowrap;">$resourceId</td>
+        <td style="white-space:nowrap;">$qty</td>
      </tr>       
 _END;
         }
@@ -165,7 +165,7 @@ _END;
 _END;
     while($re1=mysqli_fetch_assoc($r1)){
         $rid = getDimensionValue($db,'resources',$re1['resourceid'],'resourcename');
-        $qty1 = $re1['q'] . ' ' . getDimensionValue($db,'resources',$re1['resourceid'],'unit');
+        $qty1 = $re1['q'] . '' . getDimensionValue($db,'resources',$re1['resourceid'],'unit');
         echo <<<_END
         <tr>
         <td>$rid</td>
@@ -188,17 +188,17 @@ _END;
     $r8=mysqli_query($db,$q8);
     if(mysqli_num_rows($r8)){
     $re8=mysqli_fetch_assoc($r8);
-    $total=$re8['total']. '' . $re8['unit'];
+    $total=$re8['total'].''. $re8['unit'];
     }
 
     echo '<td><h5>Output</h5>';
 
     if(mysqli_num_rows($r5)>0)
     {
-        echo '<table border="1" cellspacing="1"><tr><th>Person</th><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="0" class="table-striped table-responsive" cellspacing="0"><tr><th>Person</th><th>Resource</th><th>Qty</th></tr>';
         while($re5 = mysqli_fetch_assoc($r5)){
             $resourceId = getDimensionValue($db,'resources',$re5['resourceid'],'resourcename');
-            $qty = $re5['qty'] . ' ' . getDimensionValue($db,'resources',$re5['resourceid'],'unit');
+            $qty = $re5['qty'] . '' . getDimensionValue($db,'resources',$re5['resourceid'],'unit');
             $pname=$re5['fname'] . ' ' . $re5['lname'];
             echo <<<_END
      <tr>
@@ -222,7 +222,7 @@ _END;
 
     while($re11=mysqli_fetch_assoc($r11)){
         $rid = getDimensionValue($db,'resources',$re11['resourceid'],'resourcename');
-        $qty11 = $re11['q'] . ' ' . getDimensionValue($db,'resources',$re11['resourceid'],'unit');
+        $qty11 = $re11['q'] . '' . getDimensionValue($db,'resources',$re11['resourceid'],'unit');
         echo <<<_END
         <tr>
         <td>$rid</td>
@@ -253,7 +253,7 @@ _END;
 
     if(mysqli_num_rows($r6)>0)
     {
-        echo '<table border="1" cellspacing="1"><tr><th>Person</th><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="0" class="table-striped table-responsive" cellspacing="0"><tr><th>Person</th><th>Resource</th><th>Qty</th></tr>';
         while($re6 = mysqli_fetch_assoc($r6)){
             $resourceId = getDimensionValue($db,'assets',$re6['assetid'],'assetname');
             $qty = $re6['usage_time'];
