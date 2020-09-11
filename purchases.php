@@ -136,7 +136,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$delivery_status</td>
         <td>$payment_status</td>
         <td>$status</td>
-        <td><a href="#">Add Items</a> | <a href="delete.php?table=purchases&rid=$sn&return=purchases">Delete</a></td>
+        <td><a href="purchases_additem.php?pid=$sn">Add Items</a> | <a href="delete.php?table=purchases&rid=$sn&return=purchases">Delete</a></td>
     </tr>
 _END;
 }
