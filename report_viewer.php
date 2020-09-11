@@ -35,6 +35,13 @@ if(isset($_GET['date']) && $_GET['date']!='' && isset($_GET['area']) && $_GET['a
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <style>
+        @media print { 
+            header,#report { 
+               display:none; 
+            } 
+         } 
+         </style>
     </head>
     
     <body>    

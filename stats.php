@@ -28,7 +28,7 @@ echo <<<_END
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <style>
         @media print { 
-            #report { 
+            header,#report { 
                display:none; 
             } 
          } 
@@ -138,7 +138,7 @@ if(isset($_GET['start_date']))
         
         echo <<<_END
             <div class="col-lg-6">
-            <h4>Start date: $sdt</h4>
+            <h4>Period from: $sdt To $edt</h4>
                 <h2>Consumption Stats</h2>
                 <div class="table table-responsive">
                     <table class="table-striped">
@@ -175,7 +175,6 @@ _END;
         $r2 = mysqli_query($db,$q2);
         echo <<<_END
             <div class="col-lg-6">
-                <h4>End date : $edt </h4>
                 <h2>Output Stats</h2>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -206,7 +205,7 @@ echo <<<_END
                 </div>
                
             </div>
-            <button style="position:relative;left:570;" class="btn btn-primary" onclick="window.print()">Print Report</button>
+            <button style="position:relative;left:590; bottom:20;" class="btn btn-primary" onclick="window.print()">Print Report</button>
 _END;
 
 

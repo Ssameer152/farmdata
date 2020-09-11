@@ -26,6 +26,13 @@ echo <<<_END
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <style>
+        @media print { 
+            header,#report { 
+               display:none; 
+            } 
+         } 
+         </style>
     </head>
     
     <body>    
@@ -37,7 +44,7 @@ echo <<<_END
 
 		<div class="container">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12" id="report">
                     <h2 class="h2">Report</h2><br>
                     <form action="reports.php" method="get">
                         <div class="row">
@@ -201,7 +208,7 @@ _END;
     echo '<td width="33%">';
     if(mysqli_num_rows($r5)>0)
     {
-        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="0" class="table-responsive table-striped" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
         while($re5 = mysqli_fetch_assoc($r5)){
             $resourceId = getDimensionValue($db,'resources',$re5['resourceid'],'resourcename');
             $qty = $re5['qty'] . ' ' . getDimensionValue($db,'resources',$re5['resourceid'],'unit');
@@ -229,7 +236,7 @@ _END;
 
     if(mysqli_num_rows($r6)>0)
     {
-        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="0" class="table-responsive table-striped" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
         while($re6 = mysqli_fetch_assoc($r6)){
             $resourceId = getDimensionValue($db,'assets',$re6['assetid'],'assetname');
             $qty = $re6['usage_time'];
@@ -341,7 +348,7 @@ echo '<tr>';
     echo '<td>';
     if(mysqli_num_rows($r4)>0)
     {
-        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="0" class="table-responsive table-striped" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
         while($re4 = mysqli_fetch_assoc($r4)){
             $resourceId = getDimensionValue($db,'resources',$re4['resourceid'],'resourcename');
             $qty = $re4['qty'] . ' ' . getDimensionValue($db,'resources',$re4['resourceid'],'unit');
@@ -366,7 +373,7 @@ _END;
     echo '<td width="33%">';
     if(mysqli_num_rows($r5)>0)
     {
-        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="0" class="table-responsive table-striped" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
         while($re5 = mysqli_fetch_assoc($r5)){
             $resourceId = getDimensionValue($db,'resources',$re5['resourceid'],'resourcename');
             $qty = $re5['qty'] . ' ' . getDimensionValue($db,'resources',$re5['resourceid'],'unit');
@@ -394,7 +401,7 @@ _END;
 
     if(mysqli_num_rows($r6)>0)
     {
-        echo '<table border="1" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
+        echo '<table border="0" class="table-responsive table-striped" cellspacing="0"><tr><th>Resource</th><th>Qty</th></tr>';
         while($re6 = mysqli_fetch_assoc($r6)){
             $resourceId = getDimensionValue($db,'assets',$re6['assetid'],'assetname');
             $qty = $re6['usage_time'];
