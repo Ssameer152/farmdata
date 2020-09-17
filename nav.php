@@ -3,13 +3,13 @@
 			<a class="navbar-brand" href="index.php">FarmDB</a>
 			<div class="collapse navbar-collapse" id="Navbar">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item"><a class="nav-link" href="areas.php"><span class="fa fa-home fa-lg"></span> Areas</a></li>
-					<li class="nav-item"><a class="nav-link" href="people.php"><span class="fa fa-info fa-lg"></span> People</a></li>
-					<li class="nav-item"><a class="nav-link" href="assets.php"><span class="fa fa-list fa-lg"></span> Assets</a></li>
-					<li class="nav-item"><a class="nav-link" href="resources.php"><span class="fa fa-list fa-lg"></span> Resources</a></li>
-					<li class="nav-item"><a class="nav-link" href="activity.php"><span class="fa fa-list fa-lg"></span> Activities</a></li>
-					<li class="nav-item"><a class="nav-link" href="logs.php"><span class="fa fa-address-card fa-lg"></span> Logs</a></li>
-
+					<li class="nav-item"><a class="nav-link" href="areas.php"> Areas</a></li>
+					<li class="nav-item"><a class="nav-link" href="people.php"> People</a></li>
+					<li class="nav-item"><a class="nav-link" href="assets.php"> Assets</a></li>
+					<li class="nav-item"><a class="nav-link" href="resources.php"> Resources</a></li>
+					<li class="nav-item"><a class="nav-link" href="activity.php"> Activities</a></li>
+					<li class="nav-item"><a class="nav-link" href="logs.php"> Logs</a></li>
+					<li class="nav-item"><a class="nav-link" href="cattle.php">Cattle</a></li>
 					<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Reports 
@@ -22,7 +22,16 @@
                      <a class="dropdown-item" href="reports_v1.php">Report<sup>Beta</sup></a>
 					</div>
 					</li>
-                    
+                    <li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Cattle Assets
+					</a>
+					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
+					 <a class="dropdown-item" href="cattle_activity.php">Cattle Activity</a>
+					 <a class="dropdown-item" href="cattle_breed.php">Cattle Breed</a>
+					 <a class="dropdown-item" href="cattle_type.php">Cattle Type</a>
+					</div>
+					</li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Purchases</a>
                         <div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown2">
