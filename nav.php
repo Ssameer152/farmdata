@@ -9,7 +9,6 @@
 					<li class="nav-item"><a class="nav-link" href="resources.php"> Resources</a></li>
 					<li class="nav-item"><a class="nav-link" href="activity.php"> Activities</a></li>
 					<li class="nav-item"><a class="nav-link" href="logs.php"> Logs</a></li>
-					<li class="nav-item"><a class="nav-link" href="cattle.php">Cattle</a></li>
 					<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Reports 
@@ -24,9 +23,10 @@
 					</li>
                     <li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Cattle Assets
+					Cattle
 					</a>
 					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
+                     <a class="dropdown-item" href="cattle.php">Add/View Cattle</a>
 					 <a class="dropdown-item" href="cattle_activity.php">Cattle Activity</a>
 					 <a class="dropdown-item" href="cattle_breed.php">Cattle Breed</a>
 					 <a class="dropdown-item" href="cattle_type.php">Cattle Type</a>

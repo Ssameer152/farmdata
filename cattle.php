@@ -58,12 +58,12 @@ _END;
             if($db_cname==''){
                 echo <<<_END
                         <input type="text" name="name" class="form-control">
-                    _END;
+_END;
             }   
             else {
                 echo <<<_END
                 <input type="text" name="name" value="$db_cname" class="form-control">
-                _END;
+_END;
             }
     echo <<<_END
                     </div>
@@ -94,16 +94,16 @@ _END;
                         </div>
                         <div class="form-group">
                         <label for="date">Purchase Date</label>
-                        _END;
+_END;
                        if($db_pdate==''){
                            echo <<<_END
                         <input type="date" name="pdate" class="form-control">
-                        _END;
+_END;
                        }
                        else {
                            echo <<<_END
                         <input type="date" name="pdate" value="$db_pdate" class="form-control">
-                        _END;
+_END;
                        }
                        echo <<<_END
                     </div>
@@ -135,7 +135,7 @@ echo <<<_END
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="age">Age when purchased</label>
+                            <label for="age">Age when purchased (in Months)</label>
 _END;
 
 if($db_age == ''){
