@@ -24,8 +24,7 @@ _END;
 include_once 'nav.php';
 
 echo <<<_END
-
-		<div class="container">
+        <div class="container">
             <div class="row">
                 <div class="col-lg-6">
                     <h2>Cattle Activity Log</h2>
@@ -56,11 +55,74 @@ _END;
                         <label>Comments</label>
                         <input type="text" name="comments" class="form-control"/>
                     </div>
+                    <div class="form-group">
+                        <label>Date of Activity</label>
+                        <input type="date" name="doa" class="form-control"/>
+                    </div>
+                    <div class="form-group">
                         <input type="hidden" name="cid" value="$cid"/>
-						<button type="submit" class="btn btn-primary">Add Cattle Activity</button>
+                        <button type="submit" class="btn btn-primary">Add Cattle Activity</button>
+                        </div>
                     </form>
                 </div>
                 <div class="col-lg-6">
+                <div class="table-responsive">
+                    <h2>For Cattle id : $cid</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>S.No.</th>
+                                <th>Cattle Name</th>
+                                <th>Cattle Type</th>
+                                <th>Breed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            _END;
+            $q = "SELECT id,name,type_id,breed_id from cattle where id='$cid' and is_deleted=0";
+            $r = mysqli_query($db,$q);
+            $sn = 0;
+            while($res = mysqli_fetch_assoc($r))
+            {
+                $id=$res['id'];
+                $cname = $res['name'];
+                $ctype = $res['type_id'];
+               
+                $q2 = "SELECT * FROM cattle_type WHERE id='$ctype'";
+                $r2 = mysqli_query($db,$q2);
+                
+                $re2 = mysqli_fetch_assoc($r2);
+                $cattleType= $re2['name'];
+                $sn = $sn + 1;
+            
+                $breed = $res['breed_id'];
+                
+                $q3 = "SELECT * FROM cattle_breed WHERE id='$breed'";
+                $r3 = mysqli_query($db,$q3);
+                
+                $re3 = mysqli_fetch_assoc($r3);
+                
+                $cbreed = $re3['breed'];
+            
+                echo <<<_END
+                <tr>
+                    <td>$sn</td>
+                    <td>$cname</td>
+                    <td>$cattleType</td>
+                    <td>$cbreed</td>
+                </tr>  
+            _END;
+            }
+            echo <<<_END
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="container">
+                <div class="row">
+                <div class="col-lg-9">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -69,6 +131,7 @@ _END;
                                     <th>Cattle Activity</th>
                                     <th>Activity Value</th>
                                     <th>Comments</th>
+                                    <th>Activity Date</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -82,6 +145,7 @@ while($res = mysqli_fetch_assoc($r))
 {
     $sn = $res['id'];
     $c_activity = $res['caid'];
+    $doa=$res['doa'];
     $q1="SELECT name from cattle_activity where id='$c_activity' and is_deleted=0";
     $r1=mysqli_query($db,$q1);
     $re1=mysqli_fetch_assoc($r1);
@@ -95,7 +159,8 @@ while($res = mysqli_fetch_assoc($r))
         <td>$ct_activity</td>
         <td>$acvalue</td>
         <td>$comments</td>
-        <td><a href="delete.php?table=cattle_activity_log&rid=$sn&return=cattle_activity_log">Delete</a></td>
+        <td>$doa</td>
+        <td><a href="delete.php?table=cattle_activity_log&rid=$sn&return=cattle_activity_log">Delete</a> | <a href="cattle_view.php?vid=$sn">View cattle report</a></td>
     </tr>
 _END;
 }
