@@ -22,9 +22,8 @@ if(isset($_SESSION['user'])){
         </head>
         
         <body>    
-    _END;    
-    include_once 'nav.php';
-    
+_END;    
+include_once 'nav.php';
     
     $q2="SELECT sum(qty) as q,resourceid from log_resource where is_deleted=0  group by resourceid";
     $r2=mysqli_query($db,$q2);
@@ -39,7 +38,7 @@ if(isset($_SESSION['user'])){
             <th>consumed</th>
             <th>Left</th>
         </tr>
-    _END;
+_END;
     while($res2=mysqli_fetch_assoc($r2)){
         $name=getDimensionValue($db,'resources',$res2['resourceid'],'resourcename');
         $qty=$res2['q'];
@@ -48,7 +47,7 @@ if(isset($_SESSION['user'])){
         echo <<<_END
         <tr>
         <td>$name</td>
-        _END;
+_END;
         $q="SELECT * from purchase_items where is_deleted=0 and resourceid=23 group by resourceid";
         $r=mysqli_query($db,$q);
         while($res=mysqli_fetch_assoc($r)){
@@ -58,23 +57,23 @@ if(isset($_SESSION['user'])){
         <td>$pqty $unit</td>
         <td>$qty $unit</td>
         <td>$left $unit</td>
-        _END;
+ _END;
         }
         echo <<<_END
         </tr>
-        _END;
+_END;
     }
     echo <<<_END
         </table>
         </div>
         </div>
         </div>
-        _END;
+_END;
         include_once 'foot.php';
     echo <<<_END
         </body>
         </html>
-    _END;
+_END;
 }
 else
 {
