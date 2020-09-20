@@ -46,7 +46,7 @@ include_once 'nav.php';
         </tr>
         </thead>
         <tbody>
-    _END;
+_END;
     $q="SELECT cast(doe as date) as e,cast(doa as date) as a,id,cid,caid,activity_value,comments from cattle_activity_log where is_deleted=0 and id='$vid'";
     $r=mysqli_query($db,$q);
     while($res=mysqli_fetch_assoc($r)){
@@ -63,7 +63,7 @@ include_once 'nav.php';
         echo <<<_END
         <tr>
         <td>$id</td>
-        _END;
+_END;
         $q1="SELECT * from cattle where id='$cid' and is_deleted=0";
         $r1=mysqli_query($db,$q1);
         while($res1=mysqli_fetch_assoc($r1)){
@@ -74,7 +74,7 @@ include_once 'nav.php';
         <td>$cname</td>
         <td>$ctype</td>
         <td>$breed</td>
-        _END;
+_END;
         }
         echo <<<_END
         <td>$ctlactivity</td>
@@ -83,7 +83,7 @@ include_once 'nav.php';
         <td>$acvalue</td>
         <td>$comments</td>
         </tr>
-        _END;
+_END;
     }
     
  include_once 'foot.php';

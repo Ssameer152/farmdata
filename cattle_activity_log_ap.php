@@ -17,7 +17,7 @@ if(isset($_SESSION['user']))
         
         $msg = "Cattle Activity Log Added";
         echo <<<_END
-        <meta http-equiv='refresh' content='0;url=cattle_activity_log.php?msg=$msg'>
+        <meta http-equiv='refresh' content='0;url=cattle_activity_log.php?cid=$cid&msg=$msg'>
 _END;
         
     }

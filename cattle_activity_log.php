@@ -78,7 +78,7 @@ _END;
                             </tr>
                         </thead>
                         <tbody>
-            _END;
+_END;
             $q = "SELECT id,name,type_id,breed_id from cattle where id='$cid' and is_deleted=0";
             $r = mysqli_query($db,$q);
             $sn = 0;
@@ -111,7 +111,7 @@ _END;
                     <td>$cattleType</td>
                     <td>$cbreed</td>
                 </tr>  
-            _END;
+_END;
             }
             echo <<<_END
                         </tbody>

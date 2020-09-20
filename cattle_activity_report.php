@@ -138,7 +138,7 @@ _END;
     <td>$ctltype</td>
     <td>$breed</td>
     </tr>
-    _END;
+_END;
     }
     echo '</table>';
     echo '</td>';
@@ -155,7 +155,7 @@ _END;
         <td>$acvalue</td>
         <td>$comments</td>
         </tr>
-        _END;
+_END;
     }
     echo '<table>';
     echo '</td>';
@@ -236,7 +236,7 @@ _END;
     <td>$ctltype</td>
     <td>$breed</td>
     </tr>
-    _END;
+_END;
     }
     echo '</table>';
     echo '</td>';
@@ -253,7 +253,7 @@ _END;
         <td>$acvalue</td>
         <td>$comments</td>
         </tr>
-        _END;
+_END;
     }
     echo '<table>';
     echo '</td>';
