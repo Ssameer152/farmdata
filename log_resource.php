@@ -179,7 +179,7 @@ while($res = mysqli_fetch_assoc($r))
     $qty = $res['qty'];
     $rid = $res['resourceid'];
     
-    $q2 = "SELECT resourcename,unit FROM resources WHERE id='$rid'";
+    $q2 = "SELECT resourcename,unit FROM resources WHERE id='$rid' and is_deleted=0";
     $r2 = mysqli_query($db,$q2);
     
     $re2 = mysqli_fetch_assoc($r2);
@@ -190,7 +190,7 @@ while($res = mysqli_fetch_assoc($r))
 
     $person = $res['person'];
     
-    $q3 = "SELECT * FROM people WHERE id='$person'";
+    $q3 = "SELECT * FROM people WHERE id='$person' and is_deleted=0";
     $r3 = mysqli_query($db,$q3);
     
     $re3 = mysqli_fetch_assoc($r3);
@@ -240,7 +240,7 @@ while($res = mysqli_fetch_assoc($r))
     
     $id = $res['id'];
     
-    $q2 = "SELECT resourcename,unit FROM resources WHERE id='$rid'";
+    $q2 = "SELECT resourcename,unit FROM resources WHERE id='$rid' and is_deleted=0";
     $r2 = mysqli_query($db,$q2);
     
     $re2 = mysqli_fetch_assoc($r2);
@@ -251,7 +251,7 @@ while($res = mysqli_fetch_assoc($r))
 
     $person = $res['person'];
     
-    $q3 = "SELECT * FROM people WHERE id='$person'";
+    $q3 = "SELECT * FROM people WHERE id='$person' and is_deleted=0";
     $r3 = mysqli_query($db,$q3);
     
     $re3 = mysqli_fetch_assoc($r3);
