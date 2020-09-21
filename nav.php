@@ -3,11 +3,19 @@
 			<a class="navbar-brand" href="index.php">FarmDB</a>
 			<div class="collapse navbar-collapse" id="Navbar">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item"><a class="nav-link" href="areas.php"> Areas</a></li>
-					<li class="nav-item"><a class="nav-link" href="people.php"> People</a></li>
-					<li class="nav-item"><a class="nav-link" href="assets.php"> Assets</a></li>
-					<li class="nav-item"><a class="nav-link" href="resources.php"> Resources</a></li>
-					<li class="nav-item"><a class="nav-link" href="activity.php"> Activities</a></li>
+					<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Master Data 
+					</a>
+					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
+					 <a class="dropdown-item" href="areas.php"> Areas</a>
+					 <a class="dropdown-item" href="people.php"> People</a>
+					 <a class="dropdown-item" href="assets.php"> Assets</a>
+					 <a class="dropdown-item" href="resources.php"> Resources</a>
+					 <a class="dropdown-item" href="activity.php"> Activities</a>
+					</div>
+					</li>
+                    
 					<li class="nav-item"><a class="nav-link" href="logs.php"> Logs</a></li>
 					<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
