@@ -10,10 +10,20 @@ if(isset($_SESSION['user']))
         $dlqty = mysqli_real_escape_string($db,$_POST['dlqty']);
         $cid = mysqli_real_escape_string($db,$_POST['cid']);
         $csid = mysqli_real_escape_string($db,$_POST['csid']);
+        if(isset($_POST['mid']) && $_POST['mid']!='')
+        {
+            $mid = $_POST['mid'];
+            $q = "UPDATE customer_delivery_log SET delivered_qty='$dlqty' WHERE id='$mid' LIMIT 1";
+            $r = mysqli_query($db,$q);
+            
+            $msg = 'Updated';
+        }
+        else{
         $q = "INSERT INTO customer_delivery_log(qty,delivered_qty,cid,csid) VALUES('$qty','$dlqty','$cid','$csid')";
         $r = mysqli_query($db,$q);
         
         $msg = "Customer delivery log Added";
+        }
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=customer_delivery_log.php?msg=$msg'>
 _END;

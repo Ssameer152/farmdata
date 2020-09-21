@@ -13,11 +13,6 @@ function getDimensionValue($db,$table,$gid,$name){
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    if(isset($_GET['csid']) && $_GET['csid']!='' && isset($_GET['cid']) && $_GET['cid']!='' )
-    {
-        $csid=$_GET['csid'];
-        $cid=$_GET['cid'];
-
     echo <<<_END
 <html>
     <head>
@@ -33,56 +28,44 @@ _END;
 include_once 'nav.php';
 
 echo <<<_END
-
 		<div class="container">
             <div class="row">
                 <div class="col-lg-6">
                     <h2>Customer Delivery Log</h2>
 _END;
-        $q="SELECT fname,lname from customer where id='$cid' and is_deleted=0";
+        $q="SELECT * from customer_subscription where is_active=1 and is_deleted=0 and id not in (select csid from customer_delivery_log where cast(dod as date)=cast(current_timestamp() as date))";
         $r=mysqli_query($db,$q);
         while($res=mysqli_fetch_assoc($r)){
-            $Name=$res['fname'] .' '.$res['lname'];
+            $cid=$res['cid'];
+        $q1="SELECT * from customer where is_deleted=0 and id='$cid'";
+        $r1=mysqli_query($db,$q1);
+        while($res1=mysqli_fetch_assoc($r1)){
+            $Name=$res1['fname'] .' '.$res1['lname'];
                     echo <<<_END
-                    <h5>Customer : $Name </h5>
+                    <h5 class="mt-4">Customer : $Name </h5>
+_END;
+        }
+                $qty=$res['qty'];
+                $csid=$res['id'];
+                    echo <<<_END
                     <form action="customer_delivery_log_ap.php" method="post">
-                        <div class="form-group">
-                            <label for="qty">Quantity</label>
-                            <input type="text" name="qty" class="form-control">
-                        </div>
+                    <h5 class="mt-4 mb-4 text-primary">Quantity : $qty</h5>
                         <div class="form-group">
                             <label for="dlqty">Delivered Quantity</label>
-                            <input type="text" name="dlqty" class="form-control">
+                            <input type="text" name="dlqty" value="$qty" class="form-control">
                         </div>
+                        <input type="hidden" name="qty" value="$qty">
                         <input type="hidden" name="csid" value="$csid">
-                        <input type="hidden" name="cid" value="$cid">
+                        <input type="hidden" name="cid" value="$cid">                  
 						<button type="submit" class="btn btn-primary">Mark delivered</button>
                     </form>
-_END;
-                }
-                echo <<<_END
-                </div>
-                <div class="col-lg-6">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>S.No.</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-_END;
-
+_END;              
+}      
 echo <<<_END
-                            </tbody>
-                        </table>
                     </div>
                 </div>
                 
             </div>
-        </div>
-
 _END;
 
 include_once 'foot.php';
@@ -91,13 +74,6 @@ echo <<<_END
     </body>
 </html>
 _END;
-    }
-    else {
-        $msg = "please fill all fields";
-    echo <<<_END
-    <meta http-equiv='refresh' content='0;url=customer_subscription.php?msg=$msg'>
-_END;
-    }
 }
 else
 {
