@@ -34,6 +34,18 @@
 					 <a class="dropdown-item" href="cattle_type.php">Cattle Type</a>
 					</div>
 					</li>
+					<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Customer
+					</a>
+					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
+                     <a class="dropdown-item" href="city.php">City</a>
+					 <a class="dropdown-item" href="state.php">State</a>
+					 <a class="dropdown-item" href="customer.php">Add Customer</a>
+					 <a class="dropdown-item" href="customer_subscription.php">Customer Subscription</a>
+
+					</div>
+					</li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Purchases</a>
                         <div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown2">
