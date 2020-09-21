@@ -68,7 +68,7 @@ _END;
                         else{
                             echo <<<_END
                             <input type="text" name="fname" value="$db_fname" class="form-control">
-_END;                       
+_END;
                         }
                             echo <<<_END
                         </div>
@@ -78,7 +78,7 @@ _END;
                         if($db_lname==''){
                             echo <<<_END
                         <input type="text" name="lname" class="form-control">
-_END;   
+_END;
                         }
                         else{
                             echo <<<_END
@@ -104,7 +104,7 @@ _END;
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone</label>
-_END;                   
+_END;
                         if($db_phone==''){
                             echo <<<_END
                             <input type="text" name="phone" class="form-control">
@@ -146,7 +146,7 @@ _END;
                             if($id==$db_city){
                             echo <<<_END
                             <option value="$id" selected="selected">$name</option>
-_END;   
+_END;
                         }
                         else {
                             echo <<<_END
@@ -175,7 +175,7 @@ _END;
                         else{
                             echo <<<_END
                             <option value="$id">$name</option>
-_END;   
+_END;
                         }
                     }
                         echo <<<_END
@@ -200,7 +200,7 @@ _END;
                         if(isset($mid)){
                             echo <<<_END
                             <input type="hidden" name="mid" value="$mid">
-                        _END;
+_END;
                         }
                         echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Customer</button>

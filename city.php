@@ -47,7 +47,7 @@ _END;
                             $name=$res['name'];
                             echo <<<_END
                             <option value="$id">$name</option>
-_END;   
+_END;
                         }
                         echo <<<_END
                         </select>

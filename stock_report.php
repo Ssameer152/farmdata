@@ -22,7 +22,7 @@ if(isset($_SESSION['user'])){
         </head>
         
         <body>    
-_END;    
+_END;
 include_once 'nav.php';
     
     $q2="SELECT sum(qty) as q,resourceid from log_resource where is_deleted=0  group by resourceid";
@@ -57,7 +57,7 @@ _END;
         <td>$pqty $unit</td>
         <td>$qty $unit</td>
         <td>$left $unit</td>
- _END;
+_END;
         }
         echo <<<_END
         </tr>

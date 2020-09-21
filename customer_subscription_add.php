@@ -24,7 +24,7 @@ if(isset($_SESSION['user']))
         $msg = "Customer subscription Added";
         }
         echo <<<_END
-        <meta http-equiv='refresh' content='0;url=customer_subscription.php?msg=$msg'>
+        <meta http-equiv='refresh' content='0;url=customer_subscription.php?cid=$cid&msg=$msg'>
 _END;
         
     }
