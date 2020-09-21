@@ -1,6 +1,15 @@
 <?php
 session_start();
-
+function getDimensionValue($db,$table,$gid,$name){
+    $q = "SELECT * FROM $table WHERE id=$gid";
+    $r = mysqli_query($db,$q);
+    
+    $res = mysqli_fetch_assoc($r);
+    
+    $value = $res[$name];
+    
+    return $value;
+}
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
@@ -24,17 +33,30 @@ echo <<<_END
 		<div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h2>Resources</h2>
-                    <form action="resources_add.php" method="post">
-                        <div class="form-group">
-                            <label for="resourcename">Title</label>
-                            <input type="text" name="resource" class="form-control">
+                    <h2>City</h2>
+                    <form action="city_add.php" method="post">
+                    <div class="form-group">
+                            <label for="state">State</label>
+                            <select name="state"  class="form-control">
+                            <option value="">--Select State--</option>
+_END;
+                        $q="SELECT * from state where is_deleted=0";
+                        $r=mysqli_query($db,$q);
+                        while($res=mysqli_fetch_assoc($r)){
+                            $id=$res['id'];
+                            $name=$res['name'];
+                            echo <<<_END
+                            <option value="$id">$name</option>
+_END;   
+                        }
+                        echo <<<_END
+                        </select>
                         </div>
                         <div class="form-group">
-                            <label for="unit">Measuring Unit</label>
-                            <input type="text" name="unit" class="form-control" placeholder="kg/packet/piece/litre">
+                            <label for="city">City</label>
+                            <input type="text" name="city" class="form-control">
                         </div>
-						<button type="submit" class="btn btn-primary">Add Resource</button>
+						<button type="submit" class="btn btn-primary">Add City</button>
                     </form>
                 </div>
                 <div class="col-lg-6">
@@ -43,28 +65,28 @@ echo <<<_END
                             <thead>
                                 <tr>
                                     <th>S.No.</th>
-                                    <th>Name</th>
-                                    <th>Unit</th>
+                                    <th>City</th>
+                                    <th>State</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
 _END;
 
-$q = "SELECT * FROM resources WHERE is_deleted=0 order by resourcename asc";
+$q = "SELECT * FROM city WHERE is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
 {
     $sn = $res['id'];
-    $name = $res['resourcename'];
-    $unit = $res['unit'];
+    $city = $res['name'];
+    $state=getDimensionValue($db,'state',$res['state_id'],'name');
     echo <<<_END
     <tr>
         <td>$sn</td>
-        <td>$name</td>
-        <td>$unit</td>
-        <td><a href="delete.php?table=resources&rid=$sn&return=resources"><span class="fa fa-trash fa-lg"></a></td>
+        <td>$city</td>
+        <td>$state</td>
+        <td><a href="delete.php?table=city&rid=$sn&return=city">Delete</a></td>
     </tr>
 _END;
 }

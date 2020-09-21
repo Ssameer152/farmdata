@@ -128,7 +128,7 @@ echo '<tr>';
     
 $q1="SELECT resourceid,sum(qty) as q FROM log_resource WHERE is_deleted=0 and logid in ($logid) GROUP BY resourceid ORDER BY q DESC";
 $r1=mysqli_query($db,$q1);
-$q4 = "SELECT * from log_resource lr inner join people pe on lr.person=pe.id WHERE lr.is_deleted=0 and lr.person in(18,19,20,21,22,23)  and logid='$logid'";
+$q4 = "SELECT * from log_resource lr inner join people pe on lr.person=pe.id WHERE lr.is_deleted=0 and lr.person in(23,24,25,26,28)  and logid='$logid'";
 $r4 = mysqli_query($db,$q4);
     $row4 = mysqli_num_rows($r4);
     $q7="SELECT SUM(lr.qty) as total,r.unit as unit from log_resource lr inner join resources r on r.id=lr.resourceid WHERE lr.is_deleted=0 and lr.logid IN (SELECT id FROM logs  WHERE doe ='$d' and activity='$activity' order by activity asc) group by lr.logid";

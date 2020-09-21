@@ -24,17 +24,13 @@ echo <<<_END
 		<div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h2>Resources</h2>
-                    <form action="resources_add.php" method="post">
+                    <h2>States</h2>
+                    <form action="state_add.php" method="post">
                         <div class="form-group">
-                            <label for="resourcename">Title</label>
-                            <input type="text" name="resource" class="form-control">
+                            <label for="state">Title</label>
+                            <input type="text" name="state" class="form-control">
                         </div>
-                        <div class="form-group">
-                            <label for="unit">Measuring Unit</label>
-                            <input type="text" name="unit" class="form-control" placeholder="kg/packet/piece/litre">
-                        </div>
-						<button type="submit" class="btn btn-primary">Add Resource</button>
+						<button type="submit" class="btn btn-primary">Add State</button>
                     </form>
                 </div>
                 <div class="col-lg-6">
@@ -43,28 +39,26 @@ echo <<<_END
                             <thead>
                                 <tr>
                                     <th>S.No.</th>
-                                    <th>Name</th>
-                                    <th>Unit</th>
+                                    <th>State</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
 _END;
 
-$q = "SELECT * FROM resources WHERE is_deleted=0 order by resourcename asc";
+$q = "SELECT * FROM state WHERE is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
 {
     $sn = $res['id'];
-    $name = $res['resourcename'];
-    $unit = $res['unit'];
+    $name = $res['name'];
+    
     echo <<<_END
     <tr>
         <td>$sn</td>
         <td>$name</td>
-        <td>$unit</td>
-        <td><a href="delete.php?table=resources&rid=$sn&return=resources"><span class="fa fa-trash fa-lg"></a></td>
+        <td><a href="delete.php?table=state&rid=$sn&return=state">Delete</a></td>
     </tr>
 _END;
 }

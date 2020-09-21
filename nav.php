@@ -15,6 +15,7 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
 					 <a class="dropdown-item" href="reports.php">Individual Report</a>
+					 <a class="dropdown-item" href="stock_report.php">Inventory</a>
 					 <a class="dropdown-item" href="cattle_activity_report.php">Cattle Report</a>
 					 <a class="dropdown-item" href="custom_report.php">Custom Report</a>
 					 <a class="dropdown-item" href="custom_report2.php">Custom Report 2</a>
@@ -31,6 +32,18 @@
 					 <a class="dropdown-item" href="cattle_activity.php">Cattle Activity</a>
 					 <a class="dropdown-item" href="cattle_breed.php">Cattle Breed</a>
 					 <a class="dropdown-item" href="cattle_type.php">Cattle Type</a>
+					</div>
+					</li>
+					<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Customer
+					</a>
+					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
+                     <a class="dropdown-item" href="city.php">City</a>
+					 <a class="dropdown-item" href="state.php">State</a>
+					 <a class="dropdown-item" href="customer.php">Add Customer</a>
+					 <a class="dropdown-item" href="customer_subscription.php">Customer Subscription</a>
+
 					</div>
 					</li>
                     <li class="nav-item dropdown">
