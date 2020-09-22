@@ -50,7 +50,7 @@
                      <a class="dropdown-item" href="city.php">City</a>
 					 <a class="dropdown-item" href="state.php">State</a>
 					 <a class="dropdown-item" href="customer.php">Add Customer</a>
-					 <a class="dropdown-item" href="customer_subscription.php">Customer Subscription</a>
+					 <a class="dropdown-item" href="customer_subscription_report.php">Customer Subscription Report</a>
 
 					</div>
 					</li>
