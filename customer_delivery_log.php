@@ -13,7 +13,7 @@ function getDimensionValue($db,$table,$gid,$name){
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    echo <<<_END
+    ?>
 <html>
     <head>
         <title>FarmDB</title>
@@ -23,18 +23,17 @@ if(isset($_SESSION['user']))
     </head>
     
     <body>    
-_END;
 
-include_once 'nav.php';
+<?php include_once 'nav.php';?>
 
-echo <<<_END
+
 		<div class="container">
             <div class="row">
                 <div class="col-lg-6">
                     <h2>Customer Delivery Log</h2>
-_END;
-        $q="SELECT * from customer_subscription where is_active=1 and is_deleted=0 and id not in (select csid from customer_delivery_log where cast(dod as date)=cast(current_timestamp() as date))";
-        $r=mysqli_query($db,$q);
+<?php
+        $q="SELECT * from customer_subscription where is_active=1 and is_deleted=0 and id not in (select csid from customer_delivery_log where cast(dod as date)=cast(current_timestamp() as date)) order by cid";
+        $r=mysqli_query($db,$q); 
         while($res=mysqli_fetch_assoc($r)){
             $cid=$res['cid'];
         $q1="SELECT * from customer where is_deleted=0 and id='$cid'";
@@ -42,13 +41,30 @@ _END;
         while($res1=mysqli_fetch_assoc($r1)){
             $Name=$res1['fname'] .' '.$res1['lname'];
                     echo <<<_END
-                    <h5 class="mt-4">Customer : $Name </h5>
+                    <h5 class="mt-4">Customer : <b>$Name</b></h5>
 _END;
         }
                 $qty=$res['qty'];
                 $csid=$res['id'];
+                $milktype=$res['milktype'];
+                if($milktype==1){
                     echo <<<_END
-                    <form action="customer_delivery_log_ap.php" method="post">
+                     <h6 class="mt-4">Cow Milk</h6>
+_END;
+                    }
+                elseif($milktype==2){
+                    echo <<<_END
+                    <h6>Sahiwal Milk</h6>
+_END;
+                }
+                elseif($milktype==3){
+                    echo <<<_END
+                    <h6>HF Milk</h6>
+_END;
+                }
+
+                    echo <<<_END
+                    <form  action="customer_delivery_log_ap.php"  method="post">
                     <h5 class="mt-4 mb-4 text-primary">Quantity : $qty</h5>
                         <div class="form-group">
                             <label for="dlqty">Delivered Quantity</label>
@@ -57,7 +73,7 @@ _END;
                         <input type="hidden" name="qty" value="$qty">
                         <input type="hidden" name="csid" value="$csid">
                         <input type="hidden" name="cid" value="$cid">                  
-						<button type="submit" class="btn btn-primary">Mark delivered</button>
+						<button onclick="return confirm('Do you want to mark delivered?')" type="submit" class="btn btn-primary">Mark delivered</button>
                     </form>
 _END;
 }      
