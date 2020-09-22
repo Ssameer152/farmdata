@@ -132,7 +132,7 @@ _END;
                             echo <<<_END
                         <option value="2" selected="selected">Evening</option>
                         <option value="1">Morning</option>
-_END;   
+_END;
                         }
                         else {
                             echo <<<_END
@@ -169,7 +169,7 @@ _END;
                         <tbody>
 _END;
 
-$q = "SELECT * FROM customer WHERE is_deleted=0";
+$q = "SELECT * FROM customer WHERE id='$cid' and is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
