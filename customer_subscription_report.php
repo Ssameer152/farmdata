@@ -32,21 +32,42 @@ include_once 'nav.php';
         <tr>
         <th class="w-10">Sno.</th>
         <th>Name</th>
-        <th>Qty</th>
+        <th>Del.Time</th>
+        <th>Cow</th>
+        <th>Sahiwal</th>
+        <th>Buffalo</th>
         <th>Del</th>
         </tr>
 _END;
-    $q="SELECT * from customer_subscription where is_deleted=0 and is_active=1 order by cid";
+    $q="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then qty end as CowMilk ,case when milktype=2 then qty end as Sahiwal ,case when milktype=3 then qty end as buffalo FROM `customer_subscription`) as t group by t.cid,t.delivery_time";
     $r=mysqli_query($db,$q);
+    $sn=0;
     while($res=mysqli_fetch_assoc($r)){
+        $sn=$sn+1;
         $id=$res['cid'];
         $name=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
-        $qty=$res['qty'];
+        $qty=$res['cow_milk'];
+        $qty1=$res['sahiwal_milk'];
+        $qty2=$res['buffalo_milk'];
+        $deliverytime=$res['delivery_time'];
+
         echo <<<_END
         <tr>
-        <td width="5%">$id</td>
+        <td width="5%">$sn</td>
         <td width="20%">$name</td>
-        <td width="8%">$qty</td>
+_END;
+        if($deliverytime==1)
+        echo <<<_END
+        <td width="10%">Morning</td>
+_END;
+        if($deliverytime==2)
+        echo <<<_END
+        <td width="10%">Evening</td>
+_END; 
+        echo <<<_END
+        <td width="9%">$qty</td>
+        <td width="9%">$qty1</td>
+        <td width="9%">$qty2</td>
         </tr>
 _END;
     }

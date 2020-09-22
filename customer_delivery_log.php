@@ -47,6 +47,8 @@ _END;
                 $qty=$res['qty'];
                 $csid=$res['id'];
                 $milktype=$res['milktype'];
+                $deliverytime=$res['delivery_time'];
+                
                 if($milktype==1){
                     echo <<<_END
                      <h6 class="mt-4">Cow Milk</h6>
@@ -54,18 +56,29 @@ _END;
                     }
                 elseif($milktype==2){
                     echo <<<_END
-                    <h6>Sahiwal Milk</h6>
+                    <h6 class="mt-4">Sahiwal Milk</h6>
 _END;
                 }
                 elseif($milktype==3){
                     echo <<<_END
-                    <h6>HF Milk</h6>
+                    <h6 class="mt-4">Buffalo Milk</h6>
+_END;
+                }
+                if($deliverytime==1){
+                    echo <<<_END
+                    <h6 class="mt-4">Morning</h6>
+_END;
+                }
+                elseif($deliverytime==2){
+                    echo <<<_END
+                    <h6 class="mt-4">Evening</h6>
 _END;
                 }
 
                     echo <<<_END
                     <form  action="customer_delivery_log_ap.php"  method="post">
                     <h5 class="mt-4 mb-4 text-primary">Quantity : $qty</h5>
+
                         <div class="form-group">
                             <label for="dlqty">Delivered Quantity</label>
                             <input type="text" name="dlqty" value="$qty" class="form-control">
