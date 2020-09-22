@@ -51,27 +51,27 @@ _END;
                 
                 if($milktype==1){
                     echo <<<_END
-                     <h6 class="mt-4">Cow Milk</h6>
+                     <h6 class="mt-4">Cow Milk - 
 _END;
                     }
                 elseif($milktype==2){
                     echo <<<_END
-                    <h6 class="mt-4">Sahiwal Milk</h6>
+                    <h6 class="mt-4">Sahiwal Milk - 
 _END;
                 }
                 elseif($milktype==3){
                     echo <<<_END
-                    <h6 class="mt-4">Buffalo Milk</h6>
+                    <h6 class="mt-4">Buffalo Milk - 
 _END;
                 }
                 if($deliverytime==1){
                     echo <<<_END
-                    <h6 class="mt-4">Morning</h6>
+                     Morning</h6>
 _END;
                 }
                 elseif($deliverytime==2){
                     echo <<<_END
-                    <h6 class="mt-4">Evening</h6>
+                     Evening</h6>
 _END;
                 }
 

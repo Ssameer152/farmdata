@@ -32,11 +32,10 @@ include_once 'nav.php';
         <tr>
         <th class="w-10">Sno.</th>
         <th>Name</th>
-        <th>Del.Time</th>
+        <th>Delivery Time</th>
         <th>Cow</th>
         <th>Sahiwal</th>
         <th>Buffalo</th>
-        <th>Del</th>
         </tr>
 _END;
     $q="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then qty end as CowMilk ,case when milktype=2 then qty end as Sahiwal ,case when milktype=3 then qty end as buffalo FROM `customer_subscription`) as t group by t.cid,t.delivery_time";
@@ -63,7 +62,7 @@ _END;
         if($deliverytime==2)
         echo <<<_END
         <td width="10%">Evening</td>
-_END; 
+_END;
         echo <<<_END
         <td width="9%">$qty</td>
         <td width="9%">$qty1</td>
