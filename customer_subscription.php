@@ -157,7 +157,7 @@ _END;
         <td>$sn</td>
         <td>$date</td>
         <td>$qty</td>
-        <td><a href="customer_subscription.php?cid=$cid&id=$sn">Modify</a> | <a href="delete.php?table=customer_subscription&return=customer_subscription&rid=$sn&cid=$cid">Delete</a> | <a href="customer_delivery_log.php?cid=$cid&csid=$sn">Add Customer delivery</a></td>
+        <td><a href="customer_subscription.php?cid=$cid&id=$sn">Modify</a> | <a href="delete.php?table=customer_subscription&return=customer_subscription&rid=$sn&cid=$cid">Delete</a></td>
         </tr>
 _END;
     }
