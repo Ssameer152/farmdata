@@ -59,7 +59,7 @@ _END;
                         <input type="hidden" name="cid" value="$cid">                  
 						<button type="submit" class="btn btn-primary">Mark delivered</button>
                     </form>
-_END;              
+_END;
 }      
 echo <<<_END
                     </div>

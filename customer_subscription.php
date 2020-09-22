@@ -15,7 +15,7 @@ if(isset($_SESSION['user']))
 
         if(isset($_GET['id']) && $_GET['id']!=''){
             $mid = $_GET['id'];
-            $q = "SELECT cast(start_date as date) as sd,id,qty,cid,is_active from customer_subscription WHERE id='$mid' and is_deleted=0";
+            $q = "SELECT cast(start_date as date) as sd,id,qty,cid,is_active,milktype from customer_subscription WHERE id='$mid' and is_deleted=0";
             $r = mysqli_query($db,$q);
             
             $res = mysqli_fetch_assoc($r);
@@ -87,6 +87,16 @@ _END;
 _END;
 }
                     echo <<<_END
+                    
+                    <div class="form-group">
+                        <label for="startdate">Milk Type</label>
+                        <select class="form-control" name="milktype">
+                                    <option value="1">Cow Milk</option>
+                                    <option value="2">Sahiwal Milk</option>
+                                    <option value="3">HF Milk</option>
+                                </select>
+                    </div>
+                    
 						<button type="submit" class="btn btn-primary">Add Subscription</button>
                     </form>
                 </div>
@@ -140,23 +150,30 @@ echo <<<_END
                                     <th>S.No.</th>
                                     <th>Start date</th>
                                     <th>Quantity</th>
+                                    <th>Milk Type</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
 _END;
-    $q="SELECT id,cast(start_date as date) as sd,qty from customer_subscription where cid='$cid' and is_deleted=0";
+    $q="SELECT id,cast(start_date as date) as sd,qty,milktype from customer_subscription where cid='$cid' and is_deleted=0";
     $r=mysqli_query($db,$q);
     while($res=mysqli_fetch_assoc($r)){
         $sn=$res['id'];
         $dt=$res['sd'];
         $date=date("d-m-Y", strtotime($dt));
         $qty=$res['qty'];
+        $mt = $res['milktype'];
+        
+        if($mt == 1){$mt = 'Cow Milk';}
+        else if($mt == 2){$mt = 'Sahiwal Milk';}
+        else if($mt == 3){$mt = 'HF Milk';}
         echo <<<_END
         <tr>
         <td>$sn</td>
         <td>$date</td>
         <td>$qty</td>
+        <td>$mt</td>
         <td><a href="customer_subscription.php?cid=$cid&id=$sn">Modify</a> | <a href="delete.php?table=customer_subscription&return=customer_subscription&rid=$sn&cid=$cid">Delete</a></td>
         </tr>
 _END;
