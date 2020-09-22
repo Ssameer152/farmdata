@@ -41,7 +41,7 @@ if(isset($_SESSION['user']))
         while($res1=mysqli_fetch_assoc($r1)){
             $Name=$res1['fname'] .' '.$res1['lname'];
                     echo <<<_END
-                    <h5 class="mt-4">Customer : $Name </h5>
+                    <h5 class="mt-4">Customer : <b>$Name</b></h5>
 _END;
         }
                 $qty=$res['qty'];
@@ -49,7 +49,7 @@ _END;
                 $milktype=$res['milktype'];
                 if($milktype==1){
                     echo <<<_END
-                     <h6>Cow Milk</h6>
+                     <h6 class="mt-4">Cow Milk</h6>
 _END;
                     }
                 elseif($milktype==2){
