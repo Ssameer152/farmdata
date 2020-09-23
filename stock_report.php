@@ -34,8 +34,8 @@ include_once 'nav.php';
         <table class="table table-responsive">
         <tr>
             <th>Resource</th>
-            <th>Purchased</th>
             <th>consumed</th>
+            <th>Purchased</th>
             <th>Left</th>
         </tr>
 _END;
@@ -47,6 +47,7 @@ _END;
         echo <<<_END
         <tr>
         <td>$name</td>
+        <td>$qty $unit</td>
 _END;
         $q="SELECT * from purchase_items where is_deleted=0 and resourceid=23 group by resourceid";
         $r=mysqli_query($db,$q);
@@ -55,7 +56,6 @@ _END;
             $left=$pqty-$qty;
         echo <<<_END
         <td>$pqty $unit</td>
-        <td>$qty $unit</td>
         <td>$left $unit</td>
 _END;
         }
