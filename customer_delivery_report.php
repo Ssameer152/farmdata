@@ -115,6 +115,22 @@ _END;
 _END;
     }
     }
+    $q2="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cs.id,cs.cid,cs.delivery_time,case when cs.milktype=1 then sum(cd.delivered_qty) end as CowMilk ,case when cs.milktype=2 then sum(cd.delivered_qty) end as Sahiwal ,case when cs.milktype=3 then sum(cd.delivered_qty) end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cd.csid=cs.id where cd.is_deleted=0 GROUP by cs.milktype) as t group by t.cid,t.delivery_time";
+    $r2=mysqli_query($db,$q2);
+    $res2=mysqli_fetch_assoc($r2);
+    $total1=$res2['cow_milk'];
+    $total2=$res2['sahiwal_milk'];
+    $total3=$res2['buffalo_milk'];
+    echo <<<_END
+    <tr>
+    <th>Total</th>
+    <td></td>
+    <td></td>
+    <th>$total1</th>
+    <th>$total2</th>
+    <th>$total3</th>
+    </tr>
+_END;
 }
     else {
         echo 'No deliveries found';
