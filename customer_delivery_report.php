@@ -54,10 +54,11 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
 
-    $q1="SELECT id,cast(dod as date) as d,cid,csid,qty,delivered_qty from customer_delivery_log where cast(dod as date)>='$start_date' AND cast(dod as date)<='$end_date' and is_deleted=0 group by cid";
+    $q1="SELECT id,cast(dod as date) as d,cid,csid from customer_delivery_log where cast(dod as date)>='$start_date' AND cast(dod as date)<='$end_date' and is_deleted=0 group by cast(dod as date)";
     $r1=mysqli_query($db,$q1);
     if(mysqli_num_rows($r1)>0){
     while($res1=mysqli_fetch_assoc($r1)){
+        $did=$res1['cid'];
         $sdt=date("d-m-Y", strtotime($start_date));
         $edt=date("d-m-Y", strtotime($end_date));
         echo <<<_END
@@ -68,21 +69,22 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
         </div>
         </div>
 _END;
-        echo <<<_END
-        <table class="table table-bordered">
-        <tbody>
-        <tr>
-        <th class="w-10">Sno.</th>
-        <th>Name</th>
-        <th>Delivery Time</th>
-        <th>Cow</th>
-        <th>Sahiwal</th>
-        <th>Buffalo</th>
-        </tr>
-_END;
-    $q="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cs.id,cs.cid,cs.delivery_time,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid) as t group by t.cid,t.delivery_time";
+       
+    $q="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cs.id,cs.cid,cs.delivery_time,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cd.csid=cs.id where cd.is_deleted=0) as t group by t.cid,t.delivery_time";
     $r=mysqli_query($db,$q);
     $sn=0;
+    echo <<<_END
+    <table class="table table-bordered" width="100%">
+    <tbody>
+    <tr>
+    <th width="5%">Sno.</th>
+    <th width="24%">Name</th>
+    <th width="16%">Delivery Time</th>
+    <th width="16%">Cow</th>
+    <th width="16%">Sahiwal</th>
+    <th width="16%">Buffalo</th>
+    </tr>
+_END;
     while($res=mysqli_fetch_assoc($r)){
         $sn=$sn+1;
         $id=$res['cid'];
@@ -94,21 +96,21 @@ _END;
 
         echo <<<_END
         <tr>
-        <td width="5%">$sn</td>
-        <td width="20%">$name</td>
+        <td width="8%">$sn</td>
+        <td width="24%">$name</td>
 _END;
         if($deliverytime==1)
         echo <<<_END
-        <td width="10%">Morning</td>
+        <td width="16%">Morning</td>
 _END;
         if($deliverytime==2)
         echo <<<_END
-        <td width="10%">Evening</td>
+        <td width="16%">Evening</td>
 _END;
         echo <<<_END
-        <td width="9%">$qty</td>
-        <td width="9%">$qty1</td>
-        <td width="9%">$qty2</td>
+        <td width="16%">$qty</td>
+        <td width="16%">$qty1</td>
+        <td width="16%">$qty2</td>
         </tr>
 _END;
     }
