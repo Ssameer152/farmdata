@@ -26,6 +26,7 @@ include_once 'nav.php';
     echo <<<_END
         <div class="container">
         <div class="row">
+        <h2  class="mb-4">Customer Subscription Report</h2>
         <div class="col-lg-12">
         <table class="table table-bordered">
         <tbody>
