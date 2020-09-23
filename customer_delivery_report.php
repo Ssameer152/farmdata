@@ -66,6 +66,7 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
         <h4 class="mb-4">From $sdt to $edt</h4>
         <button class="btn btn-primary" style="position: absolute;right:10;" onclick="window.print()">Print Report</button>
         </div>
+        </div>
 _END;
         echo <<<_END
         <table class="table table-bordered">
@@ -119,7 +120,6 @@ _END;
     echo <<<_END
     </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
