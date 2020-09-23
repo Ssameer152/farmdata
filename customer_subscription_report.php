@@ -70,7 +70,7 @@ _END;
         </tr>
 _END;
     }
-    $q1="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then sum(qty) end as CowMilk ,case when milktype=2 then sum(qty) end as Sahiwal ,case when milktype=3 then sum(qty) end as buffalo FROM `customer_subscription` group by milktype) as t";
+    $q1="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then sum(qty) end as CowMilk ,case when milktype=2 then sum(qty) end as Sahiwal ,case when milktype=3 then sum(qty) end as buffalo FROM `customer_subscription` where is_deleted=0 group by milktype) as t";
     $r1=mysqli_query($db,$q1);
     $res1=mysqli_fetch_assoc($r1);
     $total1=$res1['cow_milk'];
