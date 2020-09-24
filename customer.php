@@ -54,10 +54,11 @@ include_once 'nav.php';
 echo <<<_END
 		<div class="container">
             <div class="row">
-                <div class="col-lg-10">
+                <div class="col-lg-12">
                     <h2>Enter Customer Details</h2>
                     <form action="customer_add.php" method="post">
-                    <div class="form-group">
+                    <div class="form-row">
+                    <div class="form-group col-lg-6">
                             <label for="fname">First Name</label>
 _END;
                         if($db_fname==''){
@@ -72,8 +73,8 @@ _END;
                         }
                             echo <<<_END
                         </div>
-                        <div class="form-group">
-                        <label for="lname">Last Name</label>
+                        <div class="form-group col-lg-6">
+                        <label for="lname">Last Name(Optional)</label>
 _END;
                         if($db_lname==''){
                             echo <<<_END
@@ -87,8 +88,10 @@ _END;
                         }
                             echo <<<_END
                     </div>
-                    <div class="form-group">
-                            <label for="email">Email</label>
+                    </div>
+                    <div class="form-row">
+                    <div class="form-group col-lg-6">
+                            <label for="email">Email(Optional)</label>
 _END;
                         if($db_email==''){
                             echo <<<_END
@@ -102,7 +105,7 @@ _END;
                         }
                             echo <<<_END
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-lg-6">
                             <label for="phone">Phone</label>
 _END;
                         if($db_phone==''){
@@ -118,8 +121,10 @@ _END;
                         }
                             echo <<<_END
                         </div>
-                        <div class="form-group">
-                        <label for="zipcode">ZipCode</label>
+                        </div>
+                        <div class="form-row">
+                        <div class="form-group col-lg-6">
+                        <label for="zipcode">ZipCode(Optional)</label>
 _END;
                         if($db_zipcode==''){
                             echo <<<_END
@@ -133,7 +138,7 @@ _END;
                         }
                             echo <<<_END
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-lg-6">
                             <label for="city">City</label>
                             <select name="city"  class="form-control">
                             <option value="">--Select City--</option>
@@ -157,8 +162,10 @@ _END;
                         echo <<<_END
                         </select>
                         </div>
-                    <div class="form-group">
-                            <label for="state">State</label>
+                    </div>
+                    <div class="form-row">
+                    <div class="form-group col-lg-6">
+                            <label for="state">State(Optional)</label>
                             <select name="state"  class="form-control">
                             <option value="">--Select State--</option>
 _END;
@@ -181,7 +188,7 @@ _END;
                         echo <<<_END
                         </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-lg-6">
                             <label for="address">Address</label>
 _END;
                             if($db_address==''){
@@ -195,6 +202,7 @@ _END;
 _END;
                             }
                             echo <<<_END
+                        </div>
                         </div>
 _END;
                         if(isset($mid)){
@@ -218,7 +226,6 @@ _END;
                                     <th>lastname</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Zipcode</th>
                                     <th>City</th>
                                     <th>Address</th>
                                     <th>Action</th>
@@ -237,7 +244,6 @@ while($res = mysqli_fetch_assoc($r))
     $lname = $res['lname'];
     $email = $res['email'];
     $phone = $res['phone'];
-    $zip = $res['zipcode'];
     $city=getDimensionValue($db,'city',$res['city'],'name');
     $address=$res['address'];
     echo <<<_END
@@ -247,7 +253,6 @@ while($res = mysqli_fetch_assoc($r))
         <td>$lname</td>
         <td>$email</td>
         <td>$phone</td>
-        <td>$zip</td>
         <td>$city</td>
         <td>$address</td>
         <td><a href="customer.php?id=$sn">Modify</a> | <a href="delete.php?table=customer&rid=$sn&return=customer">Delete</a> | <a href="customer_subscription.php?cid=$sn">Subscribe</a></td>

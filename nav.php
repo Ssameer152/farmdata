@@ -27,6 +27,7 @@
 					 <a class="dropdown-item" href="cattle_activity_report.php">Cattle Report</a>
 					 <a class="dropdown-item" href="custom_report.php">Custom Report</a>
 					 <a class="dropdown-item" href="custom_report2.php">Custom Report 2</a>
+					 <a class="dropdown-item" href="customer_delivery_report.php">Customer Delivery Report</a>
 					 <a class="dropdown-item" href="stats.php">Stats</a>
                      <a class="dropdown-item" href="reports_v1.php">Report<sup>Beta</sup></a>
 					</div>

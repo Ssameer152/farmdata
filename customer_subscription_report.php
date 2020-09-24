@@ -26,6 +26,7 @@ include_once 'nav.php';
     echo <<<_END
         <div class="container">
         <div class="row">
+        <h2  class="mb-4">Customer Subscription Report</h2>
         <div class="col-lg-12">
         <table class="table table-bordered">
         <tbody>
@@ -70,7 +71,22 @@ _END;
         </tr>
 _END;
     }
-
+    $q1="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then sum(qty) end as CowMilk ,case when milktype=2 then sum(qty) end as Sahiwal ,case when milktype=3 then sum(qty) end as buffalo FROM `customer_subscription` where is_deleted=0 group by milktype) as t";
+    $r1=mysqli_query($db,$q1);
+    $res1=mysqli_fetch_assoc($r1);
+    $total1=$res1['cow_milk'];
+    $total2=$res1['sahiwal_milk'];
+    $total3=$res1['buffalo_milk'];
+    echo <<<_END
+        <tr>
+        <th>Total</th>
+        <td></td>
+        <td></td>
+        <td>$total1</td>
+        <td>$total2</td>
+        <td>$total3</td>
+        </tr>
+_END;
     echo <<<_END
     </tbody>
 </table>
