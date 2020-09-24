@@ -234,7 +234,7 @@ _END;
                             <tbody>
 _END;
 
-$q = "SELECT * FROM customer WHERE is_deleted=0";
+$q = "SELECT * FROM customer WHERE is_deleted=0 order by fname asc";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))

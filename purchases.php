@@ -25,6 +25,12 @@ if(isset($_SESSION['user']))
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+          });
+        </script>
     </head>
     
     <body>    
@@ -121,6 +127,9 @@ while($res = mysqli_fetch_assoc($r))
     if($payment_status == 0){$payment_status = 'Un-Paid';}
     else if($payment_status == 1){$payment_status = 'Paid';}
     
+   
+
+
     $status = $res['status'];
     
     if($status == 0){$status = 'Placed';}
@@ -133,10 +142,61 @@ while($res = mysqli_fetch_assoc($r))
         <td>$dop</td>
         <td>$dod</td>
         <td>$vendorid</td>
-        <td>$delivery_status</td>
-        <td>$payment_status</td>
-        <td>$status</td>
-        <td><a href="purchases_additem.php?pid=$sn">Add Items</a> | <a href="delete.php?table=purchases&rid=$sn&return=purchases">Delete</a></td>
+        <td>
+_END;
+        if($delivery_status=='Undelivered'){
+            echo <<<_END
+        $delivery_status
+        <a href="update.php?table=purchases&rid=$sn&ds=$delivery_status&return=purchases" data-toggle="tooltip" data-placement="top" title="For mark delivery as delivered"><span class="fa fa-edit"></span></a> 
+_END;
+        }
+        else{
+            echo <<<_END
+            $delivery_status
+_END;
+        }
+        echo <<<_END
+        </td>
+        <td>
+_END;
+        if($payment_status=='Un-Paid'){
+            echo <<<_END
+            $payment_status
+            <a href="update.php?table=purchases&rid=$sn&ps=$payment_status&return=purchases"><span data-toggle="tooltip"   title="For mark payment as paid" class="d-inline-block fa fa-edit"></span></a> 
+_END;
+        }
+        else{
+        echo <<<_END
+            $payment_status
+_END;
+        }
+        echo <<<_END
+        </td>
+        <td>
+_END;
+        if($payment_status=='Paid' && $delivery_status=='Delivered'){
+            if($status=='Placed'){
+        echo <<<_END
+        $status
+        <a href="update.php?table=purchases&rid=$sn&ps=$payment_status&ds=$delivery_status&s=$status&return=purchases"><span data-toggle="tooltip" data-placement="top" title="For mark status as completed" class="fa fa-edit"></span></a>
+_END;   
+        }
+        else{
+            echo <<<_END
+            $status
+_END;
+        }
+    }
+    else{
+        echo <<<_END
+        $status
+_END;
+    }
+       
+        echo <<<_END
+        </td>
+        <td>
+         <a href="purchases_additem.php?pid=$sn">Add items</a> | <a href="delete.php?table=purchases&rid=$sn&return=purchases">Delete</a></td>
     </tr>
 _END;
 }
