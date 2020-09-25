@@ -25,21 +25,21 @@ _END;
 include_once 'nav.php';
     echo <<<_END
         <div class="container">
-        <div class="row">
         <h2  class="mb-4">Customer Subscription Report</h2>
-        <div class="col-lg-12">
+        <h5 style="margin-left:70px">Morning</h5>
+        <div class="row">
+        <div class="col-lg-5 px-0">
         <table class="table table-bordered">
         <tbody>
         <tr>
-        <th class="w-10">Sno.</th>
+        <th width="2%">Sno.</th>
         <th>Name</th>
-        <th>Delivery Time</th>
         <th>Cow</th>
         <th>Sahiwal</th>
         <th>Buffalo</th>
         </tr>
 _END;
-    $q="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then qty end as CowMilk ,case when milktype=2 then qty end as Sahiwal ,case when milktype=3 then qty end as buffalo FROM `customer_subscription` where is_active=1 and is_deleted=0) as t group by t.cid,t.delivery_time";
+    $q="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then qty end as CowMilk ,case when milktype=2 then qty end as Sahiwal ,case when milktype=3 then qty end as buffalo FROM `customer_subscription` where is_active=1 and is_deleted=0 and delivery_time=1) as t group by t.cid,t.delivery_time";
     $r=mysqli_query($db,$q);
     $sn=0;
     while($res=mysqli_fetch_assoc($r)){
@@ -53,17 +53,17 @@ _END;
 
         echo <<<_END
         <tr>
-        <td width="5%">$sn</td>
-        <td width="20%">$name</td>
+        <td width="2%">$sn</td>
+        <td width="40%">$name</td>
 _END;
-        if($deliverytime==1)
-        echo <<<_END
-        <td width="10%">Morning</td>
-_END;
-        if($deliverytime==2)
-        echo <<<_END
-        <td width="10%">Evening</td>
-_END;
+//         if($deliverytime==1)
+//         echo <<<_END
+//         <td width="10%">Morning</td>
+// _END;
+//         if($deliverytime==2)
+//         echo <<<_END
+//         <td width="10%">Evening</td>
+// _END;
         echo <<<_END
         <td width="9%">$qty</td>
         <td width="9%">$qty1</td>
@@ -71,7 +71,7 @@ _END;
         </tr>
 _END;
     }
-    $q1="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then sum(qty) end as CowMilk ,case when milktype=2 then sum(qty) end as Sahiwal ,case when milktype=3 then sum(qty) end as buffalo FROM `customer_subscription` where is_deleted=0 group by milktype) as t";
+    $q1="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then sum(qty) end as CowMilk ,case when milktype=2 then sum(qty) end as Sahiwal ,case when milktype=3 then sum(qty) end as buffalo FROM `customer_subscription` where is_deleted=0 and delivery_time=1 group by milktype) as t";
     $r1=mysqli_query($db,$q1);
     $res1=mysqli_fetch_assoc($r1);
     $total1=$res1['cow_milk'];
@@ -81,16 +81,78 @@ _END;
         <tr>
         <th>Total</th>
         <td></td>
-        <td></td>
-        <td>$total1</td>
-        <td>$total2</td>
-        <td>$total3</td>
+        <th>$total1</th>
+        <th>$total2</th>
+        <th>$total3</th>
         </tr>
 _END;
     echo <<<_END
     </tbody>
 </table>
 </div>
+
+<div class="col-lg-6">
+<h5>Evening</h5>
+<table class="table table-bordered">
+<tbody>
+<tr>
+<th width="2%">Sno.</th>
+<th>Name</th>
+<th>Cow</th>
+<th>Sahiwal</th>
+<th>Buffalo</th>
+</tr>
+_END;
+$q="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then qty end as CowMilk ,case when milktype=2 then qty end as Sahiwal ,case when milktype=3 then qty end as buffalo FROM `customer_subscription` where is_active=1 and is_deleted=0 and delivery_time=2) as t group by t.cid,t.delivery_time";
+$r=mysqli_query($db,$q);
+$sn=0;
+while($res=mysqli_fetch_assoc($r)){
+$sn=$sn+1;
+$id=$res['cid'];
+$name=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
+$qty=$res['cow_milk'];
+$qty1=$res['sahiwal_milk'];
+$qty2=$res['buffalo_milk'];
+$deliverytime=$res['delivery_time'];
+
+echo <<<_END
+<tr>
+<td width="2%">$sn</td>
+<td width="40%">$name</td>
+_END;
+//         if($deliverytime==1)
+//         echo <<<_END
+//         <td width="10%">Morning</td>
+// _END;
+//         if($deliverytime==2)
+//         echo <<<_END
+//         <td width="10%">Evening</td>
+// _END;
+echo <<<_END
+<td width="9%">$qty</td>
+<td width="9%">$qty1</td>
+<td width="9%">$qty2</td>
+</tr>
+_END;
+}
+$q1="SELECT t.cid,t.delivery_time,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT id,cid,delivery_time,case when milktype=1 then sum(qty) end as CowMilk ,case when milktype=2 then sum(qty) end as Sahiwal ,case when milktype=3 then sum(qty) end as buffalo FROM `customer_subscription` where is_deleted=0 and delivery_time=2 group by milktype) as t";
+$r1=mysqli_query($db,$q1);
+$res1=mysqli_fetch_assoc($r1);
+$total1=$res1['cow_milk'];
+$total2=$res1['sahiwal_milk'];
+$total3=$res1['buffalo_milk'];
+echo <<<_END
+<tr>
+<th>Total</th>
+<td></td>
+<th>$total1</th>
+<th>$total2</th>
+<th>$total3</th>
+</tr>
+_END;
+echo <<<_END
+</tbody>
+</table>
 </div>
 </div>
 _END;

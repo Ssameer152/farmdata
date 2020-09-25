@@ -23,14 +23,15 @@ if(isset($_SESSION['user']))
     <head>
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
           });
         </script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
     </head>
     
     <body>    
@@ -90,9 +91,10 @@ echo <<<_END
 					</form>
                 </div>
                 
-                <div class="col-lg-12">
+                <div class="col-lg-12 mb-4">
+                <h4 class="text-center mb-4">Purchase Details</h4>
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table id="table" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>S.No.</th>
@@ -215,6 +217,13 @@ _END;
 include_once 'foot.php';
 
 echo <<<_END
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script> 
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(document).ready(function() {
+$('#table').DataTable();
+});
+</script> 
     </body>
 </html>
 _END;
