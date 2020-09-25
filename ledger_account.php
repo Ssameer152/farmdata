@@ -1,18 +1,19 @@
 <?php
+session_start();
+if(isset($_SESSION['user'])){
 echo <<<_END
     <!DOCTYPE html>
     <html>
     <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-   _END;
-include_once 'nav.php';
-echo <<<_END
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
 </head>
 <body>
+_END;
+include_once 'nav.php';
+    echo <<<_END
     <div class="container">
         <div class="row">
             <div class="col mt-4">
@@ -46,6 +47,18 @@ echo <<<_END
             </div>
         </div>
     </div>
+_END;
+include_once 'foot.php';
+echo <<<_END
 </body>
 </html>
 _END;
+
+}
+else{
+    $msg = "Please Login";
+    echo <<<_END
+    <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
+_END;
+}
+
