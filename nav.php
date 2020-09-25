@@ -52,7 +52,7 @@
     						<a class="dropdown-item" href="state.php">State</a>
     						<a class="dropdown-item" href="customer.php">Add Customer</a>
     						<a class="dropdown-item" href="customer_subscription_report.php">Customer Subscription Report</a>
-
+							<a class="dropdown-item" href="ledger_account.php">Ledger account</a>
     					</div>
     				</li>
     				<li class="nav-item dropdown">
@@ -65,7 +65,6 @@
     					</div>
     				</li>
     				<li class="nav-item"><a class="nav-link" href="transactions.php"><span class="fa fa-list fa-lg"></span> Transactions</a></li>
-    				<li class="nav-item"><a class="nav-link" href="ledger_account.php">Ledger account</a></li>
 
     			</ul>
     			<span class="navbar-text">
