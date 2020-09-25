@@ -23,12 +23,9 @@ if(isset($_SESSION['user']))
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
     </head>
-    
     <body>    
 
 <?php include_once 'nav.php';?>
-
-
 		<div class="container">
             <div class="row">
                 <div class="col-lg-12 mb-4">
