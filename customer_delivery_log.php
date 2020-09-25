@@ -31,11 +31,17 @@ if(isset($_SESSION['user']))
 
 		<div class="container">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12 mb-4">
                     <h2 class="mb-4">Customer Delivery Log</h2>
                     <div class="table-responsive">
                     <table id="table" class="table table-striped">
-                    <form  action="customer_delivery_log_ap.php"  method="post">
+                <?php
+                $q1="SELECT count(*) as ct from customer_subscription where is_active=1 and is_deleted=0  and id not in (select csid from customer_delivery_log where cast(dod as date)=cast(current_timestamp() as date)) order by cid";
+                $r1=mysqli_query($db,$q1);
+                $res1=mysqli_fetch_assoc($r1);
+                $deliveries=$res1['ct'];
+                ?>
+                    <h4 class="mb-4">Deliveries Left: <b><?php echo $deliveries;?></b></h4>
                     <thead>
                     <tr>
                     <th>Customer</th>
@@ -91,15 +97,15 @@ _END;
 _END;
                 }
                     echo <<<_END
-                    
+                    <form  action="customer_delivery_log_ap.php"  method="post">
                     <td class="text-primary">$qty</td>
                     <td>    
                     <input type="text" name="dlqty" value="$qty" class="form-control">
                     </td>
-                        <input type="hidden" name="qty" value="$qty">
+                    <input type="hidden" name="qty" value="$qty">
                         <input type="hidden" name="csid" value="$csid">
-                        <input type="hidden" name="cid" value="$cid">              
-                        <td>
+                        <input type="hidden" name="cid" value="$cid"> 
+                        <td>        
                         <button onclick="return confirm('Do you want to mark delivered?')" type="submit" class="btn btn-primary">Mark delivered</button>
                         </td>
                     </form>
