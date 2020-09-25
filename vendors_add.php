@@ -12,11 +12,20 @@ if(isset($_SESSION['user']))
         $email = mysqli_real_escape_string($db,$_POST['email']);
         $cperson = mysqli_real_escape_string($db,$_POST['cperson']);
         $address = mysqli_real_escape_string($db,$_POST['address']);
-        
+        if(isset($_POST['mid']) && $_POST['mid']!='')
+        {
+            $mid = $_POST['mid'];
+            $q = "UPDATE vendor SET name='$vname',phone='$mobile',email='$email', contact_person='$cperson',address='$address' WHERE id='$mid' LIMIT 1";
+            $r = mysqli_query($db,$q);
+            
+            $msg = 'Updated';
+        }
+        else{
         $q = "INSERT INTO vendor(name,address,email,phone,contact_person) VALUES('$vname','$address','$email','$mobile','$cperson')";
         $r = mysqli_query($db,$q);
         
         $msg = "Record Added";
+        }
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=vendor.php?msg=$msg'>
 _END;

@@ -17,7 +17,27 @@ function getDimensionValue($db,$table,$gid,$name){
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    
+    if(isset($_GET['id']) && $_GET['id']!=''){
+        $mid = $_GET['id'];
+        $q = "SELECT * from vendor WHERE id='$mid' and is_deleted=0";
+        $r = mysqli_query($db,$q);
+        $res = mysqli_fetch_assoc($r);
+
+        $db_name = $res['name'];
+        $db_email = $res['email'];
+        $db_phone = $res['phone'];
+        $db_address=$res['address'];
+        $db_contact=$res['contact_person'];
+        
+    }
+    else
+    {
+        $db_name = '';
+        $db_email = '';
+        $db_phone='';
+        $db_address='';
+        $db_contact='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -43,27 +63,89 @@ echo <<<_END
                     <form action="vendors_add.php" method="post">
                         
 						<div class="form-group">
-							<label for="particular">Name</label>
-							<input type="text" name="vname" class="form-control">
+                            <label for="particular">Name</label>
+_END;
+                        if($db_name==''){
+                            echo <<<_END
+                            <input type="text" name="vname" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" name="vname" value="$db_name" class="form-control">
+_END;
+                        }
+                        echo <<<_END
 						</div>
                         <div class="form-row">
                             <div class="col">
                                 <label for="particular">Mobile No.</label>
+_END;
+                        if($db_phone==''){
+                        echo <<<_END
                                 <input type="text" class="form-control" name="mobile">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" class="form-control" value="$db_phone" name="mobile">
+_END;
+                        }
+                        echo <<<_END
                             </div>
                             <div class="col">
                                 <label for="particular">Email</label>
+_END;
+                        if($db_email==''){
+                            echo <<<_END
                                 <input type="email" class="form-control" name="email">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="email" value="$db_email" class="form-control" name="email">
+_END;
+                        }
+                            echo <<<_END
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="leaseduntil">Contact Person</label>
+_END;
+                        if($db_contact==''){
+                            echo <<<_END
                             <input type="text" name="cperson" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_contact" name="cperson" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="leaseduntil">Address</label>
+_END;
+                        if($db_address==''){
+                            echo <<<_END
                             <input type="text" name="address" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_address" name="address" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
+_END;
+                        if(isset($mid)){
+                            echo <<<_END
+                            <input type="hidden" name="mid" value="$mid">
+_END;
+                        }
+                        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Vendor</button>
 					</form>
                 </div>
@@ -106,7 +188,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$phone</td>
         <td>$email</td>
         <td>$cperson</td>
-        <td><a href="delete.php?table=vendor&rid=$sn&return=vendor">Delete</a></td>
+        <td><a href="vendor.php?id=$sn">Modify</a> | <a href="delete.php?table=vendor&rid=$sn&return=vendor">Delete</a></td>
     </tr>
 _END;
 }
