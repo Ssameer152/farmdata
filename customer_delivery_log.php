@@ -71,12 +71,12 @@ _END;
                 if($milktype==1){
                     echo <<<_END
                      <td class="mt-4">Cow Milk - 
-_END;               
+_END;
                     }
-                elseif($milktype==2){
+                else if($milktype==2){
                     echo <<<_END
                     <td class="mt-4">Sahiwal Milk - 
-_END;               
+_END;
                 }
                 elseif($milktype==3){
                     echo <<<_END

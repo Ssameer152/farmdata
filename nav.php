@@ -65,7 +65,7 @@
     					</div>
     				</li>
     				<li class="nav-item"><a class="nav-link" href="transactions.php"><span class="fa fa-list fa-lg"></span> Transactions</a></li>
-
+    				<li class="nav-item"><a class="nav-link" href="customer_delivery_log.php"><span class="fa fa-list fa-lg"></span> Deliveries</a></li>
     			</ul>
     			<span class="navbar-text">
     				<a href="logout.php">
