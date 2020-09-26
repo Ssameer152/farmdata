@@ -37,21 +37,25 @@ if(isset($_SESSION['user']))
         $db_state='';
         $db_address='';
     }
-    echo <<<_END
+    ?>
 <html>
     <head>
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
+        
     </head>
     
-    <body>    
-_END;
-
+    <body>  
+    
+<?php
 include_once 'nav.php';
+?>
 
-echo <<<_END
+
 		<div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -60,7 +64,7 @@ echo <<<_END
                     <div class="form-row">
                     <div class="form-group col-lg-6">
                             <label for="fname">First Name</label>
-_END;
+                    <?php
                         if($db_fname==''){
                             echo <<<_END
                             <input type="text" name="fname" class="form-control">
@@ -210,15 +214,16 @@ _END;
                             <input type="hidden" name="mid" value="$mid">
 _END;
                         }
-                        echo <<<_END
+                ?>
+                    
 						<button type="submit" class="btn btn-primary">Add Customer</button>
                     </form>
                 </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 mb-4">
                 <h4 class="text-center mb-4">Customer Details</h4>
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table id="table" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>S.No.</th>
@@ -232,9 +237,8 @@ _END;
                                 </tr>
                             </thead>
                             <tbody>
-_END;
-
-$q = "SELECT * FROM customer WHERE is_deleted=0 order by fname asc";
+<?php
+$q = "SELECT * FROM customer WHERE is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -259,24 +263,28 @@ while($res = mysqli_fetch_assoc($r))
     </tr>
 _END;
 }
+?>
 
-echo <<<_END
                             </tbody>
                         </table>
                     </div>
                 </div>
-                
             </div>
 
-_END;
-
+<?php
 include_once 'foot.php';
-
-echo <<<_END
-    </body>
+?>
+        <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+        <script>
+    $(document).ready(function() {
+        $('#table').DataTable();
+    });
+    </script> 
+    </body>    
 </html>
-_END;
 
+<?php
 }
 else
 {
