@@ -122,7 +122,7 @@ _END;
                 </div>
                 <div class="container">
                 <div class="row">
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -138,7 +138,7 @@ _END;
                             <tbody>
 _END;
 
-$q = "SELECT * FROM cattle_activity_log where is_deleted=0";
+$q = "SELECT * FROM cattle_activity_log where id='$cid' and is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))

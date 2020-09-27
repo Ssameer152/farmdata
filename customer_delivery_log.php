@@ -42,8 +42,9 @@ if(isset($_SESSION['user']))
                     <thead>
                     <tr>
                     <th>Customer</th>
-                    <th>Milktype-Time</th>
-                    <th>Quantity</th>
+                    <th>Milktype</th>
+                    <th>Time</th>
+                    <th>Subscribe Quantity</th>
                     <th>Delivered Quantity</th>
                     <th>Action</th>
                     </tr>
@@ -70,27 +71,27 @@ _END;
                 
                 if($milktype==1){
                     echo <<<_END
-                     <td class="mt-4">Cow Milk - 
+                     <td class="mt-4">Cow Milk</td>
 _END;
                     }
                 else if($milktype==2){
                     echo <<<_END
-                    <td class="mt-4">Sahiwal Milk - 
+                    <td class="mt-4">Sahiwal Milk</td> 
 _END;
                 }
                 elseif($milktype==3){
                     echo <<<_END
-                    <td class="mt-4">Buffalo Milk - 
+                    <td class="mt-4">Buffalo Milk</td>
 _END;
                 }
                 if($deliverytime==1){
                     echo <<<_END
-                     Morning</td>
+                    <td> Morning</td>
 _END;
                 }
                 elseif($deliverytime==2){
                     echo <<<_END
-                     Evening</td>
+                     <td>Evening</td>
 _END;
                 }
                     echo <<<_END
