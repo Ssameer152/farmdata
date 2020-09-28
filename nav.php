@@ -1,9 +1,65 @@
+<?php
+
+include_once 'db.php';
+
+if(isset($_SESSION['user'])){
+    $uid = $_SESSION['user'];
+    $q = "select * from user_permission where userid='$uid'";
+    $r = mysqli_query($db,$q);
+    
+    $row = mysqli_num_rows($r);
+    
+    if($row>0){
+        $res = mysqli_fetch_assoc($r);
+        $master_data = $res['master_data'];
+        $logs = $res['logs'];
+        $reports = $res['reports'];
+        $cattle = $res['cattle'];
+        $customer = $res['customer'];
+        $purchases = $res['purchases'];
+        $transactions = $res['transactions'];
+        $delivery = $res['delivery'];
+        
+    }
+    else{
+        $master_data = 0;
+        $logs = 0;
+        $reports = 0;
+        $cattle = 0;
+        $customer = 0;
+        $purchases = 0;
+        $transactions = 0;
+        $delivery = 0;
+    }
+    
+}
+else{
+    
+    $master_data = 0;
+    $logs = 0;
+    $reports = 0;
+    $cattle = 0;
+    $customer = 0;
+    $purchases = 0;
+    $transactions = 0;
+    $delivery = 0;
+    
+}
+
+?>
+
     <nav class="navbar navbar-dark navbar-expand-sm fixed-top bg-success">
     	<div class="container">
     		<a class="navbar-brand" href="index.php">FarmDB</a>
     		<div class="collapse navbar-collapse" id="Navbar">
     			<ul class="navbar-nav mr-auto">
-    				<li class="nav-item dropdown">
+    				
+                    
+                    <?php
+                    
+                    if($master_data == 1){
+                    echo <<<_END
+                    <li class="nav-item dropdown">
     					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     						Master Data
     					</a>
@@ -17,9 +73,29 @@
     						<a class="dropdown-item" href="state.php">State</a>
     					</div>
     				</li>
+_END;
+                    }
+?>
+    				
+                    <?php
+                    
+                    if($logs == 1)
+                    {
+                        echo <<<_END
+                    <li class="nav-item"><a class="nav-link" href="logs.php"> Logs</a></li>                        
+_END;
+                    }
 
-    				<li class="nav-item"><a class="nav-link" href="logs.php"> Logs</a></li>
-    				<li class="nav-item dropdown">
+?>
+                    
+                    
+                    
+            <?php
+
+                if($reports == 1)
+                {
+                    echo <<<_END
+                    <li class="nav-item dropdown">
     					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     						Reports
     					</a>
@@ -34,7 +110,16 @@
     						<a class="dropdown-item" href="reports_v1.php">Report<sup>Beta</sup></a>
     					</div>
     				</li>
-    				<li class="nav-item dropdown">
+_END;
+    }
+?>
+                    
+
+<?php
+
+        if($cattle == 1){
+            echo <<<_END
+                    <li class="nav-item dropdown">
     					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     						Cattle
     					</a>
@@ -46,7 +131,15 @@
 							<a class="dropdown-item" href="cattle_activity_log_master.php">Cattle Activity Log</a>
     					</div>
     				</li>
-    				<li class="nav-item dropdown">
+_END;
+    }
+?>               
+
+
+<?php
+        if($customer == 1){
+            echo <<<_END
+                    <li class="nav-item dropdown">
     					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     						Customer
     					</a>
@@ -57,7 +150,15 @@
 							<a class="dropdown-item" href="ledger_account.php">Ledger account</a>
     					</div>
     				</li>
-    				<li class="nav-item dropdown">
+_END;
+        }
+?>    
+                    
+<?php
+
+        if($purchases == 1){
+            echo <<<_END
+                    <li class="nav-item dropdown">
     					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Purchases</a>
     					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown2">
     						<a class="dropdown-item" href="purchases.php">Add Purchase</a>
@@ -66,7 +167,16 @@
     						<a class="dropdown-item" href="vendor.php">View Vendors</a>
     					</div>
     				</li>
-					<li class="nav-item dropdown">
+_END;
+        }		
+?>                
+
+
+<?php
+
+if($transactions == 1){
+    echo <<<_END
+                    <li class="nav-item dropdown">
     					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     						Transactions
     					</a>
@@ -76,13 +186,30 @@
 							<a class="dropdown-item" href="transaction_category.php">Transaction Category</a>
     					</div>
     				</li>
-    				<li class="nav-item"><a class="nav-link" href="customer_delivery_log.php"><span class="fa fa-list fa-lg"></span> Deliveries</a></li>
-    			</ul>
+_END;
+}
+?>
+                    
+        <?php
+        
+        if($delivery == 1){
+            echo <<<_END
+                    <li class="nav-item"><a class="nav-link" href="customer_delivery_log.php"><span class="fa fa-list fa-lg"></span> Deliveries</a></li>
+_END;
+        }	
+?>    
+                
+                
+                </ul>
+
+
     			<span class="navbar-text">
     				<a href="logout.php">
     					<span class="fa fa-sign-in"></span> Logout
     				</a>
     			</span>
+
+
     		</div>
     	</div>
     	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar"><span class="navbar-toggler-icon"></span></button>
