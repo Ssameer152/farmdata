@@ -43,6 +43,7 @@
     						<a class="dropdown-item" href="cattle_activity.php">Cattle Activity</a>
     						<a class="dropdown-item" href="cattle_breed.php">Cattle Breed</a>
     						<a class="dropdown-item" href="cattle_type.php">Cattle Type</a>
+							<a class="dropdown-item" href="cattle_activity_log_master.php">Cattle Activity Log</a>
     					</div>
     				</li>
     				<li class="nav-item dropdown">
