@@ -138,7 +138,7 @@ _END;
                             <tbody>
 _END;
 
-$q = "SELECT * FROM cattle_activity_log where id='$cid' and is_deleted=0";
+$q = "SELECT * FROM cattle_activity_log where cid='$cid' and is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
@@ -146,7 +146,7 @@ while($res = mysqli_fetch_assoc($r))
     $sn = $res['id'];
     $c_activity = $res['caid'];
     $doa=$res['doa'];
-    $q1="SELECT name from cattle_activity where id='$c_activity' and is_deleted=0";
+    $q1="SELECT name from cattle_activity where id='$c_activity'";
     $r1=mysqli_query($db,$q1);
     $re1=mysqli_fetch_assoc($r1);
     $ct_activity=$re1['name'];
