@@ -24,7 +24,9 @@ if(isset($_SESSION['user']))
         $db_city=$res['city'];
         $db_state=$res['state'];
         $db_address=$res['address'];
-        
+        $db_cowMilkPrice=$res['price_cow_milk'];
+        $db_sahiwalMilkPrice=$res['price_sahiwal_milk'];
+        $db_buffaloMilkPrice=$res['price_buffalo_milk'];
     }
     else
     {
@@ -36,6 +38,9 @@ if(isset($_SESSION['user']))
         $db_city='';
         $db_state='';
         $db_address='';
+        $db_cowMilkPrice='';
+        $db_sahiwalMilkPrice='';
+        $db_buffaloMilkPrice='';
     }
     ?>
 <html>
@@ -208,7 +213,56 @@ _END;
                             echo <<<_END
                         </div>
                         </div>
+                        <h6>Milk Price</h6>
+                        <div class="form-row">
+                        <div class="form-group col-lg-4">
+                        <label for="Cow Milk">Price Cow Milk</label>
 _END;
+                            if($db_cowMilkPrice==''){
+                            echo <<<_END
+                        <input type="text" name="cow_milk_price" value="0.00" class="form-control" />
+_END;
+                            }
+                            else{
+                                echo <<<_END
+                                <input type="text" name="cow_milk_price" value="$db_cowMilkPrice" class="form-control" />
+_END;
+                            }
+                            echo <<<_END
+                        </div>
+                        <div class="form-group col-lg-4">
+                        <label for="Sahiwal Milk">Price Sahiwal Milk</label>
+_END;
+                            if($db_sahiwalMilkPrice==''){
+                            echo <<<_END
+                        <input type="text" name="sahiwal_milk_price" value="0.00" class="form-control" />
+_END;
+                            }
+                            else {
+                                echo <<<_END
+                                <input type="text" name="sahiwal_milk_price" value="$db_sahiwalMilkPrice" class="form-control" />
+_END;
+                            }
+                            echo <<<_END
+                        </div>
+                        <div class="form-group col-lg-4">
+                        <label for="Buffalo Milk">Price Buffalo Milk</label>
+_END;
+                            if($db_buffaloMilkPrice==''){
+                                echo <<<_END
+                        <input type="text" name="buffalo_milk_price" value="0.00" class="form-control" />
+_END;
+                            }
+                            else{
+                                echo <<<_END
+                                <input type="text" name="buffalo_milk_price" value="$db_buffaloMilkPrice" class="form-control" />
+_END;
+                            }
+                            echo <<<_END
+                        </div>
+                        </div>
+_END;
+                        
                         if(isset($mid)){
                             echo <<<_END
                             <input type="hidden" name="mid" value="$mid">
@@ -233,6 +287,9 @@ _END;
                                     <th>Phone</th>
                                     <th>City</th>
                                     <th>Address</th>
+                                  <th>Price Cow Milk</th>
+                                    <th>Price Sahiwal Milk</th>
+                                    <th>Price Buffalo Milk</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -250,6 +307,9 @@ while($res = mysqli_fetch_assoc($r))
     $phone = $res['phone'];
     $city=getDimensionValue($db,'city',$res['city'],'name');
     $address=$res['address'];
+    $priceCowMilk=$res['price_cow_milk'];
+    $priceSahiwalMilk=$res['price_sahiwal_milk'];
+    $priceBuffaloMilk=$res['price_buffalo_milk'];
     echo <<<_END
     <tr>
         <td>$sn</td>
@@ -259,6 +319,9 @@ while($res = mysqli_fetch_assoc($r))
         <td>$phone</td>
         <td>$city</td>
         <td>$address</td>
+        <td>$priceCowMilk</td>
+        <td>$priceSahiwalMilk</td>
+        <td>$priceBuffaloMilk</td>
         <td><a href="customer.php?id=$sn">Modify</a> | <a href="delete.php?table=customer&rid=$sn&return=customer">Delete</a> | <a href="customer_subscription.php?cid=$sn">Subscribe</a></td>
     </tr>
 _END;

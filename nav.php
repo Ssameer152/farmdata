@@ -13,6 +13,8 @@
     						<a class="dropdown-item" href="assets.php"> Assets</a>
     						<a class="dropdown-item" href="resources.php"> Resources</a>
     						<a class="dropdown-item" href="activity.php"> Activities</a>
+							<a class="dropdown-item" href="city.php">City</a>
+    						<a class="dropdown-item" href="state.php">State</a>
     					</div>
     				</li>
 
@@ -41,6 +43,7 @@
     						<a class="dropdown-item" href="cattle_activity.php">Cattle Activity</a>
     						<a class="dropdown-item" href="cattle_breed.php">Cattle Breed</a>
     						<a class="dropdown-item" href="cattle_type.php">Cattle Type</a>
+							<a class="dropdown-item" href="cattle_activity_log_master.php">Cattle Activity Log</a>
     					</div>
     				</li>
     				<li class="nav-item dropdown">
@@ -48,8 +51,6 @@
     						Customer
     					</a>
     					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
-    						<a class="dropdown-item" href="city.php">City</a>
-    						<a class="dropdown-item" href="state.php">State</a>
     						<a class="dropdown-item" href="customer.php">Add Customer</a>
     						<a class="dropdown-item" href="customer_subscription_report.php">Customer Subscription Report</a>
 							<a class="dropdown-item" href="customer_stmt.php">Customer Statement</a>
@@ -65,7 +66,16 @@
     						<a class="dropdown-item" href="vendor.php">View Vendors</a>
     					</div>
     				</li>
-    				<li class="nav-item"><a class="nav-link" href="transactions.php"><span class="fa fa-list fa-lg"></span> Transactions</a></li>
+					<li class="nav-item dropdown">
+    					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    						Transactions
+    					</a>
+    					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
+    						<a class="dropdown-item" href="transactions.php">Add transaction</a>
+    						<a class="dropdown-item" href="transaction_account.php">Transaction Account</a>
+							<a class="dropdown-item" href="transaction_category.php">Transaction Category</a>
+    					</div>
+    				</li>
     				<li class="nav-item"><a class="nav-link" href="customer_delivery_log.php"><span class="fa fa-list fa-lg"></span> Deliveries</a></li>
     			</ul>
     			<span class="navbar-text">

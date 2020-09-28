@@ -67,7 +67,7 @@ echo <<<_END
 							<label for="particular">Particular</label>
 							<input type="text" name="particular" class="form-control">
 						</div>
-                        <div class="form-row">
+                        <div class="form-row mb-4">
                             <div class="col">
                                 <label for="particular">Amount Received</label>
                                 <input type="text" class="form-control" name="rec" value="0">
@@ -75,6 +75,42 @@ echo <<<_END
                             <div class="col">
                                 <label for="particular">Amount Paid</label>
                                 <input type="text" class="form-control" name="paid" value="0">
+                            </div>
+                        </div>
+                        <div class="form-row mb-4">
+                        <div class="col">
+                            <label for="transaction_account">Transaction Accounts</label>
+                            <select class="form-control" name="tr_account">
+                            <option value="">--Select transaction account--</option>
+_END;
+                            $q="SELECT * from transactions_accounts where is_deleted=0";
+                            $r=mysqli_query($db,$q);
+                            while($res=mysqli_fetch_assoc($r)){
+                                $id=$res['id'];
+                                $account=$res['account'];
+                                echo <<<_END
+                                <option value="$id">$account</option>
+_END;
+                            }
+                            echo <<<_END
+                            </select>
+                        </div>
+                        <div class="col">
+                        <label for="transaction_category">Transaction Category</label>
+                        <select class="form-control" name="tr_category">
+                        <option value="">--Select transaction category--</option>
+_END;
+                            $q="SELECT * from transactions_category where is_deleted=0";
+                            $r=mysqli_query($db,$q);
+                            while($res=mysqli_fetch_assoc($r)){
+                                $id=$res['id'];
+                                $category=$res['category'];
+                                echo <<<_END
+                            <option value="$id">$category</option>
+_END;
+                            }
+                            echo <<<_END
+                            </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -94,6 +130,8 @@ echo <<<_END
                                     <th>Date</th>
                                     <th>Area</th>
                                     <th>Particular</th>
+                                    <th>Transaction Account</th>
+                                    <th>Transaction catrgory</th>
                                     <th>Received</th>
                                     <th>Paid</th>
                                     <th>Actions</th>
@@ -113,12 +151,16 @@ while($res = mysqli_fetch_assoc($r))
     $received = $res['amt_received'];
     $part = $res['particular'];
     $area = getDimensionValue($db,'areas',$res['area'],'sitename');
+    $tr_account=getDimensionValue($db,'transactions_accounts',$res['transaction_account'],'account');
+    $tr_category=getDimensionValue($db,'transactions_category',$res['transaction_category'],'category');
     echo <<<_END
     <tr>
         <td>$sn</td>
         <td>$dot</td>
         <td>$area</td>
         <td>$part</td>
+        <td>$tr_account</td>
+        <td>$tr_category</td>
         <td>&#8377; $received</td>
         <td>&#8377; $paid</td>
         <td><a href="delete.php?table=transactions&rid=$sn&return=transactions">Delete</a></td>
