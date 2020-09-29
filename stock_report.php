@@ -24,53 +24,77 @@ if(isset($_SESSION['user'])){
         <body>    
 _END;
 include_once 'nav.php';
-    
-    $q2="SELECT sum(qty) as q,resourceid from log_resource where is_deleted=0  group by resourceid";
-    $r2=mysqli_query($db,$q2);
     echo <<<_END
         <div class="container">
         <div class="row">
         <div class="col-lg-12">
-        <table class="table table-responsive">
+        <div class="table table-responsive">
+        <table class="table table-bordered">
+        <thead>
         <tr>
-            <th>Resource</th>
-            <th>consumed</th>
-            <th>Purchased</th>
-            <th>Left</th>
+        <th>Sno.</th>
+        <th>Resource</th>
+        <th>Consumed</th>
+        <th>Purchased</th>
+        <th>Produced</th>
+        <th>Balance</th>
         </tr>
+        </thead>
+        <tbody>
 _END;
-    while($res2=mysqli_fetch_assoc($r2)){
-        $name=getDimensionValue($db,'resources',$res2['resourceid'],'resourcename');
-        $qty=$res2['q'];
-        $unit=getDimensionValue($db,'resources',$res2['resourceid'],'unit');
-
+    $q="SELECT * from resources where is_deleted=0";
+    $r=mysqli_query($db,$q);
+    while($res=mysqli_fetch_assoc($r)){
+        $id=$res['id'];
+        $resource=$res['resourcename'];
+        $unit=$res['unit'];
         echo <<<_END
         <tr>
-        <td>$name</td>
-        <td>$qty $unit</td>
+        <td>$id</td>
+        <td>$resource</td>     
 _END;
-        $q="SELECT * from purchase_items where is_deleted=0 and resourceid=23 group by resourceid";
-        $r=mysqli_query($db,$q);
-        while($res=mysqli_fetch_assoc($r)){
-            $pqty=$res['qty'];
-            $left=$pqty-$qty;
-        echo <<<_END
-        <td>$pqty $unit</td>
-        <td>$left $unit</td>
-_END;
-        }
-        echo <<<_END
-        </tr>
+        $q1="SELECT t.qty ,COALESCE(sum(t.qty),0) as q1 from (select qty from log_resource where resourceid='$id' and is_deleted=0) as t";
+        $r1=mysqli_query($db,$q1);
+        while($res1=mysqli_fetch_assoc($r1)){
+            $consumed=$res1['q1'];
+                echo <<<_END
+                <td>$consumed $unit</td>
 _END;
     }
+        $q2="SELECT t.qty,COALESCE(sum(t.qty),0) as q2 from (select qty from purchase_items where resourceid='$id' and is_deleted=0) as t";
+        $r2=mysqli_query($db,$q2);
+        while($res2=mysqli_fetch_assoc($r2)){
+            $purchase=$res2['q2'];
+            echo <<<_END
+            <td>$purchase $unit</td>
+_END;
+        }
+        $q3="SELECT t.qty ,COALESCE(sum(t.qty),0) as q3 from (select qty from log_output where resourceid='$id' and is_deleted=0) as t";
+        $r3=mysqli_query($db,$q3);
+        while($res3=mysqli_fetch_assoc($r3)){
+            $produced=$res3['q3'];
+            $left=$purchase+$produced-$consumed;
+            echo <<<_END
+            <td>$produced $unit</td>
+            <td>$left $unit</td>
+            </tr>
+_END;
+        }
+    }
     echo <<<_END
+        
+_END;
+    
+    
+        
+   
+include_once 'foot.php';
+    echo <<<_END
+            </tbody>
         </table>
         </div>
         </div>
         </div>
-_END;
-        include_once 'foot.php';
-    echo <<<_END
         </body>
         </html>
 _END;
