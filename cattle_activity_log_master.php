@@ -99,7 +99,7 @@ _END;
                             <tbody>
 _END;
 
-$q = "SELECT * FROM cattle_activity_log where is_deleted=0 limit 20";
+$q = "SELECT * FROM cattle_activity_log where is_deleted=0 order by doe desc limit 20";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
