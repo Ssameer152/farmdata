@@ -102,7 +102,8 @@ _END;
     					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
     						<a class="dropdown-item" href="reports.php">Individual Report</a>
     						<a class="dropdown-item" href="stock_report.php">Inventory</a>
-    						<a class="dropdown-item" href="cattle_activity_report.php">Cattle Report</a>
+							<a class="dropdown-item" href="cattle_activity_report.php">Cattle Report</a>
+							<a class="dropdown-item" href="cattle_activity_report2.php">Cattle Report 2</a>
     						<a class="dropdown-item" href="custom_report.php">Custom Report</a>
     						<a class="dropdown-item" href="custom_report2.php">Custom Report 2</a>
     						<a class="dropdown-item" href="customer_delivery_report.php">Customer Delivery Report</a>
