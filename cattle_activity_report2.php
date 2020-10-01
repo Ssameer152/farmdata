@@ -37,8 +37,8 @@ echo <<<_END
 		<div class="container">
             <div class="row">
                 <div class="col-lg-12" id="report">
-                    <h2 class="h2">Cattle Activity Report</h2><br>
-                    <form action="cattle_activity_report.php" method="get">
+                    <h2 class="h2">Cattle Activity Report-2</h2><br>
+                    <form action="cattle_activity_report2.php" method="get">
                         <div class="row">
                             <div class="col-lg">
                                 <input type="date" class="form-control" name="start_date">
@@ -76,7 +76,7 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
     $cattle_activity = mysqli_real_escape_string($db,$_GET['caid']);
-    $q = "SELECT t.id,t.cid,t.caid,cast(t.doa as date) as d,COALESCE(t.milkCollection,0) as milk_collection, COALESCE(t.feeding,0) as 'feeding' from (SELECT id,cid,caid,doa,case when caid=1 then activity_value end as milkCollection ,case when caid=6 then activity_value end as feeding  FROM cattle_activity_log where cast(doa as date)>='$start_date' and  cast(doa as date)<='$end_date' and caid='$cattle_activity' and is_deleted=0) as t order by doa";
+    $q = "SELECT t.id,t.cid,t.caid,cast(t.doa as date),COALESCE(sum(t.milkCollectionMorning),0) as milk_collection_morning, COALESCE(sum(t.milkCollectionEvening),0) as milk_collection_evening,COALESCE(sum(t.bhusaMorning),0) as bhusa_morning,COALESCE(sum(t.bhusaEvening),0) as bhusa_evening,COALESCE(sum(t.charaMorning),0) as chara_morning,COALESCE(sum(t.charaEvening),0) as chara_evening,COALESCE(sum(t.danaMorning),0) as dana_morning,COALESCE(sum(t.danaEvening),0) as dana_evening from (SELECT id,cid,caid,doa,case when caid=7 then activity_value end as milkCollectionMorning ,case when caid=8 then activity_value end as milkCollectionEvening,case WHEN caid=9 THEN activity_value end as bhusaMorning,case WHEN caid=10 then activity_value end as bhusaEvening,case WHEN caid=11 then activity_value end as charaMorning,case when caid=12 then activity_value end as charaEvening,case when caid=13 then activity_value end as danaMorning,case when caid=14 then activity_value end as danaEvening  FROM cattle_activity_log where cast(doa as date)>='$start_date' and cast(doa as date)<='$end_date' and caid='$cattle_activity'  and is_deleted=0) as t  ORDER by doa";
     $r=mysqli_query($db,$q);
     $q1="SELECT t.id,t.cid,t.caid,cast(t.doa as date) as d,COALESCE(sum(t.milkCollection),0) as milk_collection, COALESCE(sum(t.feeding),0) as 'feeding' from (SELECT id,cid,caid,doa,case when caid=1 then activity_value end as milkCollection ,case when caid=6 then activity_value end as feeding  FROM cattle_activity_log where cast(doa as date)>='$start_date' and  cast(doa as date)<='$end_date' and caid='$cattle_activity' and is_deleted=0) as t";
     $r1=mysqli_query($db,$q1);
@@ -88,7 +88,6 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     <div class="col-lg-12">
         <div class="row">
         <h2>Data</h2>
-        <button style="position: absolute; right:10;" class="btn btn-primary" onclick="window.print()">Print Report</button>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -176,13 +175,19 @@ elseif(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_da
     $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
     
-    $q = "SELECT t.id,t.cid,t.caid,cast(t.doa as date) as d,COALESCE(sum(t.milkCollection),0) as milk_collection, COALESCE(sum(t.feeding),0) as 'feeding' from (SELECT id,cid,caid,doa,case when caid=1 then activity_value end as milkCollection ,case when caid=6 then activity_value end as feeding  FROM cattle_activity_log where cast(doa as date)>='$start_date' and  cast(doa as date)<='$end_date' and is_deleted=0) as t group by t.cid order by doa";
+    $q = "SELECT t.id,t.cid,t.caid,cast(t.doa as date) as d,COALESCE(sum(t.milkCollectionMorning),0) as milk_collection_morning, COALESCE(sum(t.milkCollectionEvening),0) as milk_collection_evening,COALESCE(sum(t.bhusaMorning),0) as bhusa_morning,COALESCE(sum(t.bhusaEvening),0) as bhusa_evening,COALESCE(sum(t.charaMorning),0) as chara_morning,COALESCE(sum(t.charaEvening),0) as chara_evening,COALESCE(sum(t.danaMorning),0) as dana_morning,COALESCE(sum(t.danaEvening),0) as dana_evening from (SELECT id,cid,caid,doa,case when caid=1 then activity_value end as milkCollectionMorning ,case when caid=10 then activity_value end as milkCollectionEvening,case WHEN caid=7 THEN activity_value end as bhusaMorning,case WHEN caid=11 then activity_value end as bhusaEvening,case WHEN caid=8 then activity_value end as charaMorning,case when caid=12 then activity_value end as charaEvening,case when caid=9 then activity_value end as danaMorning,case when caid=13 then activity_value end as danaEvening  FROM cattle_activity_log where cast(doa as date)>='$start_date' and cast(doa as date)<='$end_date'  and is_deleted=0) as t  group by t.cid ORDER by doa";
     $r=mysqli_query($db,$q);
-    $q1="SELECT t.id,t.cid,t.caid,cast(t.doa as date) as d,COALESCE(sum(t.milkCollection),0) as milk_collection, COALESCE(sum(t.feeding),0) as 'feeding' from (SELECT id,cid,caid,doa,case when caid=1 then activity_value end as milkCollection ,case when caid=6 then activity_value end as feeding  FROM cattle_activity_log where cast(doa as date)>='$start_date' and  cast(doa as date)<='$end_date' and is_deleted=0) as t";
+    $q1="SELECT t.id,t.cid,t.caid,cast(t.doa as date),COALESCE(sum(t.milkCollectionMorning),0) as milk_collection_morning, COALESCE(sum(t.milkCollectionEvening),0) as milk_collection_evening,COALESCE(sum(t.bhusaMorning),0) as bhusa_morning,COALESCE(sum(t.bhusaEvening),0) as bhusa_evening,COALESCE(sum(t.charaMorning),0) as chara_morning,COALESCE(sum(t.charaEvening),0) as chara_evening,COALESCE(sum(t.danaMorning),0) as dana_morning,COALESCE(sum(t.danaEvening),0) as dana_evening from (SELECT id,cid,caid,doa,case when caid=1 then activity_value end as milkCollectionMorning ,case when caid=10 then activity_value end as milkCollectionEvening,case WHEN caid=7 THEN activity_value end as bhusaMorning,case WHEN caid=11 then activity_value end as bhusaEvening,case WHEN caid=8 then activity_value end as charaMorning,case when caid=12 then activity_value end as charaEvening,case when caid=9 then activity_value end as danaMorning,case when caid=13 then activity_value end as danaEvening  FROM cattle_activity_log where cast(doa as date)>='$start_date' and cast(doa as date)<='$end_date'  and is_deleted=0) as t  ORDER by doa";
     $r1=mysqli_query($db,$q1);
     $res1=mysqli_fetch_assoc($r1);
-    $total1=$res1['milk_collection'];
-    $total2=$res1['feeding'];
+    $total1=$res1['milk_collection_morning'];
+    $total2=$res1['milk_collection_evening'];
+    $total3=$res1['bhusa_morning'];
+    $total4=$res1['bhusa_evening'];
+    $total5=$res1['chara_morning'];
+    $total6=$res1['chara_evening'];
+    $total7=$res1['dana_morning'];
+    $total8=$res1['dana_evening'];
     $date='';
         echo <<<_END
     <div class="col-lg-12">
@@ -194,11 +199,16 @@ elseif(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_da
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>S.no</th>
                         <th>Date</th>
                         <th>Cattle Name</th>
-                        <th>Milk Collection</th>
-                        <th>Feeding(Bhusa+chara+dana)</th>
+                        <th>Milk Collection Morning</th>
+                        <th>Milk Collection Evening</th>
+                        <th>Bhusa Morning</th>
+                        <th>Chara Morning</th>
+                        <th>Dana Morning</th>
+                        <th>Bhusa Evening</th>
+                        <th>Chara Evening</th>
+                        <th>Dana Evening</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -206,27 +216,45 @@ _END;
         while($res=mysqli_fetch_assoc($r)){
             $id=$res['id'];
             $d=$res['d'];
+            $d=date("d-m-Y", strtotime($d));
             $cattle=getDimensionValue($db,'cattle',$res['cid'],'name');
-            $cattle_activity_value1=$res['milk_collection'];
-            $cattle_activity_value2=$res['feeding'];
+            $cattle_activity_value1=$res['milk_collection_morning'];
+            $cattle_activity_value2=$res['milk_collection_evening'];
+            $cattle_activity_value3=$res['bhusa_morning'];
+            $cattle_activity_value4=$res['chara_morning'];
+            $cattle_activity_value5=$res['dana_morning'];
+            $cattle_activity_value6=$res['bhusa_evening'];
+            $cattle_activity_value7=$res['chara_evening'];
+            $cattle_activity_value8=$res['dana_evening'];
             $cattle_activity=getDimensionValue($db,'cattle_activity',$res['caid'],'name');
             if($d!=$date){
                 echo <<<_END
                 <tr>
-                <td>$id</td>
                 <td>$d</td>
                 <td>$cattle</td>
                 <td>$cattle_activity_value1</td>
                 <td>$cattle_activity_value2</td>
+                <td>$cattle_activity_value3</td>
+                <td>$cattle_activity_value4</td>
+                <td>$cattle_activity_value5</td>
+                <td>$cattle_activity_value6</td>
+                <td>$cattle_activity_value7</td>
+                <td>$cattle_activity_value8</td>
                 </tr>
 _END;
             }
         }
         echo <<<_END
         <tr>
-                    <th colspan="3">Total</th>
+                    <th colspan="2">Total</th>
                     <th>$total1</th>
                     <th>$total2</th>
+                    <th>$total3</th>
+                    <th>$total5</th>
+                    <th>$total7</th>
+                    <th>$total4</th>
+                    <th>$total6</th>
+                    <th>$total8</th>
                     </tr>
 _END;
 

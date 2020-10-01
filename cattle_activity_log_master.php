@@ -107,6 +107,7 @@ while($res = mysqli_fetch_assoc($r))
     $sn = $res['id'];
     $c_activity = $res['caid'];
     $doa=$res['doa'];
+    $doa=date("d-m-Y", strtotime($doa));
     $cid=$res['cid'];
     $q1="SELECT name from cattle_activity where id='$c_activity' and is_deleted=0";
     $r1=mysqli_query($db,$q1);

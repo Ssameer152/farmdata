@@ -22,14 +22,6 @@ if(isset($_SESSION['user'])){
             header,#report,#btn{ 
                display:none; 
             } 
-            .table-borderless {
-                border: solid white !important;
-                border-bottom-style: none;
-            }
-
-            #border1 {
-                border: solid white !important;
-            }
          } 
          </style>
     </head>
@@ -43,7 +35,7 @@ include_once 'nav.php';
         <div class="row">
         <div class="col-lg-12" id="report">
         <h3 class="mb-4">Customer Delivery Report</h3>
-        <form action="customer_delivery_report.php" method="get">
+        <form action="customer_delivery_reportBeta.php" method="get">
                         <div class="row">
                             <div class="col-lg">
                                 <input type="date" class="form-control" name="start_date">
@@ -82,35 +74,18 @@ echo <<<_END
 _END;
     if(mysqli_num_rows($r)>0){
         echo <<<_END
-        <div class="table table-responsive">
-        <h5 class="text-center">Morning</h5>
+        <div class="row">
+        <table class="table table-bordered table-sm">
+        <tr>
+        <th class="text-center" colspan="4">
+        <h5>Morning</h5>
         <table class="table table-bordered">
         <tr>
         <th>Customer</th>
-        <th class="text-center">Cow
-        <table class="table-sm table-borderless">
-        <tr>
-        <th>Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
+        <th>Cow</th>
+        <th>Sahiwal</th>
+        <th>Buffalo</th>
         </tr>
-        </table>
-        </th>
-        <th class="text-center">Sahiwal
-        <table class="table-sm table-borderless">
-        <tr>
-        <th>Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
-        </tr>
-        </table>
-        </th>
-        <th class="text-center">Buffalo
-        <table class="table-sm table-borderless">
-        <tr>
-        <th>Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
-        </tr>
-        </table>
-        </th>
 _END;
     while($res=mysqli_fetch_assoc($r)){
         $cid=$res['cid'];
@@ -120,68 +95,40 @@ _END;
         $qty1=$res['sahiwal_milk'];
         $sqty2=$res['s_buffalo_milk'];
         $qty2=$res['buffalo_milk'];
-        $cust=getDimensionValue($db,'customer',$res['cid'],'fname');
-            
+        $cust=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
             echo <<<_END
             <tr>
             <td>$cust</td>
-            <td>
-            <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1" class="w-25">$sqty</td><td class="text-right">$qty</td</tr>
-            </table>
-            </td>
-            <td>
-            <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1" class="w-25">$sqty1</td><td class="text-right">$qty1</td></tr>
-            </table>
-            </td>
-            <td>
-            <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1" class="w-25">$sqty2</td><td class="text-right">$qty2</td></tr>
-            </table>
-            </td>
+            <td>$qty</td>
+            <td>$qty1</td>
+            <td>$qty2</td>
             </tr>
 _END;
            }
            echo <<<_END
            <tr>
-           <th colspan="1">Total</th>
-           <th class="text-right">$total1</th>
-           <th class="text-right">$total2</th>
-           <th class="text-right">$total3</th>
+           <th>Total</th>
+           <th>$total1</th>
+           <th>$total2</th>
+           <th>$total3</th>
            </tr>
+           </table>
+           </th>
+           </div>
         
 _END;
            echo <<<_END
+           <th>
+           <!-- 2nd table -->
+           <table class="table table-bordered">
            <tr>
-           <th class="text-center" colspan="4"><h5>Evening</h5></th>
+           <h5 class="text-center">Evening</h5>
            </tr>
            <tr>
         <th>Customer</th>
-        <th class="text-center">Cow
-        <table class="table-sm table-borderless">
-        <tr>
-        <th>Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
-        </tr>
-        </table>
-        </th>
-        <th class="text-center">Sahiwal
-        <table class="table-sm table-borderless">
-        <tr>
-        <th>Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
-        </tr>
-        </table>
-        </th>
-        <th class="text-center">Buffalo
-        <table class="table-sm table-borderless">
-        <tr>
-        <th >Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
-        </tr>
-        </table>
-        </th>
+        <th>Cow</th>
+        <th>Sahiwal</th>
+        <th>Buffalo</th>
            </tr>
 _END;
         $q2="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.sCowMilk),0) as s_cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk,COALESCE(sum(t.sSahiwalMilk),0) as s_sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk,COALESCE(sum(t.sBuffaloMilk),0) as s_buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=1 then cd.qty end as sCowMilk, case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=2 then cd.qty end as sSahiwalMilk ,case when cs.milktype=3 then cd.delivered_qty end as buffalo, case when cs.milktype=3 then cd.qty end as sBuffaloMilk FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=2 and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
@@ -200,43 +147,33 @@ _END;
         $qty1=$res2['sahiwal_milk'];
         $sqty2=$res2['s_buffalo_milk'];
         $qty2=$res2['buffalo_milk'];
-        $cust=getDimensionValue($db,'customer',$res2['cid'],'fname');
+        $cust=getDimensionValue($db,'customer',$res2['cid'],'fname').' '.getDimensionValue($db,'customer',$res2['cid'],'lname');
         echo <<<_END
         <tr>
         <td>$cust</td>
-        <td>
-        <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1" class="w-25">$sqty</td><td class="text-right">$qty</td</tr>
-            </table>
-        </td>
-        <td>
-        <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1" class="w-25">$sqty1</td><td class="text-right">$qty1</td></tr>
-            </table>
-        </td>
-        <td>
-        <table class="table-sm table-borderless">
-        <tr class="text-center"><td id="border1" class="w-25">$sqty2</td><td class="text-right">$qty2</td></tr>
-        </table>
-        </td>
+        <td>$qty</td>
+        <td>$qty1</td>
+        <td>$qty2</td>
         </tr>
 _END;
     }
     echo <<<_END
     <tr>
            <th>Total</th>
-           <th class="text-right">$total1</th>
-           <th class="text-right">$total2</th>
-           <th class="text-right">$total3</th>
+           <th>$total1</th>
+           <th>$total2</th>
+           <th>$total3</th>
            </tr>
-    
+        
 _END;
     }
     else {
         echo 'No deliveries found';
     }
     echo <<<_END
-    </tbody>
+    </table>
+    </th>
+    </tr>
 </table>
 </div>
 </div>

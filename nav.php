@@ -102,10 +102,12 @@ _END;
     					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
     						<a class="dropdown-item" href="reports.php">Individual Report</a>
     						<a class="dropdown-item" href="stock_report.php">Inventory</a>
-    						<a class="dropdown-item" href="cattle_activity_report.php">Cattle Report</a>
+							<a class="dropdown-item" href="cattle_activity_report.php">Cattle Report</a>
+							<a class="dropdown-item" href="cattle_activity_report2.php">Cattle Report 2</a>
     						<a class="dropdown-item" href="custom_report.php">Custom Report</a>
     						<a class="dropdown-item" href="custom_report2.php">Custom Report 2</a>
-    						<a class="dropdown-item" href="customer_delivery_report.php">Customer Delivery Report</a>
+							<a class="dropdown-item" href="customer_delivery_report.php">Customer Delivery Report</a>
+							<a class="dropdown-item" href="customer_delivery_reportBeta.php">Customer Delivery Report<sup>Beta</sup></a>
     						<a class="dropdown-item" href="stats.php">Stats</a>
     						<a class="dropdown-item" href="reports_v1.php">Report<sup>Beta</sup></a>
     					</div>
@@ -193,8 +195,18 @@ _END;
         <?php
         
         if($delivery == 1){
-            echo <<<_END
-                    <li class="nav-item"><a class="nav-link" href="customer_delivery_log.php"><span class="fa fa-list fa-lg"></span> Deliveries</a></li>
+			echo <<<_END
+			<li class="nav-item dropdown">
+    					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    						Deliveries
+    					</a>
+    					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
+    						<a class="dropdown-item" href="customer_delivery_log.php">Morning Delivery</a>
+    						<a class="dropdown-item" href="customer_delivery_log2.php">Evening Delivery</a>
+							<a class="dropdown-item" href="customer_delivery_reportBeta.php">Delivery Report</a>
+    					</div>
+    				</li>
+                   
 _END;
         }	
 ?>    

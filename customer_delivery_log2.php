@@ -29,11 +29,11 @@ if(isset($_SESSION['user']))
 		<div class="container">
             <div class="row">
                 <div class="col-lg-12 mb-4">
-                    <h2 class="mb-4">Morning Delivery Log</h2>
+                    <h2 class="mb-4">Evening Delivery Log</h2>
                     <div class="table-responsive">
                     <table id="table" class="table table-striped">
                 <?php
-                $q1="SELECT count(*) as ct from customer_subscription where is_active=1  and delivery_time=1 and is_deleted=0  and id not in (select csid from customer_delivery_log where cast(dod as date)=cast(current_timestamp() as date)) order by cid";
+                $q1="SELECT count(*) as ct from customer_subscription where is_active=1  and delivery_time=2 and is_deleted=0  and id not in (select csid from customer_delivery_log where cast(dod as date)=cast(current_timestamp() as date)) order by cid";
                 $r1=mysqli_query($db,$q1);
                 $res1=mysqli_fetch_assoc($r1);
                 $deliveries=$res1['ct'];
@@ -43,7 +43,6 @@ if(isset($_SESSION['user']))
                     <tr>
                     <th>Customer</th>
                     <th>Milktype</th>
-                    <th>Time</th>
                     <th>Subscribe Quantity</th>
                     <th>Delivered Quantity</th>
                     <th>Action</th>
@@ -51,7 +50,7 @@ if(isset($_SESSION['user']))
                     </thead>
                     <tbody>
 <?php
-        $q="SELECT * from customer_subscription where is_active=1 and is_deleted=0 and delivery_time=1  and id not in (select csid from customer_delivery_log where cast(dod as date)=cast(current_timestamp() as date)) order by cid";
+        $q="SELECT * from customer_subscription where is_active=1 and is_deleted=0 and delivery_time=2  and id not in (select csid from customer_delivery_log where cast(dod as date)=cast(current_timestamp() as date)) order by cid";
         $r=mysqli_query($db,$q); 
         while($res=mysqli_fetch_assoc($r)){
             $cid=$res['cid'];
@@ -82,16 +81,6 @@ _END;
                 elseif($milktype==3){
                     echo <<<_END
                     <td class="mt-4">Buffalo Milk</td>
-_END;
-                }
-                if($deliverytime==1){
-                    echo <<<_END
-                    <td> Morning</td>
-_END;
-                }
-                elseif($deliverytime==2){
-                    echo <<<_END
-                     <td>Evening</td>
 _END;
                 }
                     echo <<<_END
