@@ -95,7 +95,7 @@ _END;
         $qty1=$res['sahiwal_milk'];
         $sqty2=$res['s_buffalo_milk'];
         $qty2=$res['buffalo_milk'];
-        $cust=getDimensionValue($db,'customer',$res['cid'],'fname');
+        $cust=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
             echo <<<_END
             <tr>
             <td>$cust</td>
@@ -147,7 +147,7 @@ _END;
         $qty1=$res2['sahiwal_milk'];
         $sqty2=$res2['s_buffalo_milk'];
         $qty2=$res2['buffalo_milk'];
-        $cust=getDimensionValue($db,'customer',$res2['cid'],'fname');
+        $cust=getDimensionValue($db,'customer',$res2['cid'],'fname').' '.getDimensionValue($db,'customer',$res2['cid'],'lname');
         echo <<<_END
         <tr>
         <td>$cust</td>
