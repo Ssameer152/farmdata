@@ -10,6 +10,8 @@ if(isset($_SESSION['user']))
         $dlqty = mysqli_real_escape_string($db,$_POST['dlqty']);
         $cid = mysqli_real_escape_string($db,$_POST['cid']);
         $csid = mysqli_real_escape_string($db,$_POST['csid']);
+        $returnpage = mysqli_real_escape_string($db,$_POST['returnpage']);
+        
         if(isset($_POST['mid']) && $_POST['mid']!='')
         {
             $mid = $_POST['mid'];
@@ -25,7 +27,7 @@ if(isset($_SESSION['user']))
         $msg = "Customer delivery log Added";
         }
         echo <<<_END
-        <meta http-equiv='refresh' content='0;url=customer_delivery_log.php?msg=$msg'>
+        <meta http-equiv='refresh' content='0;url=$returnpage.php?msg=$msg'>
 _END;
         
     }

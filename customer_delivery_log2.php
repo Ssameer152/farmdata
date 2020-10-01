@@ -91,7 +91,8 @@ _END;
                     </td>
                     <input type="hidden" name="qty" value="$qty">
                         <input type="hidden" name="csid" value="$csid">
-                        <input type="hidden" name="cid" value="$cid"> 
+                        <input type="hidden" name="cid" value="$cid">
+                        <input type="hidden" name="returnpage" value="customer_delivery_log2">
                         <td>        
                         <button onclick="return confirm('Do you want to mark delivered?')" type="submit" class="btn btn-primary">Mark delivered</button>
                         </td>
