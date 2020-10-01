@@ -24,7 +24,7 @@
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <style>
         @media print { 
-            header,#report { 
+            header,#report,#btn { 
                display:none; 
             } 
          } 
@@ -190,11 +190,12 @@ elseif(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_da
     $total8=$res1['dana_evening'];
     $date='';
     $sdate=date("d-m-Y", strtotime($start_date));
+    $edate=date("d-m-Y", strtotime($end_date));
         echo <<<_END
     <div class="col-lg-12">
         <div class="row">
-        <h2>From $sdate</h2>
-        <button style="position: absolute; right:10;" class="btn btn-primary" onclick="window.print()">Print Report</button>
+        <h5>From $sdate to $edate</h5>
+        <button id="btn" style="position: absolute; right:10;" class="btn btn-primary" onclick="window.print()">Print Report</button>
         </div>
         <div class="table-responsive table-sm">
             <table class="table table-bordered">
@@ -244,7 +245,7 @@ _END;
         }
         echo <<<_END
         <tr>
-                    <th colspan="2">Total</th>
+                    <th>Total</th>
                     <th>$total1</th>
                     <th>$total2</th>
                     <th>$total3</th>
