@@ -43,7 +43,6 @@ if(isset($_SESSION['user']))
                     <tr>
                     <th>Customer</th>
                     <th>Milktype</th>
-                    <th>Time</th>
                     <th>Subscribe Quantity</th>
                     <th>Delivered Quantity</th>
                     <th>Action</th>
@@ -83,17 +82,7 @@ _END;
                     echo <<<_END
                     <td class="mt-4">Buffalo Milk</td>
 _END;
-                }
-                if($deliverytime==1){
-                    echo <<<_END
-                    <td> Morning</td>
-_END;
-                }
-                elseif($deliverytime==2){
-                    echo <<<_END
-                     <td>Evening</td>
-_END;
-                }
+                }   
                     echo <<<_END
                     <form  action="customer_delivery_log_ap.php"  method="post">
                     <td class="text-primary">$qty</td>
