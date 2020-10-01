@@ -24,7 +24,7 @@
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <style>
         @media print { 
-            header,#report { 
+            header,#report,#btn { 
                display:none; 
             } 
          } 
@@ -88,7 +88,7 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     <div class="col-lg-12">
         <div class="row">
         <h2>Data</h2>
-        <button style="position: absolute; right:10;" class="btn btn-primary" onclick="window.print()">Print Report</button>
+        <button id="btn" style="position: absolute; right:10;" class="btn btn-primary" onclick="window.print()">Print Report</button>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
