@@ -51,7 +51,13 @@ if(isset($_SESSION['user']))
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
-        
+        <script>
+            function ask(anchor){
+                var conf=confirm("Do you want to delete?");
+                if(conf) 
+                window.location=anchor.attr("href");
+            }
+        </script>
     </head>
     
     <body>  
@@ -213,7 +219,10 @@ _END;
                             echo <<<_END
                         </div>
                         </div>
-                        <h6>Milk Price</h6>
+                        <div class="form-row mb-4 ml-2 mt-2">
+                        <h6>Milk Price From </h6>
+                        <input type="date" class="form-control ml-2 col-lg-3"/>
+                       </div>
                         <div class="form-row">
                         <div class="form-group col-lg-4">
                         <label for="Cow Milk">Price Cow Milk</label>
@@ -281,15 +290,12 @@ _END;
                             <thead>
                                 <tr>
                                     <th>S.No.</th>
-                                    <th>firstname</th>
-                                    <th>lastname</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>City</th>
+                                    <th>Name</th>
                                     <th>Address</th>
                                   <th>Price Cow Milk</th>
                                     <th>Price Sahiwal Milk</th>
                                     <th>Price Buffalo Milk</th>
+                                    <th>Phone</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -297,12 +303,12 @@ _END;
 <?php
 $q = "SELECT * FROM customer WHERE is_deleted=0";
 $r = mysqli_query($db,$q);
-
+$sn=0;
 while($res = mysqli_fetch_assoc($r))
 {
-    $sn = $res['id'];
-    $fname = $res['fname'];
-    $lname = $res['lname'];
+    $sn=$sn+1;
+    $id = $res['id'];
+    $name = $res['fname'].' '.$res['lname'];
     $email = $res['email'];
     $phone = $res['phone'];
     $city=getDimensionValue($db,'city',$res['city'],'name');
@@ -313,16 +319,13 @@ while($res = mysqli_fetch_assoc($r))
     echo <<<_END
     <tr>
         <td>$sn</td>
-        <td>$fname</td>
-        <td>$lname</td>
-        <td>$email</td>
-        <td>$phone</td>
-        <td>$city</td>
+        <td>$name</td>
         <td>$address</td>
         <td>$priceCowMilk</td>
         <td>$priceSahiwalMilk</td>
         <td>$priceBuffaloMilk</td>
-        <td><a href="customer.php?id=$sn">Modify</a> | <a href="delete.php?table=customer&rid=$sn&return=customer">Delete</a> | <a href="customer_subscription.php?cid=$sn">Subscribe</a></td>
+        <td>$phone</td>
+        <td><a href="customer.php?id=$id">Modify</a> | <a onclick='javascript:ask($(this));return false;' href="delete.php?table=customer&rid=$id&return=customer">Delete</a> | <a href="customer_subscription.php?cid=$id">Subscribe</a></td>
     </tr>
 _END;
 }

@@ -22,6 +22,9 @@ if(isset($_SESSION['user'])){
             header,#report,#btn{ 
                display:none; 
             } 
+            #t{
+                border: solid white !important;
+            }
          } 
          </style>
     </head>
@@ -65,6 +68,7 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     $sdt=date("d-m-Y", strtotime($start_date));
         $edt=date("d-m-Y", strtotime($end_date));
 $date='';
+$sn=0;
 echo <<<_END
 <div class="col-lg-12">
 <div class="row">
@@ -75,12 +79,13 @@ _END;
     if(mysqli_num_rows($r)>0){
         echo <<<_END
         <div class="row">
-        <table class="table table-bordered table-sm">
+        <table id="t" class="table table-bordered table-sm">
         <tr>
         <th class="text-center" colspan="4">
         <h5>Morning</h5>
         <table class="table table-bordered">
         <tr>
+        <th>S.no</th>
         <th>Customer</th>
         <th>Cow</th>
         <th>Sahiwal</th>
@@ -88,6 +93,7 @@ _END;
         </tr>
 _END;
     while($res=mysqli_fetch_assoc($r)){
+        $sn=$sn+1;
         $cid=$res['cid'];
         $qty=$res['cow_milk'];
         $sqty=$res['s_cow_milk'];
@@ -98,6 +104,7 @@ _END;
         $cust=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
             echo <<<_END
             <tr>
+            <td>$sn</td>
             <td>$cust</td>
             <td>$qty</td>
             <td>$qty1</td>
@@ -107,15 +114,13 @@ _END;
            }
            echo <<<_END
            <tr>
-           <th>Total</th>
+           <th colspan="2">Total</th>
            <th>$total1</th>
            <th>$total2</th>
            <th>$total3</th>
            </tr>
            </table>
            </th>
-           </div>
-        
 _END;
            echo <<<_END
            <th>
@@ -125,6 +130,7 @@ _END;
            <h5 class="text-center">Evening</h5>
            </tr>
            <tr>
+        <th>S.no</th>
         <th>Customer</th>
         <th>Cow</th>
         <th>Sahiwal</th>
@@ -135,11 +141,13 @@ _END;
         $r2=mysqli_query($db,$q2);
         $q3="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=2 and cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t";
     $r3=mysqli_query($db,$q3);
+    $sn1=0;
     $res3=mysqli_fetch_assoc($r3);
     $total1=$res3['cow_milk'];
     $total2=$res3['sahiwal_milk'];
     $total3=$res3['buffalo_milk'];
     while($res2=mysqli_fetch_assoc($r2)){
+        $sn1=$sn1+1;
         $cid=$res2['cid'];
         $sqty=$res2['s_cow_milk'];
         $qty=$res2['cow_milk'];
@@ -150,6 +158,7 @@ _END;
         $cust=getDimensionValue($db,'customer',$res2['cid'],'fname').' '.getDimensionValue($db,'customer',$res2['cid'],'lname');
         echo <<<_END
         <tr>
+        <td>$sn1</td>
         <td>$cust</td>
         <td>$qty</td>
         <td>$qty1</td>
@@ -159,7 +168,7 @@ _END;
     }
     echo <<<_END
     <tr>
-           <th>Total</th>
+           <th colspan="2">Total</th>
            <th>$total1</th>
            <th>$total2</th>
            <th>$total3</th>
@@ -175,6 +184,7 @@ _END;
     </th>
     </tr>
 </table>
+</div>
 </div>
 </div>
 </div>
