@@ -24,7 +24,7 @@
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <style>
         @media print { 
-            header,#report { 
+            header,#report,#btn { 
                display:none; 
             } 
          } 
@@ -189,17 +189,18 @@ elseif(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_da
     $total7=$res1['dana_morning'];
     $total8=$res1['dana_evening'];
     $date='';
+    $sdate=date("d-m-Y", strtotime($start_date));
+    $edate=date("d-m-Y", strtotime($end_date));
         echo <<<_END
     <div class="col-lg-12">
         <div class="row">
-        <h2>Data</h2>
-        <button style="position: absolute; right:10;" class="btn btn-primary" onclick="window.print()">Print Report</button>
+        <h5>From $sdate to $edate</h5>
+        <button id="btn" style="position: absolute; right:10;" class="btn btn-primary" onclick="window.print()">Print Report</button>
         </div>
-        <div class="table-responsive">
+        <div class="table-responsive table-sm">
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Date</th>
                         <th>Cattle Name</th>
                         <th>Milk Collection Morning</th>
                         <th>Milk Collection Evening</th>
@@ -216,7 +217,6 @@ _END;
         while($res=mysqli_fetch_assoc($r)){
             $id=$res['id'];
             $d=$res['d'];
-            $d=date("d-m-Y", strtotime($d));
             $cattle=getDimensionValue($db,'cattle',$res['cid'],'name');
             $cattle_activity_value1=$res['milk_collection_morning'];
             $cattle_activity_value2=$res['milk_collection_evening'];
@@ -230,7 +230,6 @@ _END;
             if($d!=$date){
                 echo <<<_END
                 <tr>
-                <td>$d</td>
                 <td>$cattle</td>
                 <td>$cattle_activity_value1</td>
                 <td>$cattle_activity_value2</td>
@@ -246,7 +245,7 @@ _END;
         }
         echo <<<_END
         <tr>
-                    <th colspan="2">Total</th>
+                    <th>Total</th>
                     <th>$total1</th>
                     <th>$total2</th>
                     <th>$total3</th>

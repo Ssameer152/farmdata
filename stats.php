@@ -28,7 +28,7 @@ echo <<<_END
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <style>
         @media print { 
-            header,#report { 
+            header,#report,#btn { 
                display:none; 
             } 
          } 
@@ -205,7 +205,7 @@ echo <<<_END
                 </div>
                
             </div>
-            <button style="position:relative;left:590; bottom:20;" class="btn btn-primary" onclick="window.print()">Print Report</button>
+            <button id="btn" style="position:relative;left:590; bottom:20;" class="btn btn-primary" onclick="window.print()">Print Report</button>
 _END;
 
 
