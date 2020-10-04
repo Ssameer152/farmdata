@@ -195,12 +195,14 @@ elseif(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_da
     <div class="col-lg-12">
         <div class="row">
         <h5>From $sdate to $edate</h5>
-        <button id="btn" style="position: absolute; right:10;" class="btn btn-primary" onclick="window.print()">Print Report</button>
+        <button id="btn" style="position: relative; bottom:50; left:650;" class="btn btn-primary" onclick="window.print()">Print Report</button>
         </div>
+        <div class="row">
         <div class="table-responsive table-sm">
-            <table class="table table-bordered">
+            <table class="table-sm table-bordered">
                 <thead>
                     <tr>
+                        <th>S.no</th>
                         <th>Cattle Name</th>
                         <th>Milk Collection Morning</th>
                         <th>Milk Collection Evening</th>
@@ -214,7 +216,9 @@ elseif(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_da
                 </thead>
                 <tbody>
 _END;
+        $sn=0;
         while($res=mysqli_fetch_assoc($r)){
+            $sn=$sn+1;
             $id=$res['id'];
             $d=$res['d'];
             $cattle=getDimensionValue($db,'cattle',$res['cid'],'name');
@@ -230,6 +234,7 @@ _END;
             if($d!=$date){
                 echo <<<_END
                 <tr>
+                <td>$sn</th>
                 <td>$cattle</td>
                 <td>$cattle_activity_value1</td>
                 <td>$cattle_activity_value2</td>
@@ -245,7 +250,7 @@ _END;
         }
         echo <<<_END
         <tr>
-                    <th>Total</th>
+                    <th colspan="2">Total</th>
                     <th>$total1</th>
                     <th>$total2</th>
                     <th>$total3</th>
@@ -260,6 +265,7 @@ _END;
     echo <<<_END
                 </tbody>
             </table>
+            </div>
         </div>
     </div>        
 _END;

@@ -76,7 +76,7 @@ if( isset($_GET['end_date'])  && $_GET['end_date']!='')
         </thead>
         <tbody>
 _END;
-    $q4="SELECT * from logs where cast(doe as date)<='$start_date' and is_deleted=0";
+    $q4="SELECT * from logs where cast(doe as date)<'$start_date' and is_deleted=0";
     $r4=mysqli_query($db,$q4);
     while($res4=mysqli_fetch_assoc($r4)){
     $q="SELECT * from resources where is_deleted=0";
@@ -98,16 +98,7 @@ _END;
                 <td>$consumed $unit</td>
 _END;
     }
-        $q2="SELECT t.qty,COALESCE(sum(t.qty),0) as q2 from (select qty from purchase_items where resourceid='$id' and is_deleted=0) as t";
-        $r2=mysqli_query($db,$q2);
-        while($res2=mysqli_fetch_assoc($r2)){
-            $purchase=$res2['q2'];
-            echo <<<_END
-            <td>$purchase $unit</td>
-_END;
-        }
-    }
-}
+        
         $q3="SELECT t.qty ,COALESCE(sum(t.qty),0) as q3 from (select qty from log_output where resourceid='$id'  and is_deleted=0) as t";
         $r3=mysqli_query($db,$q3);
         while($res3=mysqli_fetch_assoc($r3)){
@@ -119,6 +110,16 @@ _END;
             </tr>
 _END;
         }
+    }
+}
+$q2="SELECT t.qty,COALESCE(sum(t.qty),0) as q2 from (select qty from purchase_items where resourceid='$id' and is_deleted=0) as t";
+$r2=mysqli_query($db,$q2);
+while($res2=mysqli_fetch_assoc($r2)){
+    $purchase=$res2['q2'];
+    echo <<<_END
+    <td>$purchase $unit</td>
+_END;
+}
 }
 else{
     echo <<<_END

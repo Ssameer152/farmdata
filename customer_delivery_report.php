@@ -27,8 +27,11 @@ if(isset($_SESSION['user'])){
                 border-bottom-style: none;
             }
 
-            #border1 {
+            #border1,#t {
                 border: solid white !important;
+            }
+            #ch {
+                font-weight:bold;
             }
          } 
          </style>
@@ -73,6 +76,7 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     $sdt=date("d-m-Y", strtotime($start_date));
         $edt=date("d-m-Y", strtotime($end_date));
 $date='';
+$sn=0;
 echo <<<_END
 <div class="col-lg-12">
 <div class="row">
@@ -82,16 +86,20 @@ echo <<<_END
 _END;
     if(mysqli_num_rows($r)>0){
         echo <<<_END
-        <div class="table table-responsive">
-        <h5 class="text-center">Morning</h5>
+        <div class="row">
+        <table id="t" class="table-sm table-bordered">
+        <tr>
+        <th class="text-center">
+        <h5>Morning</h5>
         <table class="table table-bordered">
         <tr>
+        <th>S.no</th>
         <th>Customer</th>
         <th class="text-center">Cow
         <table class="table-sm table-borderless">
         <tr>
         <th>Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
+        <th id="border1">Del</th>
         </tr>
         </table>
         </th>
@@ -99,7 +107,7 @@ _END;
         <table class="table-sm table-borderless">
         <tr>
         <th>Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
+        <th id="border1">Del</th>
         </tr>
         </table>
         </th>
@@ -107,12 +115,14 @@ _END;
         <table class="table-sm table-borderless">
         <tr>
         <th>Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
+        <th id="border1">Del</th>
         </tr>
         </table>
         </th>
+        </tr>
 _END;
     while($res=mysqli_fetch_assoc($r)){
+        $sn=$sn+1;
         $cid=$res['cid'];
         $qty=$res['cow_milk'];
         $sqty=$res['s_cow_milk'];
@@ -120,24 +130,64 @@ _END;
         $qty1=$res['sahiwal_milk'];
         $sqty2=$res['s_buffalo_milk'];
         $qty2=$res['buffalo_milk'];
-        $cust=getDimensionValue($db,'customer',$res['cid'],'fname');
+        $cust=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
             
             echo <<<_END
             <tr>
+            <td>$sn</td>
             <td>$cust</td>
             <td>
             <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1" class="w-25">$sqty</td><td class="text-right">$qty</td</tr>
+            <tr class="text-center"><td id="border1">$sqty</td>
+_END;
+            if($sqty!=$qty){
+                echo <<<_END
+            <td id="ch" class="table-dark text-right">$qty</td>
+_END;
+            }
+            else{
+                echo <<<_END
+                <td class="text-right">$qty</td>
+_END;
+            }
+            echo <<<_END
+            </tr>
             </table>
             </td>
             <td>
             <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1" class="w-25">$sqty1</td><td class="text-right">$qty1</td></tr>
+            <tr class="text-center"><td id="border1">$sqty1</td>
+_END;
+            if($sqty1!=$qty1){
+                echo <<<_END
+            <td id="ch" class="table-dark text-right">$qty1</td>
+_END;
+            }
+            else{
+                echo <<<_END
+                <td class="text-right">$qty1</td>
+_END;
+            }
+            echo <<<_END
+            </tr>
             </table>
             </td>
             <td>
             <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1" class="w-25">$sqty2</td><td class="text-right">$qty2</td></tr>
+            <tr class="text-center"><td id="border1">$sqty2</td>
+_END;
+            if($sqty2!=$qty2){
+                echo <<<_END
+            <td id="ch" class="table-dark text-right">$qty2</td>
+_END;
+            }
+            else{
+                echo <<<_END
+                <td  class="text-right">$qty2</td>
+_END;
+            }
+            echo <<<_END
+            </tr>
             </table>
             </td>
             </tr>
@@ -145,24 +195,28 @@ _END;
            }
            echo <<<_END
            <tr>
-           <th colspan="1">Total</th>
+           <th colspan="2">Total</th>
            <th class="text-right">$total1</th>
            <th class="text-right">$total2</th>
            <th class="text-right">$total3</th>
            </tr>
-        
+           </table>
+           </th>
 _END;
            echo <<<_END
+           <th id="t">
+           <table class="table table-bordered">
            <tr>
-           <th class="text-center" colspan="4"><h5>Evening</h5></th>
+           <h5 class="text-center">Evening</h5>
            </tr>
            <tr>
+        <th>S.no</th>
         <th>Customer</th>
         <th class="text-center">Cow
         <table class="table-sm table-borderless">
         <tr>
         <th>Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
+        <th id="border1">Del</th>
         </tr>
         </table>
         </th>
@@ -170,7 +224,7 @@ _END;
         <table class="table-sm table-borderless">
         <tr>
         <th>Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
+        <th id="border1">Del</th>
         </tr>
         </table>
         </th>
@@ -178,7 +232,7 @@ _END;
         <table class="table-sm table-borderless">
         <tr>
         <th >Sub</th>
-        <th id="border1" class="w-25">Delivered</th>
+        <th id="border1">Del</th>
         </tr>
         </table>
         </th>
@@ -192,7 +246,9 @@ _END;
     $total1=$res3['cow_milk'];
     $total2=$res3['sahiwal_milk'];
     $total3=$res3['buffalo_milk'];
+    $sn1=0;
     while($res2=mysqli_fetch_assoc($r2)){
+        $sn1=$sn1+1;
         $cid=$res2['cid'];
         $sqty=$res2['s_cow_milk'];
         $qty=$res2['cow_milk'];
@@ -200,23 +256,63 @@ _END;
         $qty1=$res2['sahiwal_milk'];
         $sqty2=$res2['s_buffalo_milk'];
         $qty2=$res2['buffalo_milk'];
-        $cust=getDimensionValue($db,'customer',$res2['cid'],'fname');
+        $cust=getDimensionValue($db,'customer',$res2['cid'],'fname').' '.getDimensionValue($db,'customer',$res2['cid'],'lname');
         echo <<<_END
         <tr>
+        <td>$sn1</td>
         <td>$cust</td>
         <td>
         <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1" class="w-25">$sqty</td><td class="text-right">$qty</td</tr>
+            <tr class="text-center"><td id="border1">$sqty</td>
+_END;
+            if($sqty!=$qty){
+                echo <<<_END
+            <td id="ch" class="table-dark text-right">$qty</td>
+_END;
+            }
+            else{
+                echo <<<_END
+                <td class="text-right">$qty</td>
+_END;
+            }
+            echo <<<_END
+            </tr>
             </table>
         </td>
         <td>
         <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1" class="w-25">$sqty1</td><td class="text-right">$qty1</td></tr>
+            <tr class="text-center"><td id="border1">$sqty1</td>
+_END;
+            if($sqty1!=$qty1){
+                echo <<<_END
+            <td id="ch" class="table-dark text-right">$qty1</td>
+_END;
+            }
+            else{
+                echo <<<_END
+                <td class="text-right">$qty1</td>
+_END;
+            }
+            echo <<<_END
+            </tr>
             </table>
         </td>
         <td>
         <table class="table-sm table-borderless">
-        <tr class="text-center"><td id="border1" class="w-25">$sqty2</td><td class="text-right">$qty2</td></tr>
+        <tr class="text-center"><td id="border1">$sqty2</td>
+_END;
+            if($sqty2!=$qty2){
+                echo <<<_END
+        <td id="ch" class="table-dark text-right">$qty2</td>
+_END;
+            }
+            else{
+                echo <<<_END
+                <td class="text-right">$qty2</td>
+_END;
+            }
+            echo <<<_END
+        </tr>
         </table>
         </td>
         </tr>
@@ -224,19 +320,20 @@ _END;
     }
     echo <<<_END
     <tr>
-           <th>Total</th>
+           <th colspan="2">Total</th>
            <th class="text-right">$total1</th>
            <th class="text-right">$total2</th>
            <th class="text-right">$total3</th>
            </tr>
-    
 _END;
     }
     else {
         echo 'No deliveries found';
     }
     echo <<<_END
-    </tbody>
+    </table>
+    </th>
+    </tr>
 </table>
 </div>
 </div>

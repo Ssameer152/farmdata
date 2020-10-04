@@ -81,7 +81,7 @@ _END;
         <div class="row">
         <table id="t" class="table table-bordered table-sm">
         <tr>
-        <th class="text-center" colspan="4">
+        <th class="text-center">
         <h5>Morning</h5>
         <table class="table table-bordered">
         <tr>
@@ -123,7 +123,7 @@ _END;
            </th>
 _END;
            echo <<<_END
-           <th>
+           <th id="t">
            <!-- 2nd table -->
            <table class="table table-bordered">
            <tr>
