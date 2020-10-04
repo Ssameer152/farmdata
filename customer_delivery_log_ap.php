@@ -21,10 +21,20 @@ if(isset($_SESSION['user']))
             $msg = 'Updated';
         }
         else{
-        $q = "INSERT INTO customer_delivery_log(qty,delivered_qty,cid,csid) VALUES('$qty','$dlqty','$cid','$csid')";
-        $r = mysqli_query($db,$q);
+            $q1 = "SELECT * FROM customer_delivery_log WHERE csid='$csid' AND cast(dod as date)=cast(current_timestamp as date)";
+            $r1 = mysqli_query($db,$q1);
+            
+            $row1 = mysqli_num_rows($r1);
+            
+            if($row1>=1){
+                $msg = "Record already exist";
+            }
+            else{
+                $q = "INSERT INTO customer_delivery_log(qty,delivered_qty,cid,csid) VALUES('$qty','$dlqty','$cid','$csid')";
+                $r = mysqli_query($db,$q);
         
-        $msg = "Customer delivery log Added";
+                $msg = "Customer delivery log Added";
+            }
         }
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=$returnpage.php?msg=$msg'>
