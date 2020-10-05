@@ -131,7 +131,8 @@ _END;
     						<a class="dropdown-item" href="cattle_activity.php">Cattle Activity</a>
     						<a class="dropdown-item" href="cattle_breed.php">Cattle Breed</a>
     						<a class="dropdown-item" href="cattle_type.php">Cattle Type</a>
-							<a class="dropdown-item" href="cattle_activity_log_master.php">Cattle Activity Log</a>
+							<a class="dropdown-item" href="cattle_activity_log_avg.php">Cattle Activity Log</a>
+							<a class="dropdown-item" href="cattle_activity_report_avg.php">Cattle Activity average Report</a>
     					</div>
     				</li>
 _END;
