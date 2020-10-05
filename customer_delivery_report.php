@@ -33,6 +33,12 @@ if(isset($_SESSION['user'])){
             #ch {
                 font-weight:bold;
             }
+            .fnt{
+                font-size:12px;
+            }
+            #fnt{
+                font-size:12px;
+            }
          } 
          </style>
     </head>
@@ -87,11 +93,11 @@ _END;
     if(mysqli_num_rows($r)>0){
         echo <<<_END
         <div class="row">
-        <table id="t" class="table-sm table-bordered">
+        <table id="t" class="table table-bordered table-sm">
         <tr>
         <th class="text-center">
-        <h5>Morning</h5>
-        <table class="table table-bordered">
+        <h6>Morning</h6>
+        <table class="table-sm table-bordered">
         <tr>
         <th>S.no</th>
         <th>Customer</th>
@@ -134,20 +140,20 @@ _END;
             
             echo <<<_END
             <tr>
-            <td>$sn</td>
-            <td>$cust</td>
+            <td id="fnt">$sn</td>
+            <td id="fnt">$cust</td>
             <td>
             <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1">$sqty</td>
+            <tr class="text-center"><td class="fnt" id="border1">$sqty</td>
 _END;
             if($sqty!=$qty){
                 echo <<<_END
-            <td id="ch" class="table-dark text-right">$qty</td>
+            <td id="ch" class="table-dark text-right fnt">$qty</td>
 _END;
             }
             else{
                 echo <<<_END
-                <td class="text-right">$qty</td>
+                <td id="fnt" class="text-right">$qty</td>
 _END;
             }
             echo <<<_END
@@ -156,16 +162,16 @@ _END;
             </td>
             <td>
             <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1">$sqty1</td>
+            <tr class="text-center"><td class="fnt" id="border1">$sqty1</td>
 _END;
             if($sqty1!=$qty1){
                 echo <<<_END
-            <td id="ch" class="table-dark text-right">$qty1</td>
+            <td id="ch" class="table-dark text-right fnt">$qty1</td>
 _END;
             }
             else{
                 echo <<<_END
-                <td class="text-right">$qty1</td>
+                <td id="fnt" class="text-right">$qty1</td>
 _END;
             }
             echo <<<_END
@@ -174,16 +180,16 @@ _END;
             </td>
             <td>
             <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1">$sqty2</td>
+            <tr class="text-center"><td class="fnt" id="border1">$sqty2</td>
 _END;
             if($sqty2!=$qty2){
                 echo <<<_END
-            <td id="ch" class="table-dark text-right">$qty2</td>
+            <td id="ch" class="table-dark text-right fnt">$qty2</td>
 _END;
             }
             else{
                 echo <<<_END
-                <td  class="text-right">$qty2</td>
+                <td id="fnt" class="text-right">$qty2</td>
 _END;
             }
             echo <<<_END
@@ -196,18 +202,18 @@ _END;
            echo <<<_END
            <tr>
            <th colspan="2">Total</th>
-           <th class="text-right">$total1</th>
-           <th class="text-right">$total2</th>
-           <th class="text-right">$total3</th>
+           <th id="fnt" class="text-right">$total1</th>
+           <th id="fnt" class="text-right">$total2</th>
+           <th id="fnt" class="text-right">$total3</th>
            </tr>
            </table>
            </th>
 _END;
            echo <<<_END
            <th id="t">
-           <table class="table table-bordered">
+           <table class="table-sm table-bordered">
            <tr>
-           <h5 class="text-center">Evening</h5>
+           <h6 class="text-center">Evening</h6>
            </tr>
            <tr>
         <th>S.no</th>
@@ -259,20 +265,20 @@ _END;
         $cust=getDimensionValue($db,'customer',$res2['cid'],'fname').' '.getDimensionValue($db,'customer',$res2['cid'],'lname');
         echo <<<_END
         <tr>
-        <td>$sn1</td>
-        <td>$cust</td>
+        <td id="fnt">$sn1</td>
+        <td id="fnt">$cust</td>
         <td>
         <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1">$sqty</td>
+            <tr class="text-center"><td class="fnt" id="border1">$sqty</td>
 _END;
             if($sqty!=$qty){
                 echo <<<_END
-            <td id="ch" class="table-dark text-right">$qty</td>
+            <td id="ch" class="table-dark text-right fnt">$qty</td>
 _END;
             }
             else{
                 echo <<<_END
-                <td class="text-right">$qty</td>
+                <td id="fnt" class="text-right">$qty</td>
 _END;
             }
             echo <<<_END
@@ -281,16 +287,16 @@ _END;
         </td>
         <td>
         <table class="table-sm table-borderless">
-            <tr class="text-center"><td id="border1">$sqty1</td>
+            <tr class="text-center"><td class="fnt" id="border1">$sqty1</td>
 _END;
             if($sqty1!=$qty1){
                 echo <<<_END
-            <td id="ch" class="table-dark text-right">$qty1</td>
+            <td id="ch" class="table-dark text-right fnt">$qty1</td>
 _END;
             }
             else{
                 echo <<<_END
-                <td class="text-right">$qty1</td>
+                <td id="fnt" class="text-right">$qty1</td>
 _END;
             }
             echo <<<_END
@@ -299,16 +305,16 @@ _END;
         </td>
         <td>
         <table class="table-sm table-borderless">
-        <tr class="text-center"><td id="border1">$sqty2</td>
+        <tr class="text-center"><td class="fnt" id="border1">$sqty2</td>
 _END;
             if($sqty2!=$qty2){
                 echo <<<_END
-        <td id="ch" class="table-dark text-right">$qty2</td>
+        <td id="ch" class="table-dark text-right fnt">$qty2</td>
 _END;
             }
             else{
                 echo <<<_END
-                <td class="text-right">$qty2</td>
+                <td id="fnt" class="text-right">$qty2</td>
 _END;
             }
             echo <<<_END
@@ -321,9 +327,9 @@ _END;
     echo <<<_END
     <tr>
            <th colspan="2">Total</th>
-           <th class="text-right">$total1</th>
-           <th class="text-right">$total2</th>
-           <th class="text-right">$total3</th>
+           <th id="fnt" class="text-right">$total1</th>
+           <th id="fnt" class="text-right">$total2</th>
+           <th id="fnt" class="text-right">$total3</th>
            </tr>
 _END;
     }
