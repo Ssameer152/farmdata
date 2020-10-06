@@ -54,6 +54,9 @@ _END;
 }
 
 echo <<<_END
+               
+                <div class="col-lg-12">
+                <div class="row">
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -135,9 +138,10 @@ _END;
                         }
                         
                         $doe = $res['doe'];
+                        $doe=date("d-m-Y", strtotime($doe));
                         $dou = $res['dou'];
                         
-                        $link = 'report_viewer.php?area=' . $area .' &date=' . explode(' ',$doe)[0];
+                        $link = 'report_viewer.php?area='. $area .'&date=' . explode(' ',$doe)[0];
                         
                         echo <<<_END
                         <tr>
@@ -157,6 +161,8 @@ _END;
 					echo <<<_END
 					</tbody>
 					</table>
+                    </div>
+                    </div>
                     </div>
 _END;
 				}
@@ -182,9 +188,7 @@ _END;
 				}
 
 			?>
-			</div>
-		</div>
-
+			
         
 <?php
 include_once 'foot.php';
