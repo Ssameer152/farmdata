@@ -181,7 +181,7 @@ _END;
         echo <<<_END
         $status
         <a href="update.php?table=purchases&rid=$sn&ps=$payment_status&ds=$delivery_status&s=$status&return=purchases"><span data-toggle="tooltip" data-placement="top" title="For mark status as completed" class="fa fa-edit"></span></a>
-_END;   
+_END;
         }
         else{
             echo <<<_END
