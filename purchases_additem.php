@@ -129,7 +129,7 @@ _END;
 $q = "SELECT * FROM purchase_items WHERE pid='$pid' AND is_deleted=0";
 $r = mysqli_query($db,$q);
 $sn = 0;
-
+$st1=0;
 while($res = mysqli_fetch_assoc($r))
 {
     $qty = $res['qty'];
@@ -144,9 +144,9 @@ while($res = mysqli_fetch_assoc($r))
     $unit = $re2['unit'];
     $resourcename  = $re2['resourcename'];
     $sn = $sn + 1;
-    
     $st = $qty * $cpu;
-    
+    $st1+=$st;
+
     echo <<<_END
     <tr>
         <td>$sn</td>
@@ -154,10 +154,15 @@ while($res = mysqli_fetch_assoc($r))
         <td>$qty $unit</td>
         <td>&#8377; $cpu</td>
         <td>&#8377; $st</td>
+       
     </tr>
 _END;
-}
-    
+}  
+    echo <<<_END
+    <tr>
+    <td colspan="5" class="text-right">$st1</td>
+    </tr>
+_END; 
 echo <<<_END
             </tbody>
         </table>
