@@ -82,7 +82,8 @@ _END;
                     if($logs == 1)
                     {
                         echo <<<_END
-                    <li class="nav-item"><a class="nav-link" href="logs.php"> Logs</a></li>                        
+					<li class="nav-item"><a class="nav-link" href="logs.php"> Logs</a></li> 
+					<li class="nav-item"><a class="nav-link" href="log_resource_data.php">Common</a></li>                        
 _END;
                     }
 
