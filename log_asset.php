@@ -159,7 +159,7 @@ echo <<<_END
             <tbody>
 _END;
 
-$q = "SELECT sum(usage_time) as qty,assetid,person FROM log_assets WHERE logid='$logid' AND is_deleted=0 GROUP BY assetid,person";
+$q = "SELECT id,sum(usage_time) as qty,assetid,person FROM log_assets WHERE logid='$logid' AND is_deleted=0 GROUP BY assetid,person";
 $r = mysqli_query($db,$q);
 
 if(!$r){
