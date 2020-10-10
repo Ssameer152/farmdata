@@ -34,7 +34,7 @@ include_once 'nav.php';
             <h3 class="mb-4 mt-2">Log Resource Info</h3>
 
     <form action="log_resource_data_ap.php" method="post">
-        <label class="form-check-inline mr-4">Type</label>
+        <label class="form-check-inline mr-4"><b>Type</b></label>
         <div class="form-check form-check-inline">
             <input class="form-check-input" id="rad1" type="radio" name="rad" value="1" checked />
             <label class="form-check-label" for="Produced">Produced</label>
@@ -42,6 +42,23 @@ include_once 'nav.php';
         <div class="form-check form-check-inline ml-4">
             <input class="form-check-input" id="rad2" type="radio" name="rad" value="2" />
             <label class="form-check-label" for="Consumed">Consumed</label>
+        </div>
+        <h6 class="mt-2 mb-2">Activity</h6>
+        <div class="form-check form-group">
+
+_END;
+        $q="SELECT * from logs where cast(doe as date)=cast(current_timestamp() as date) and  is_deleted=0";
+        $r=mysqli_query($db,$q);
+        while($res=mysqli_fetch_assoc($r)){
+            $logid=$res['id'];
+            $activity=$res['activity'];
+            $ac=getDimensionValue($db,'activities',$res['activity'],'activity');
+            echo <<<_END
+            <input class="form-check-input" id="rad2" type="radio" name="logid" value="$logid" checked/>
+            <label class="form-check-label mb-2">$ac</label><br/>
+_END;
+        }
+        echo <<<_END
         </div>
         <div class="form-group mb-4">
         <label for="person">Person</label>
@@ -81,17 +98,6 @@ _END;
         <label for="quantity">Quantity</label>
         <input type="text" name="qty" class="form-control">
         </div>
-        <div class="form-group">
-        <label for="comments">Comments</label>
-        <input type="text" name="comments" class="form-control">
-        </div>
-_END;
-        $q="SELECT * from logs where is_deleted=0";
-        $r=mysqli_query($db,$q);
-        $res=mysqli_fetch_assoc($r);
-        $logid=$res['id'];
-        echo <<<_END
-        <input type="hidden" value="$logid" name="logid"/>
         <button type="submit" class="btn btn-primary mt-2">Add To Log</button>
     </form>
 _END;
