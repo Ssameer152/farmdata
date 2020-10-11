@@ -110,38 +110,94 @@ _END;
             <div class="table table-responsive">
                 <table class="table table-striped">
                     <thead>
+                    <tr>
+                    <h5 class="text-center">Production</h5>
+                    </tr>
                         <tr>
                             <th>S.no</th>
                             <th>Person</th>
                             <th>Resource</th>
                             <th>Quantity</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
 _END;
-//          Display part ...
-//         $sn=0;
-//         $q="SELECT * from log_resource_data where type=1 and is_deleted=0";
-//         $r=mysqli_query($db,$q);
-//         while($res=mysqli_fetch_assoc($r)){
-//             $sn=$sn+1;
-//             $id=$res['id'];
-//             $rname=$res['resource'];
-//             $person=$res['person'];
-//             $qty=$res['quantity'];
-//             $resource=getDimensionValue($db,'resources',$res['resource'],'resourcename');
-//             $people=getDimensionValue($db,'people',$res['person'],'fname').' '.getDimensionValue($db,'people',$res['person'],'lname');
-//             echo <<<_END
-//             <tr>
-//             <td>$sn</td>
-//             <td>$people</td>
-//             <td>$resource</td>
-//             <td>$qty</td>
-//             </tr>
-// _END;
-//         }
+        $sn=0;
+        $q = "SELECT id,sum(qty) as qty,resourceid,person FROM log_output WHERE  cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0 GROUP BY resourceid,person";
+      $r=mysqli_query($db,$q);
+//       $q1="SELECT sum(qty) as total FROM log_output WHERE  cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0 group by logid, resourceid,person";
+// $r1=mysqli_query($db,$q1);
+// $res1=mysqli_fetch_assoc($r1);
+// $total=$res1['total'];
+         while($res=mysqli_fetch_assoc($r)){
+             $sn=$sn+1;
+          $id=$res['id'];
+             $person=$res['person'];
+               $qty=$res['qty'];
+               $unit=getDimensionValue($db,'resources',$res['resourceid'],'unit');
+                $resource=getDimensionValue($db,'resources',$res['resourceid'],'resourcename');
+             $people=getDimensionValue($db,'people',$res['person'],'fname').' '.getDimensionValue($db,'people',$res['person'],'lname');
+             echo <<<_END
+             <tr>
+             <td>$sn</td>
+             <td>$people</td>
+             <td>$resource</td>
+             <td>$qty</td>
+             </tr>
+_END;
+         }
+    echo <<<_END
+    </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="col-lg-6">
+    <div class="table table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <h5 class="text-center">Consumption</h5>
+            </tr>
+                <tr>
+                    <th>S.no</th>
+                    <th>Person</th>
+                    <th>Resource</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
 
+_END;
+$sn1=0;
+$q = "SELECT id,sum(qty) as qty,resourceid,person FROM log_resource WHERE  cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0 GROUP BY resourceid,person";
+$r=mysqli_query($db,$q);
+// $q1="SELECT sum(qty) as total FROM log_resource WHERE  cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0";
+// $r1=mysqli_query($db,$q1);
+// $res1=mysqli_fetch_assoc($r1);
+// $total=$res1['total'];
+ while($res=mysqli_fetch_assoc($r)){
+     $sn1=$sn1+1;
+  $id=$res['id'];
+     $person=$res['person'];
+       $qty=$res['qty'];
+        $resource=getDimensionValue($db,'resources',$res['resourceid'],'resourcename');
+        $unit=getDimensionValue($db,'resources',$res['resourceid'],'unit');
+     $people=getDimensionValue($db,'people',$res['person'],'fname').' '.getDimensionValue($db,'people',$res['person'],'lname');
+     echo <<<_END
+     <tr>
+     <td>$sn1</td>
+     <td>$people</td>
+     <td>$resource</td>
+     <td>$qty</td>
+     </tr>
+_END;
+ }
+echo <<<_END
+         </tbody>
+         </table>
+         </div>
+         </div>
+_END;
 include_once 'foot.php';
 
 echo <<<_END
