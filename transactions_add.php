@@ -14,11 +14,20 @@ if(isset($_SESSION['user']))
         $dot = mysqli_real_escape_string($db,$_POST['dot']);
         $tr_account=mysqli_real_escape_string($db,$_POST['tr_account']);
         $tr_category=mysqli_real_escape_string($db,$_POST['tr_category']);
-
+        if(isset($_POST['mid']) && $_POST['mid']!='')
+        {
+            $mid = $_POST['mid'];
+            $q="UPDATE transactions set area='$area',dot='$dot',particular='$particular',amt_paid='$paid',amt_received='$rec',transaction_account='$tr_account',transaction_category='$tr_category' where id='$mid' LIMIT 1";
+            $r=mysqli_query($db,$q);
+            $msg="Transaction Updated";
+        }
+        else
+        {
         $q = "INSERT INTO transactions(area,dot,particular,amt_paid,amt_received,transaction_account,transaction_category) VALUES('$area','$dot','$particular','$paid','$rec','$tr_account','$tr_category')";
         $r = mysqli_query($db,$q);
         
-        $msg = "Record Added";
+        $msg = "Transaction Added";
+        }
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=transactions.php?msg=$msg'>
 _END;
