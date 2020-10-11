@@ -7,11 +7,20 @@ if(isset($_SESSION['user']))
     if(isset($_POST['activity']) && $_POST['activity']!='')
     {
         $activity = mysqli_real_escape_string($db,$_POST['activity']);
-        
+        if(isset($_POST['mid']) && $_POST['mid']!='')
+        {
+            $mid = $_POST['mid'];
+            $q="UPDATE activities set activity='$activity' where id='$mid' LIMIT 1";
+            $r=mysqli_query($db,$q);
+            $msg="Activity Updated";
+        }
+
+        else{
         $q = "INSERT INTO activities(activity) VALUES('$activity')";
         $r = mysqli_query($db,$q);
         
         $msg = "Activity Added";
+        }
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=activity.php?msg=$msg'>
 _END;

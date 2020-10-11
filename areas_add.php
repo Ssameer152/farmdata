@@ -12,11 +12,20 @@ if(isset($_SESSION['user']))
         $manager = $_POST['manager'];
         $rent = $_POST['rent'];
         $leased_until = $_POST['leased_until'];
-        
+
+        if(isset($_POST['mid']) && $_POST['mid']!='')
+        {
+            $mid = $_POST['mid'];
+            $q="UPDATE areas set sitename='$sitename',location='$location',area='$areasize',manager='$manager',monthly_rent='$rent',leased_until='$leased_until' where id='$mid' LIMIT 1";
+            $r=mysqli_query($db,$q);
+            $msg="Updated";
+        }
+        else{
         $q = "INSERT INTO areas(sitename,location,area,manager,monthly_rent,leased_until) VALUES('$sitename','$location','$areasize','$manager','$rent','$leased_until')";
         $r = mysqli_query($db,$q);
         
-        $msg = "User Added";
+        $msg = "Area Added";
+        }
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=areas.php?msg=$msg'>
 _END;

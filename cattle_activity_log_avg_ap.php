@@ -11,11 +11,19 @@ if(isset($_SESSION['user']))
         $comments = mysqli_real_escape_string($db,$_POST['comments']);
         $doa=mysqli_real_escape_string($db,$_POST['doa']);
         $cid = mysqli_real_escape_string($db,$_POST['cattle']);
-
+        if(isset($_POST['mid']) && $_POST['mid']!='')
+        {
+            $mid = $_POST['mid'];
+            $q="UPDATE cattle_activity_log set cid='$cid',caid='$ctactivity',activity_value='$acvalue',comments='$comments',doa='$doa' where id='$mid' LIMIT 1";
+            $r=mysqli_query($db,$q);
+            $msg="Activity log Updated";
+        }
+        else{
         $q = "INSERT INTO cattle_activity_log(cid,caid,activity_value,comments,doa) VALUES('$cid','$ctactivity','$acvalue','$comments','$doa')";
         $r = mysqli_query($db,$q);
         
         $msg = "Cattle Activity Log Added";
+        }
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=cattle_activity_log_avg.php?cid=$cid&msg=$msg'>
 _END;
