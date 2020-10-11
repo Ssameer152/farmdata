@@ -141,7 +141,7 @@ _END;
                         $doe=date("d-m-Y", strtotime($doe));
                         $dou = $res['dou'];
                         
-                        $link = 'report_viewer.php?area='. $area .'&date=' . explode(' ',$doe)[0];
+                        $link = 'reports_v1.php?activity='. $res['activity'] .'&start_date=' . explode(' ',$res['doe'])[0] . '&end_date=' . explode(' ',$res['doe'])[0];
                         
                         echo <<<_END
                         <tr>
