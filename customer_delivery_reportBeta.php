@@ -28,9 +28,6 @@ if(isset($_SESSION['user'])){
             #fnt{
                 font-size:12px;
             }
-            .fnt{
-                font-size:12px;
-            }
          } 
          </style>
     </head>
@@ -110,20 +107,20 @@ _END;
         $cust=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
             echo <<<_END
             <tr>
-            <td id="fnt">$sn</td>
-            <td id="fnt">$cust</td>
-            <td id="fnt">$qty</td>
-            <td id="fnt">$qty1</td>
-            <td id="fnt">$qty2</td>
+            <td>$sn</td>
+            <td>$cust</td>
+            <td>$qty</td>
+            <td>$qty1</td>
+            <td>$qty2</td>
             </tr>
 _END;
            }
            echo <<<_END
            <tr>
            <th colspan="2">Total</th>
-           <th id="fnt">$total1</th>
-           <th id="fnt">$total2</th>
-           <th id="fnt">$total3</th>
+           <th>$total1</th>
+           <th>$total2</th>
+           <th>$total3</th>
            </tr>
            </table>
            </th>
@@ -164,20 +161,20 @@ _END;
         $cust=getDimensionValue($db,'customer',$res2['cid'],'fname').' '.getDimensionValue($db,'customer',$res2['cid'],'lname');
         echo <<<_END
         <tr>
-        <td id="fnt">$sn1</td>
-        <td id="fnt">$cust</td>
-        <td id="fnt">$qty</td>
-        <td id="fnt">$qty1</td>
-        <td id="fnt">$qty2</td>
+        <td>$sn1</td>
+        <td>$cust</td>
+        <td>$qty</td>
+        <td>$qty1</td>
+        <td>$qty2</td>
         </tr>
 _END;
     }
     echo <<<_END
     <tr>
            <th colspan="2">Total</th>
-           <th id="fnt">$total1</th>
-           <th id="fnt">$total2</th>
-           <th id="fnt">$total3</th>
+           <th>$total1</th>
+           <th>$total2</th>
+           <th>$total3</th>
            </tr>
         
 _END;

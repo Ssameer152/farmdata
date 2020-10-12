@@ -204,7 +204,7 @@ _END;
                         if(isset($mid)){
                             echo <<<_END
                             <input type="hidden" name="mid" value="$mid">
-                        _END;
+_END;
                         }
                         echo <<<_END
 						<button type="submit" class="btn btn-primary">Add User</button>
@@ -273,5 +273,4 @@ else
     <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
 _END;
 }
-
 ?>	
