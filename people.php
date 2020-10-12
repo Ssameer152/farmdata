@@ -273,5 +273,4 @@ else
     <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
 _END;
 }
-
 ?>	
