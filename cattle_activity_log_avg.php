@@ -14,8 +14,8 @@ function getDimensionValue($db,$table,$gid,$name){
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    if(isset($_GET['cid']) && $_GET['cid']!=''){
-        $mid = $_GET['cid'];
+    if(isset($_GET['did']) && $_GET['did']!=''){
+        $mid = $_GET['did'];
         $q="SELECT id,doe,cid,caid,activity_value,comments,cast(doa as date) as d from cattle_activity_log where id='$mid' and is_deleted=0";
         $r=mysqli_query($db,$q);
         $res=mysqli_fetch_assoc($r);
@@ -208,7 +208,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$acvalue</td>
         <td>$comments</td>
         <td>$doa</td>
-        <td><a href="cattle_activity_log_avg.php?table=cattle_activity_log&return=cattle_activity_log_avg&cid=$sn">Modify</a> | <a href="delete.php?table=cattle_activity_log&rid=$sn&return=cattle_activity_log_avg">Delete</a> | <a href="cattle_view.php?vid=$sn">View cattle report</a></td>
+        <td><a href="cattle_activity_log_avg.php?table=cattle_activity_log&return=cattle_activity_log_avg&cid=$cid&did=$sn">Modify</a> | <a href="delete.php?table=cattle_activity_log&rid=$sn&return=cattle_activity_log_avg">Delete</a> | <a href="cattle_view.php?vid=$sn">View cattle report</a></td>
     </tr>
 _END;
 }

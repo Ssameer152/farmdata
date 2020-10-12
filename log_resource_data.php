@@ -31,8 +31,15 @@ include_once 'nav.php';
     <div class="container">
     <div class="row">
         <div class="col-lg-6">
+_END;
+$q1="SELECT cast(doe as date) as d FROM logs WHERE  cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0";
+$r1=mysqli_query($db,$q1);
+$res1=mysqli_fetch_assoc($r1);
+$dt=$res1['d'];
+$dt=date("d-m-Y", strtotime($dt));
+            echo <<<_END
+            <h4>Date : $dt </h4>
             <h3 class="mb-4 mt-2">Log Resource Info</h3>
-
     <form action="log_resource_data_ap.php" method="post">
         <label class="form-check-inline mr-4"><b>Type</b></label>
         <div class="form-check form-check-inline">
@@ -45,7 +52,6 @@ include_once 'nav.php';
         </div>
         <h6 class="mt-2 mb-2">Activity</h6>
         <div class="form-check form-group">
-
 _END;
         $q="SELECT * from logs where cast(doe as date)=cast(current_timestamp() as date) and  is_deleted=0";
         $r=mysqli_query($db,$q);
