@@ -4,7 +4,26 @@ session_start();
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    
+    if(isset($_GET['aid']) && $_GET['aid']!=''){
+        $mid = $_GET['aid'];
+        $q="SELECT id,sitename,location,area,manager,monthly_rent,cast(leased_until as date) as ld from areas where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_sitename=$res['sitename'];
+        $db_location=$res['location'];
+        $db_area=$res['area'];
+        $db_manager=$res['manager'];
+        $db_monthly_rent=$res['monthly_rent'];
+        $db_leased=$res['ld'];
+    }
+    else{
+        $db_sitename='';
+        $db_location='';
+        $db_area='';
+        $db_manager='';
+        $db_monthly_rent='';
+        $db_leased='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -27,16 +46,49 @@ echo <<<_END
                     <h2>Areas</h2>
                     <form action="areas_add.php" method="post">
 						<div class="form-group">
-							<label for="sitename">Site Name</label>
-							<input type="text" name="sitename" class="form-control">
+                            <label for="sitename">Site Name</label>
+_END;
+                        if($db_sitename==''){
+                            echo <<<_END
+                            <input type="text" name="sitename" class="form-control">
+_END;
+                        }
+                        else{
+                        echo <<<_END
+                            <input type="text" name="sitename" value="$db_sitename" class="form-control">
+_END;
+                        }
+                            echo <<<_END
 						</div>
 						<div class="form-group">
-							<label for="location">Location</label>
-							<input type="text" name="location" class="form-control">
+                            <label for="location">Location</label>
+_END;
+                        if($db_location==''){
+                            echo <<<_END
+                            <input type="text" name="location" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" name="location" value="$db_location" class="form-control">
+_END;
+                        }
+                        echo <<<_END
 						</div>
                         <div class="form-group">
-							<label for="area">Size</label>
-							<input type="text" name="areasize" class="form-control" placeholder="sq. mtr.">
+                            <label for="area">Size</label>
+_END;
+                        if($db_area==''){
+                            echo <<<_END
+                            <input type="text" name="areasize" class="form-control" placeholder="sq. mtr.">
+_END;
+                        }
+                        else{
+                        echo <<<_END
+                            <input type="text" name="areasize" value="$db_area" class="form-control" placeholder="sq. mtr.">
+_END;
+                        }
+                        echo <<<_END
 						</div>
                         <div class="form-group">
                             <label for="Manager">Manager</label>
@@ -53,23 +105,57 @@ while($res = mysqli_fetch_assoc($r))
     $name = $res['fname'] . ' ' . $res['lname'];
     $desig = $res['desig'];
     $phone = $res['phone'];
-    
+    if($db_manager==$sn){
     echo <<<_END
-    <option value="$sn">$name - $phone ($dwsig)</option>
+    <option value="$sn" selected="selected">$name - $phone ($desig)</option>
 _END;
+    }
+    else{
+        echo <<<_END
+        <option value="$sn">$name - $phone ($desig)</option>
+_END;
+    }
 }
-
 echo <<<_END
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="rent">Monthly Rent</label>
+_END;
+                        if($db_monthly_rent==''){
+                            echo <<<_END
                             <input type="text" name="rent" placeholder="&#8377;" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" name="rent" value="$db_monthly_rent" placeholder="&#8377;" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="leaseduntil">Leased Until</label>
+_END;
+                        if($db_leased==''){
+                            echo <<<_END
                             <input type="date" name="leased_until" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="date" value="$db_leased" name="leased_until" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
+_END;
+if(isset($mid)){
+    echo <<<_END
+    <input type="hidden" name="mid" value="$mid">
+_END;
+}
+                        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Area</button>
 					</form>
                 </div>
@@ -103,7 +189,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$sn</td>
         <td>$sitename</td>
         <td>$fname $lname</td>
-        <td><a href="delete.php?table=areas&rid=$sn&return=areas"><span class="fa fa-trash fa-lg"></a></td>
+        <td><a href="areas.php?table=areas&return=areas&aid=$sn">Modify</a> | <a href="delete.php?table=areas&rid=$sn&return=areas"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }

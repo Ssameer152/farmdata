@@ -4,7 +4,16 @@ session_start();
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-
+    if(isset($_GET['tid']) && $_GET['tid']!=''){
+        $mid = $_GET['tid'];
+        $q="SELECT * from transactions_accounts where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_traccount=$res['account'];
+    }
+    else{
+        $db_traccount='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -28,9 +37,26 @@ echo <<<_END
                     <form action="transaction_account_add.php" method="post">
                         <div class="form-group">
                             <label for="account">Account</label>
+_END;
+                        if($db_traccount==''){
+                            echo <<<_END
                             <input type="text" name="t_account" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_traccount" name="t_account" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
-
+_END;
+if(isset($mid)){
+    echo <<<_END
+    <input type="hidden" name="mid" value="$mid">
+_END;
+}
+                        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Account</button>
                     </form>
                 </div>
@@ -59,7 +85,7 @@ while($res = mysqli_fetch_assoc($r))
     <tr>
         <td>$sn</td>
         <td>$ac</td>
-        <td><a href="delete.php?table=transactions_accounts&rid=$sn&return=transaction_account">Delete</a></td>
+        <td><a href="transaction_account.php?table=transactions_accounts&return=transaction_account&tid=$sn">Modify</a> | <a href="delete.php?table=transactions_accounts&rid=$sn&return=transaction_account">Delete</a></td>
     </tr>
 _END;
 }

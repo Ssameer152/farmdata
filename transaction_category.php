@@ -4,7 +4,17 @@ session_start();
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
+    if(isset($_GET['tid']) && $_GET['tid']!=''){
+        $mid = $_GET['tid'];
+        $q="SELECT * from transactions_category where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_trcategory=$res['category'];
 
+    }
+    else{
+        $db_trcategory='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -28,9 +38,26 @@ echo <<<_END
                     <form action="transaction_category_add.php" method="post">
                         <div class="form-group">
                             <label for="account">Category</label>
+_END;
+                        if($db_trcategory==''){
+                            echo <<<_END
                             <input type="text" name="t_category" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_trcategory" name="t_category" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
-
+_END;
+if(isset($mid)){
+    echo <<<_END
+    <input type="hidden" name="mid" value="$mid">
+_END;
+}
+                        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Category</button>
                     </form>
                 </div>
@@ -59,7 +86,7 @@ while($res = mysqli_fetch_assoc($r))
     <tr>
         <td>$sn</td>
         <td>$category</td>
-        <td><a href="delete.php?table=transactions_category&rid=$sn&return=transaction_category">Delete</a></td>
+        <td><a href="transaction_category.php?table=transactions_category&return=transaction_category&tid=$sn">Modify</a> | <a href="delete.php?table=transactions_category&rid=$sn&return=transaction_category">Delete</a></td>
     </tr>
 _END;
 }

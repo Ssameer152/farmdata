@@ -17,7 +17,28 @@ function getDimensionValue($db,$table,$gid,$name){
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    
+    if(isset($_GET['tid']) && $_GET['tid']!=''){
+        $mid = $_GET['tid'];
+        $q="SELECT id,area,particular,amt_paid,amt_received,transaction_account,transaction_category,cast(dot as date) as dt from transactions where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_area=$res['area'];
+        $db_particular=$res['particular'];
+        $db_amt_received=$res['amt_received'];
+        $db_amt_paid=$res['amt_paid'];
+        $db_traccount=$res['transaction_account'];
+        $db_trcategory=$res['transaction_category'];
+        $db_tdate=$res['dt'];
+    }
+    else{
+        $db_area='';
+        $db_particular='';
+        $db_amt_paid='';
+        $db_amt_received='';
+        $db_traccount='';
+        $db_trcategory='';
+        $db_tdate='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -53,28 +74,66 @@ while($res = mysqli_fetch_assoc($r))
     $sid = $res['id'];
     $sitename = $res['sitename'];
     $location = $res['location'];
-    
+    if($sid==$db_area){
     echo <<<_END
-    <option value="$sid">$sitename ($location)</option>
+    <option value="$sid" selected="selected">$sitename ($location)</option>
 _END;
-
+    }
+    else{
+        echo <<<_END
+        <option value="$sid">$sitename ($location)</option>
+_END;
+    }
 }
 
 echo <<<_END
                             </select>
                         </div>
 						<div class="form-group">
-							<label for="particular">Particular</label>
-							<input type="text" name="particular" class="form-control">
+                            <label for="particular">Particular</label>
+_END;
+                        if($db_particular==''){
+                            echo <<<_END
+                            <input type="text" name="particular" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_particular" name="particular" class="form-control">
+_END;
+                        }
+                        echo <<<_END
 						</div>
                         <div class="form-row mb-4">
                             <div class="col">
                                 <label for="particular">Amount Received</label>
-                                <input type="text" class="form-control" name="rec" value="0">
+_END;
+                        if($db_amt_received==''){
+                            echo <<<_END
+                            <input type="text" class="form-control" name="rec" value="0">
+_END;
+                        }
+                        else{
+                                echo <<<_END
+                                <input type="text" class="form-control" name="rec" value="$db_amt_received">
+_END;
+                        }
+                            echo <<<_END
                             </div>
                             <div class="col">
                                 <label for="particular">Amount Paid</label>
-                                <input type="text" class="form-control" name="paid" value="0">
+_END;
+                            if($db_amt_paid==''){
+                                echo <<<_END
+                                <input type="text" class="form-control" name="paid" value="0">  
+_END;
+                            }
+                            else{
+                                echo <<<_END
+                                <input type="text" class="form-control" name="paid" value="$db_amt_paid">
+_END;
+                            }
+                            echo <<<_END
                             </div>
                         </div>
                         <div class="form-row mb-4">
@@ -88,10 +147,17 @@ _END;
                             while($res=mysqli_fetch_assoc($r)){
                                 $id=$res['id'];
                                 $account=$res['account'];
+                                if($id==$db_traccount){
+                                echo <<<_END
+                                <option value="$id" selected="selected">$account</option>
+_END;
+                            }
+                            else{
                                 echo <<<_END
                                 <option value="$id">$account</option>
 _END;
                             }
+                        }
                             echo <<<_END
                             </select>
                         </div>
@@ -105,23 +171,49 @@ _END;
                             while($res=mysqli_fetch_assoc($r)){
                                 $id=$res['id'];
                                 $category=$res['category'];
+                                if($id==$db_trcategory){
                                 echo <<<_END
-                            <option value="$id">$category</option>
+                            <option value="$id" selected="selected">$category</option>
 _END;
                             }
+                            else{
+                                echo <<<_END
+                                <option value="$id">$category</option>
+_END;
+                            }
+                        }
                             echo <<<_END
                             </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="leaseduntil">Date of Transaction</label>
-                            <input type="date" name="dot" class="form-control">
+                            <label for="trdate">Date of Transaction</label>
+_END;
+                        if($db_tdate==''){
+                            echo <<<_END
+                            <input type="date" name="dot" class="form-control">   
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="date" value="$db_tdate" name="dot" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
+_END;
+if(isset($mid)){
+    echo <<<_END
+    <input type="hidden" name="mid" value="$mid">
+_END;
+}
+                        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Transaction</button>
 					</form>
                 </div>
                 
                 <div class="col-lg-12">
+                    <div class="row">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -163,7 +255,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$tr_category</td>
         <td>&#8377; $received</td>
         <td>&#8377; $paid</td>
-        <td><a href="delete.php?table=transactions&rid=$sn&return=transactions">Delete</a></td>
+        <td><a href="transactions.php?table=transactions&return=transactions&tid=$sn">Modify</a> | <a href="delete.php?table=transactions&rid=$sn&return=transactions">Delete</a></td>
     </tr>
 _END;
 }
@@ -173,7 +265,7 @@ echo <<<_END
                         </table>
                     </div>
                 </div>
-                
+                </div>
             </div>
         </div>
 

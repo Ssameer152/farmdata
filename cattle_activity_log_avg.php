@@ -1,10 +1,37 @@
 <?php
 session_start();
+function getDimensionValue($db,$table,$gid,$name){
+    $q = "SELECT * FROM $table WHERE id=$gid";
+    $r = mysqli_query($db,$q);
+    
+    $res = mysqli_fetch_assoc($r);
+    
+    $value = $res[$name];
+    
+    return $value;
+}
 
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    
+    if(isset($_GET['cid']) && $_GET['cid']!=''){
+        $mid = $_GET['cid'];
+        $q="SELECT id,doe,cid,caid,activity_value,comments,cast(doa as date) as d from cattle_activity_log where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_cattle=$res['cid'];
+        $db_cactivity=$res['caid'];
+        $db_acvalue=$res['activity_value'];
+        $db_comments=$res['comments'];
+        $db_doa=$res['d'];
+    }
+    else{
+        $db_cattle='';
+        $db_cactivity='';
+        $db_acvalue='';
+        $db_comments='';
+        $db_doa='';
+    }
     
     echo <<<_END
 <html>
@@ -38,10 +65,17 @@ _END;
                     while($res1=mysqli_fetch_assoc($r1)){
                         $id=$res1['id'];
                         $name=$res1['name'];
+                        if($id==$db_cattle){
+                        echo <<<_END
+                        <option value="$id" selected="selected">$name</option>
+_END;
+                    }
+                    else{
                         echo <<<_END
                         <option value="$id">$name</option>
 _END;
                     }
+                }
                         echo <<<_END
                         </select>
                         </div>
@@ -55,27 +89,73 @@ _END;
         while($res=mysqli_fetch_assoc($r)){
             $id=$res['id'];
             $name=$res['name'];
+            if($id==$db_cactivity){
+            echo <<<_END
+            <option value="$id" selected="selected">$name</option>
+_END;
+        }
+        else{
             echo <<<_END
             <option value="$id">$name</option>
 _END;
         }
-                                    
+        }                  
         echo <<<_END
                         </select>
                         </div>
                         <div class="form-group">
                             <label>Activity Value</label>
+_END;
+                        if($db_acvalue==''){
+                            echo <<<_END
                             <input type="text" name="acvalue" class="form-control"/>
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_acvalue" name="acvalue" class="form-control"/>
+_END;
+                        }
+                        echo <<<_END
                         </div>
                         <div class="form-group">
                         <label>Comments</label>
-                        <input type="text" name="comments" class="form-control"/>
+_END;
+                        if($db_comments==''){
+                            echo <<<_END
+                            <input type="text" name="comments" class="form-control"/>
+_END;
+                        }
+                        else{
+                        echo <<<_END
+                        <input type="text" value="$db_comments" name="comments" class="form-control"/>
+_END;
+                        }
+                        echo <<<_END
                     </div>
                     <div class="form-group">
                         <label>Date of Activity</label>
-                        <input type="date" name="doa" class="form-control"/>
+_END;
+                        if($db_doa==''){
+                            echo <<<_END
+                            <input type="date" name="doa" class="form-control"/>
+_END;
+                        }
+                        else{
+                        echo <<<_END
+                        <input type="date" value="$db_doa" name="doa" class="form-control"/>
+_END;
+                        }
+                        echo <<<_END
                     </div>
                     <div class="form-group">
+_END;
+if(isset($mid)){
+    echo <<<_END
+    <input type="hidden" name="mid" value="$mid">
+_END;
+}
+                        echo <<<_END
                         <button type="submit" class="btn btn-primary">Add Cattle Activity</button>
                         </div>
                     </form>
@@ -128,7 +208,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$acvalue</td>
         <td>$comments</td>
         <td>$doa</td>
-        <td><a href="delete.php?table=cattle_activity_log&rid=$sn&return=cattle_activity_log_avg">Delete</a> | <a href="cattle_view.php?vid=$sn">View cattle report</a></td>
+        <td><a href="cattle_activity_log_avg.php?table=cattle_activity_log&return=cattle_activity_log_avg&cid=$sn">Modify</a> | <a href="delete.php?table=cattle_activity_log&rid=$sn&return=cattle_activity_log_avg">Delete</a> | <a href="cattle_view.php?vid=$sn">View cattle report</a></td>
     </tr>
 _END;
 }
