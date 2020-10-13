@@ -4,7 +4,18 @@ session_start();
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    
+    if(isset($_GET['rid']) && $_GET['rid']!=''){
+        $mid = $_GET['rid'];
+        $q="SELECT * from resources where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_rname=$res['resourcename'];
+        $db_unit=$res['unit'];
+    }
+    else{
+        $db_rname='';
+        $db_unit='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -28,12 +39,41 @@ echo <<<_END
                     <form action="resources_add.php" method="post">
                         <div class="form-group">
                             <label for="resourcename">Title</label>
+_END;
+                        if($db_rname==''){
+                            echo <<<_END
                             <input type="text" name="resource" class="form-control">
+_END;
+                        }
+                        else{
+                        echo <<<_END
+                            <input type="text" name="resource" value="$db_rname" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="unit">Measuring Unit</label>
-                            <input type="text" name="unit" class="form-control" placeholder="kg/packet/piece/litre">
+_END;
+                        if($db_unit==''){
+                            echo <<<_END
+                            <input type="text" name="unit" class="form-control" placeholder="kg/packet/piece/litre"> 
+_END;
+                        }
+                        else{
+                        echo <<<_END
+                            <input type="text" name="unit" class="form-control" value="$db_unit" placeholder="kg/packet/piece/litre">
+_END;
+                        }
+                        echo <<<_END
                         </div>
+_END;
+                        if(isset($mid)){
+                            echo <<<_END
+                            <input type="hidden" name="mid" value="$mid">
+_END;
+                        }
+                        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Resource</button>
                     </form>
                 </div>
@@ -64,7 +104,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$sn</td>
         <td>$name</td>
         <td>$unit</td>
-        <td><a href="delete.php?table=resources&rid=$sn&return=resources"><span class="fa fa-trash fa-lg"></a></td>
+        <td><a href="resources.php?table=resources&return=resources&rid=$sn">Modify</a> | <a href="delete.php?table=resources&rid=$sn&return=resources"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }
@@ -95,5 +135,4 @@ else
     <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
 _END;
 }
-
 ?>	

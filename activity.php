@@ -4,7 +4,16 @@ session_start();
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    
+    if(isset($_GET['aid']) && $_GET['aid']!=''){
+        $mid = $_GET['aid'];
+        $q="SELECT * from activities where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_activity=$res['activity'];
+    }
+    else{
+        $db_activity='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -28,8 +37,26 @@ echo <<<_END
                     <form action="activity_add.php" method="post">
                         <div class="form-group">
                             <label for="activityname">Title</label>
+_END;
+                        if($db_activity==''){
+                            echo <<<_END
                             <input type="text" name="activity" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_activity" name="activity" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
+_END;
+                if(isset($mid)){
+                echo <<<_END
+                <input type="hidden" name="mid" value="$mid">
+_END;
+    }
+                        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Activity</button>
                     </form>
                 </div>
@@ -58,7 +85,7 @@ while($res = mysqli_fetch_assoc($r))
     <tr>
         <td>$sn</td>
         <td>$name</td>
-        <td><a href="delete.php?table=activities&rid=$sn&return=activity"><span class="fa fa-trash fa-lg"></a></td>
+        <td><a href="activity.php?table=activities&return=activity&aid=$sn">Modify</a> | <a href="delete.php?table=activities&rid=$sn&return=activity"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }

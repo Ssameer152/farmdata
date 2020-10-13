@@ -4,7 +4,16 @@ session_start();
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    
+    if(isset($_GET['cid']) && $_GET['cid']!=''){
+        $mid = $_GET['cid'];
+        $q="SELECT * from cattle_breed where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_breed=$res['breed'];
+    }
+    else{
+        $db_breed='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -28,8 +37,26 @@ echo <<<_END
                     <form action="cattle_breed_add.php" method="post">
                         <div class="form-group">
                             <label for="cattlebreed">Breed</label>
+_END;
+                        if($db_breed==''){
+                            echo <<<_END
                             <input type="text" name="breed" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_breed" name="breed" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
+_END;
+if(isset($mid)){
+    echo <<<_END
+    <input type="hidden" name="mid" value="$mid">
+_END;
+}
+                        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Cattle Breed</button>
                     </form>
                 </div>
@@ -58,7 +85,7 @@ while($res = mysqli_fetch_assoc($r))
     <tr>
         <td>$sn</td>
         <td>$name</td>
-        <td><a href="delete.php?table=cattle_breed&rid=$sn&return=cattle_breed">Delete</a></td>
+        <td><a href="cattle_breed.php?table=cattle_breed&return=cattle_breed&cid=$sn">Modify</a> | <a href="delete.php?table=cattle_breed&rid=$sn&return=cattle_breed">Delete</a></td>
     </tr>
 _END;
 }

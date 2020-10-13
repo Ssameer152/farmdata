@@ -4,7 +4,16 @@ session_start();
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    
+    if(isset($_GET['cid']) && $_GET['cid']!=''){
+        $mid = $_GET['cid'];
+        $q="SELECT * from cattle_type where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_ctype=$res['name'];
+    }
+    else{
+        $db_ctype='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -28,8 +37,26 @@ echo <<<_END
                     <form action="cattle_type_add.php" method="post">
                         <div class="form-group">
                             <label for="cattletype">Name</label>
+_END;
+                        if($db_ctype==''){
+                            echo <<<_END
                             <input type="text" name="cattle" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_ctype" name="cattle" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
+_END;
+if(isset($mid)){
+    echo <<<_END
+    <input type="hidden" name="mid" value="$mid">
+_END;
+}
+                        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Cattle Type</button>
                     </form>
                 </div>
@@ -58,7 +85,7 @@ while($res = mysqli_fetch_assoc($r))
     <tr>
         <td>$sn</td>
         <td>$name</td>
-        <td><a href="delete.php?table=cattle_type&rid=$sn&return=cattle_type">Delete</a></td>
+        <td><a href="cattle_type.php?table=cattle_type&return=cattle_type&cid=$sn">Modify</a> | <a href="delete.php?table=cattle_type&rid=$sn&return=cattle_type">Delete</a></td>
     </tr>
 _END;
 }

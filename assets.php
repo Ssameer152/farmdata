@@ -4,7 +4,16 @@ session_start();
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    
+    if(isset($_GET['aid']) && $_GET['aid']!=''){
+        $mid = $_GET['aid'];
+        $q="SELECT * from assets where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_asset=$res['assetname'];
+    }
+    else{
+        $db_asset='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -28,8 +37,26 @@ echo <<<_END
                     <form action="assets_add.php" method="post">
                         <div class="form-group">
                             <label for="assetname">Title</label>
+_END;
+                        if($db_asset==''){
+                            echo <<<_END
                             <input type="text" name="asset" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_asset" name="asset" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
+_END;
+                    if(isset($mid)){
+                    echo <<<_END
+                    <input type="hidden" name="mid" value="$mid">
+_END;
+                    }
+                    echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Asset</button>
                     </form>
                 </div>
@@ -58,7 +85,7 @@ while($res = mysqli_fetch_assoc($r))
     <tr>
         <td>$sn</td>
         <td>$name</td>
-        <td><a href="delete.php?table=assets&rid=$sn&return=assets"><span class="fa fa-trash fa-lg"></a></td>
+        <td><a href="assets.php?table=assets&return=assets&aid=$sn">Modify</a> | <a href="delete.php?table=assets&rid=$sn&return=assets"><span class="fa fa-trash fa-lg"></a></td>
     </tr>
 _END;
 }

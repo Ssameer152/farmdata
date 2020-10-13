@@ -1,10 +1,40 @@
 <?php
 session_start();
-
+function getDimensionValue($db,$table,$gid,$name){
+    $q = "SELECT * FROM $table WHERE id=$gid";
+    $r = mysqli_query($db,$q);
+    
+    $res = mysqli_fetch_assoc($r);
+    
+    $value = $res[$name];
+    
+    return $value;
+}
 if(isset($_SESSION['user']))
 {
     include_once 'db.php';
-    
+    if(isset($_GET['pid']) && $_GET['pid']!=''){
+        $mid = $_GET['pid'];
+        $q="SELECT id,fname,lname,email,phone,cast(joined_on as date) as jd,designation,pword from people where id='$mid' and is_deleted=0";
+        $r=mysqli_query($db,$q);
+        $res=mysqli_fetch_assoc($r);
+        $db_fname=$res['fname'];
+        $db_lname=$res['lname'];
+        $db_email=$res['email'];
+        $db_phone=$res['phone'];
+        $db_jdate=$res['jd'];
+        $db_desig=$res['designation'];
+        $db_pword=$res['pword'];
+    }
+    else{
+        $db_fname='';
+        $db_lname='';
+        $db_email='';
+        $db_phone='';
+        $db_jdate='';
+        $db_desig='';
+        $db_pword='';
+    }
     echo <<<_END
 <html>
     <head>
@@ -53,16 +83,49 @@ echo <<<_END
                     <h2>People</h2>
                     <form action="people_add.php" method="post">
 						<div class="form-group">
-							<label for="firstname">First Name</label>
-							<input type="text" name="fname" class="form-control">
+                            <label for="firstname">First Name</label>
+_END;
+                        if($db_fname==''){
+                            echo <<<_END
+                            <input type="text" name="fname" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_fname" name="fname" class="form-control">
+_END;
+                        }
+                        echo <<<_END
 						</div>
 						<div class="form-group">
-							<label for="lastname">Last Name</label>
-							<input type="text" name="lname" class="form-control">
+                            <label for="lastname">Last Name</label>
+_END;
+                        if($db_lname==''){
+                            echo <<<_END
+                            <input type="text" name="lname" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_lname" name="lname" class="form-control">
+_END;
+                        }
+                        echo <<<_END
 						</div>
                         <div class="form-group">
-							<label for="area">Email</label>
-							<input type="email" name="email" class="form-control">
+                            <label for="area">Email</label>
+_END;
+                        if($db_email==''){
+                            echo <<<_END
+                            <input type="email" name="email" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="email" value="$db_email" name="email" class="form-control">
+_END;
+                        }
+                        echo <<<_END
 						</div>
                         <div class="form-group">
                             <label for="Manager">Designation</label>
@@ -77,9 +140,16 @@ while($res = mysqli_fetch_assoc($r))
 {
     $desig = $res['desig'];
     $did = $res['id'];
+    if($did==$db_desig){
     echo <<<_END
-    <option value="$did">$desig</option>
+    <option value="$did" selected="selected">$desig</option>
 _END;
+    }
+    else{
+        echo <<<_END
+        <option value="$did">$desig</option>
+_END;
+    }
 }
 
 echo <<<_END
@@ -87,21 +157,61 @@ echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="rent">Mobile No.</label>
+_END;
+                        if($db_phone==''){
+                            echo <<<_END
                             <input type="text" name="phone" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
+                            <input type="text" value="$db_phone" name="phone" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="joinedon">Joined On</label>
-                            <input type="date" name="joined_on" class="form-control">
+_END;
+                        if($db_jdate==''){
+                            echo <<<_END
+                            <input type="date" name="joined_on" class="form-control"> 
+_END;
+                        }
+                        else{
+                        echo <<<_END
+                            <input type="date" value="$db_jdate" name="joined_on" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
+_END;
+                        if($db_pword==''){
+                            echo <<<_END
                             <input type="password" name="pword" class="form-control">
+_END;
+                        }
+                        else{
+                        echo <<<_END
+                            <input type="password" value="$db_pword" name="pword" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
+_END;
+                        if(isset($mid)){
+                            echo <<<_END
+                            <input type="hidden" name="mid" value="$mid">
+_END;
+                        }
+                        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add User</button>
 					</form>
                 </div>
                 
-                <div class="col-lg-6">
+                <div class="col-lg-9">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -116,14 +226,14 @@ echo <<<_END
                             <tbody>
 _END;
 
-$q = "SELECT people.id,fname,lname,phone,d.desig FROM `people` INNER JOIN designation d ON people.designation=d.id WHERE people.is_deleted=0";
+$q = "SELECT * FROM `people` WHERE is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
 {
     $sn = $res['id'];
     $name = $res['fname'] . ' ' . $res['lname'];
-    $desig = $res['desig'];
+    $desig = getDimensionValue($db,'designation',$res['designation'],'desig');
     $phone = $res['phone'];
     
     echo <<<_END
@@ -132,7 +242,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$name</td>
         <td>$desig</td>
         <td>$phone</td>
-        <td><a href="delete.php?table=people&rid=$sn&return=people"><span class="fa fa-trash fa-lg"></a></td>
+        <td><a href="people.php?table=people&return=people&pid=$sn">Modify</a> | <a href="delete.php?table=people&rid=$sn&return=people">Delete</a></td>
     </tr>
 _END;
 }
@@ -163,5 +273,4 @@ else
     <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
 _END;
 }
-
 ?>	
