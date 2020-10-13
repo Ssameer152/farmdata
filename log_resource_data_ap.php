@@ -12,7 +12,15 @@ if(isset($_SESSION['user']))
         $resource = mysqli_real_escape_string($db,$_POST['resource']);
         $logid = mysqli_real_escape_string($db,$_POST['logid']);
         $person = mysqli_real_escape_string($db,$_POST['person']);
-        
+        $q1="SELECT * from resources where id='$resource' and is_deleted=0";
+        $r1=mysqli_query($db,$q1);
+        $res1=mysqli_fetch_assoc($r1);
+        $unit=$res1['unit'];
+        $resname=$res1['resourcename'];
+        if($unit=='litre' && $resname!='Separata Milk(Sahiwal)' && $resname!='Separata Milk(Cow)'){
+            $qty=1.032*$qty;
+        }
+
         if($type==1){
             $q="INSERT INTO log_output(logid,resourceid,qty,person) VALUES('$logid','$resource','$qty','$person')";
             $r=mysqli_query($db,$q);
