@@ -12,7 +12,14 @@ if(isset($_SESSION['user']))
         $logid = mysqli_real_escape_string($db,$_POST['logid']);
         $person = mysqli_real_escape_string($db,$_POST['person']);
         $comments = mysqli_real_escape_string($db,$_POST['comments']);
-        
+        $q1="SELECT * from resources where id='$area' and is_deleted=0";
+        $r1=mysqli_query($db,$q1);
+        $res1=mysqli_fetch_assoc($r1);
+        $unit=$res1['unit'];
+        $resname=$res1['resourcename'];
+        if($unit=='litre' && $resname!='Separata Milk(Sahiwal)' && $resname!='Separata Milk(Cow)'){
+            $qty=1.032*$qty;
+        }
         
         if(isset($_POST['mid']) && $_POST['mid']!='')
         {
@@ -23,7 +30,6 @@ if(isset($_SESSION['user']))
             $msg = 'Updated';
         }
         else{
-
         $q = "INSERT INTO log_output(logid,resourceid,qty,person,comments) VALUES('$logid','$area','$qty','$person','$comments')";
         $r = mysqli_query($db,$q);
         
