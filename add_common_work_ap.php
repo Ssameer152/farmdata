@@ -2,8 +2,9 @@
 session_start();
 if (isset($_SESSION['submit'])) {
     include_once 'db.php';
-    if (isset($_POST['sd']) && isset($_POST['sd']) != '' && isset($_POST['activity']) && isset($_POST['activity']) != '' && isset($_POST['person']) && isset($_POST['person']) != '' && isset($_POST['resource']) && isset($_POST['resource']) != '' && isset($_POST['cmq']) && isset($_POST['cmq']) != '' && isset($_POST['smq']) && isset($_POST['smq']) != '' && isset($_POST['bmq']) && isset($_POST['bmq']) != '' && isset($_POST['qty']) && isset($_POST['qty']) != '') {
+    if (isset($_POST['sd']) && isset($_POST['sd']) != '' && isset($_POST['meeting']) && isset($_POST['meeting']) != '' && isset($_POST['activity']) && isset($_POST['activity']) != '' && isset($_POST['person']) && isset($_POST['person']) != '' && isset($_POST['resource']) && isset($_POST['resource']) != '' && isset($_POST['cmq']) && isset($_POST['cmq']) != '' && isset($_POST['smq']) && isset($_POST['smq']) != '' && isset($_POST['bmq']) && isset($_POST['bmq']) != '' && isset($_POST['qty']) && isset($_POST['qty']) != '') {
         $sd = $_POST['sd'];
+        $meeting = $_POST['meeting'];
         $activity = $_POST['activity'];
         $person = $_POST['person'];
         $resource = $_POST['resource'];
@@ -12,9 +13,8 @@ if (isset($_SESSION['submit'])) {
         $bmq = $_POST['bmq'];
         $qty = $_POST['qty'];
 
-        $q = "INSERT INTO common_work(activity , person , start_date , cowmilk_qty , buffalosmilk_qty , Sahiwalmilk_qty , quantity) VALUES('$activity','$person','$sd','$cmq','$bmq','$smq','$qty')";
+        $q = "INSERT INTO common_work(activity , person , start_dates , cowmilk_qty , buffalosmilk_qty , sahiwalmilk_qty , quantity, meeting_time) VALUES('$activity','$person','$sd','$cmq','$bmq','$smq','$qty','$meeting')";
         $r = mysqli_query($db, $q);
-
         $msg = "details Added";
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=add_common_work.php?msg=$msg'>

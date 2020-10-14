@@ -76,23 +76,31 @@ _END;
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th colspan="4"></th>
+                                    <th colspan="2"></th>
                                 </tr>
                             </thead>
                             <tbody>
+                            <!----------------------Start Date field---------------------->
                             <tr>
-                                    <th>Start Date</th>
-                                    <td>
-                                        <input type="date" class="form-control" name="sd" id="">
-                                    </td>
+                                    <th>Start Date 
+                                    <p class="mt-2 mb-0"> <input type="date" class="form-control" name="sd" id=""></p>
+                                    </th>
+
+                         <!----------------------Start Meeting Time field---------------------->
+                                    <th>Meeting Time
+                                        <p class="mt-2 mb-0">
+                                            <select class="form-control" name="meeting">
+                                                <option value="1">Morning</option>
+                                                <option value="2">Evening</option>
+                                            </select>
+                                        </p>
+                                    </th>     
                                 </tr>
-                                <!------------------Start Activity field---------------------->
+                                <!----------------------Start Activity field---------------------->
                                 <tr>
                                     <th>Activity</th> 
                                     <td>
- 
-
-                                        <select class="form-control" name="activity">
+                                    <select class="form-control" name="activity">
 _END;
     $q = "SELECT * FROM activities where is_deleted=0";
     $r = mysqli_query($db, $q);
@@ -164,7 +172,7 @@ _END;
                                     <th>Quantity<p class="mt-2 mb-0"><input type="text" class="form-control" name="qty" id=""></p>
                                         </th>
                                     </tr>
-                    <!-----------------------------Close field---------------------->
+                    <!-----------------------------Close All field---------------------->
                                 <tr>
                                     <td colspan="4"><input type="submit" name="submit" class="btn btn-block btn-primary" value="Add work"></td>
                                 </tr>
@@ -240,9 +248,9 @@ _END;
     </body>
     </html>
 _END;
-    //} else {
-    //  $msg = "Please Login";
-    /*echo <<<_END
+} else {
+    $msg = "Please Login";
+    echo <<<_END
     <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
-_END;*/
+_END;
 }
