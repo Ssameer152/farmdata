@@ -99,7 +99,7 @@ _END;
                         if($cattle_activity==1){
                             echo <<<_END
                         <th>Milk Collection</th>
-_END;                   
+_END;
                         }
                         elseif($cattle_activity==6) {
                             echo <<<_END

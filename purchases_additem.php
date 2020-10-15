@@ -177,7 +177,7 @@ _END;
     <tr>
     <td colspan="5" class="text-right">$st1</td>
     </tr>
-_END; 
+_END;
 echo <<<_END
             </tbody>
         </table>
