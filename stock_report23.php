@@ -59,10 +59,11 @@ _END;
         <tr>
         <th>Sno.</th>
         <th>Resource</th>
+        <th>Opening Stock</th>
         <th>Consumed</th>
         <th>Purchased</th>
         <th>Produced</th>
-        <th>Balance</th>
+        <th>Closing</th>
         </tr>
         </thead>
         <tbody>
@@ -70,7 +71,7 @@ _END;
         $produced1 = 0;
         $consumed1 = 0;
         $purchase1 = 0;
-        $q = "SELECT * from resources where is_deleted=0";
+        $q = "SELECT id, resourcename,unit from resources where is_deleted=0";
         $r = mysqli_query($db, $q);
         while ($res = mysqli_fetch_assoc($r)) {
             $id = $res['id'];
@@ -79,29 +80,36 @@ _END;
             echo <<<_END
         <tr>
         <td>$id</td>
-        <td>$resource</td>  
-        
+        <td>$resource</td>      
+_END;
+            //if (isset($id)) {
+            /*  $q1 = "SELECT t.qty ,COALESCE(sum(t.qty),0) as q1 from (select qty from log_resource where cast(doe as date)>='$start_date' and cast(doe as date)<='$end_date' and resourceid='$id' and is_deleted=0) as t";
+            $r1 = mysqli_query($db, $q1);
+            while ($res1 = mysqli_fetch_assoc($r1)) {
+                $consumed2 = $res1['q1'];
+                echo <<<_END
         
 _END;
-            /* $q = "SELECT i.country AS group_by
-     , COUNT(*)          AS item_count
-     , SUM(i.price)      AS cost
-     , SUM(p.sum_amount) AS earned
-     , SUM(e.sum_amount) AS extra_earned
-FROM  items i
-LEFT  JOIN (
-   SELECT item_id, SUM(amount) AS sum_amount
-   FROM   payments
-   GROUP  BY 1
-   ) p ON p.item_id = i.id
-LEFT  JOIN (
-   SELECT item_id, SUM(amount) AS sum_amount
-   FROM   extras
-   GROUP  BY 1
-   ) e ON e.item_id = i.id
-GROUP BY 1";
-// */
-
+            }
+            $q2 = "SELECT t.qty,COALESCE(sum(t.qty),0) as q2 from (select qty from purchase_items where cast(doe as date)>='$start_date' and cast(doe as date)<='$end_date' and resourceid='$id' and is_deleted=0) as t";
+            $r2 = mysqli_query($db, $q2);
+            while ($res2 = mysqli_fetch_assoc($r2)) {
+                $purchase2 = $res2['q2'];
+                echo <<<_END
+    
+_END;
+            }
+            $q3 = "SELECT t.qty ,COALESCE(sum(t.qty),0) as q3 from (select qty from log_output where cast(doe as date)>='$start_date' and cast(doe as date)<='$end_date' and resourceid='$id' and is_deleted=0) as t";
+            $r3 = mysqli_query($db, $q3);
+            while ($res3 = mysqli_fetch_assoc($r3)) {
+                $produced2 = $res3['q3'];
+                // $left = $purchase2 + $produced2 - $consumed2;
+                echo <<<_END
+    
+    
+_END;
+            }*/
+            // }
             /*SELECT a.resourceid,produced,consumed from (select resourceid,sum(qty) as produced from log_output where logid in (SELECT id FROM `logs` where cast(doe as date)<='2020-10-07' and is_deleted=0) and is_deleted=0 GROUP by resourceid) a 
             inner join (select resourceid,sum(qty) as consumed from log_resource where logid in (SELECT id FROM `logs` where cast(doe as date)<='2020-10-07' and is_deleted=0) and is_deleted=0 GROUP by resourceid ) b on a.resourceid=b.resourceid*/
 
@@ -112,28 +120,55 @@ GROUP BY 1";
             LEFT JOIN (select resourceid,sum(qty) as purchase from purchase_items where TIMESTAMP(cast(doe as date))>='$start_date' and TIMESTAMP(cast(doe as date))<='$end_date' and is_deleted=0 GROUP BY resourceid) c on r.id = c.resourceid where id='$id'";
 
             $r1 = mysqli_query($db, $q5);
+            if (isset($r1)) {
+                while ($res1 = mysqli_fetch_assoc($r1)) {
+                    $produced = $res1['produced'];
+                    $consumed = $res1['con'];
+                    $purchase = $res1['pur'];
+                    $produced1 += $produced;
+                    $consumed1 += $consumed;
+                    $purchase1 += $purchase;
+                    $opening = ($produced + $purchase) - $consumed;
+                    //$extra = $opening + $produced1;
+                    echo <<<_END
 
-            while ($res1 = mysqli_fetch_assoc($r1)) {
-                $produced = $res1['produced'];
-                $consumed = $res1['con'];
-                $purchase = $res1['pur'];
-
-                $produced1 += $produced;
-                $consumed1 += $consumed;
-                $purchase1 += $purchase;
-                $left = ($produced + $purchase) - $consumed;
-                echo <<<_END
+                    <td>$opening</td>
                 <td>$consumed $unit</td>
-_END;
-                echo <<<_END
             <td>$purchase $unit</td>
-_END;
-                echo <<<_END
             <td>$produced $unit</td>
-            <td>$left $unit</td>
-            </tr>
-            
+            <td>$opening $unit</td>
+            </tr> 
 _END;
+                }
+                // }
+                // }
+            }
+
+
+            if (date("Y/m/d") == $start_date) {
+                //use for opening
+                $q6 = "SELECT CURDATE()-1,r.id, a.resourceid,b.resourceid,c.resourceid,sum(a.produced) as produced, sum(b.consumed) as con, sum(c.purchase) as pur  from resources r
+            LEFT JOIN (select resourceid,sum(qty) as produced from log_output where logid in (SELECT CURDATE()-1,id FROM `logs` where  is_deleted=0) and is_deleted=0 GROUP BY resourceid) a on r.id = a.resourceid
+            LEFT JOIN (select resourceid,sum(qty) as consumed from log_resource where  logid in (SELECT CURDATE()-1,id FROM `logs` where  is_deleted=0) and is_deleted=0 GROUP BY resourceid) b on r.id = b.resourceid
+            LEFT JOIN (select CURDATE()-1,resourceid,sum(qty) as purchase from purchase_items where is_deleted=0 GROUP BY resourceid) c on r.id = c.resourceid where id='$id'";
+
+                $r2 = mysqli_query($db, $q6);
+                while ($res1 = mysqli_fetch_assoc($r2)) {
+                    $produced = $res1['produced'];
+                    $consumed = $res1['con'];
+                    $purchase = $res1['pur'];
+                    $opening = ($produced + $purchase) - $consumed;
+                    $closing = ($opening + $produced + $purchase) - $consumed;
+                    echo <<<_END
+                <td>$opening</td>
+                <td>$consumed $unit</td>
+                <td>$purchase $unit</td>
+                <td>$produced $unit</td>
+                <td>$closing $unit</td>
+                </tr> 
+                _END;
+                    //use for closing
+                }
             }
         }
         echo <<<_END
@@ -148,10 +183,11 @@ _END;
     include_once 'foot.php';
     echo <<<_END
     
-    <tr><td colspan='2' class='text-center'>Total :</td>
-    <td>$consumed1</td>
-    <td>$purchase1</td>
-    <td>$produced1</td></tr>
+    <tr><th colspan='2' class='text-center'>Total :</th>
+    <td></td>
+    <th></th>
+    <th></th>
+    <th></th></tr>
             </tbody>
         </table>
         </div>
