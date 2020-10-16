@@ -17,7 +17,7 @@ if(isset($_SESSION['user']))
         $res1=mysqli_fetch_assoc($r1);
         $unit=$res1['unit'];
         $resname=$res1['resourcename'];
-        if($unit=='litre' && $resname!='Separata Milk(Sahiwal)' && $resname!='Separata Milk(Cow)'){
+        if($type==1 && $unit=='litre' && $resname!='Separata Milk(Sahiwal)' && $resname!='Separata Milk(Cow)'){
             $qty=1.032*$qty;
         }
 
