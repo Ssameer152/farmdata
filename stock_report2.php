@@ -166,7 +166,7 @@ _END;
                 <td>$produced $unit</td>
                 <td>$closing $unit</td>
                 </tr> 
-                _END;
+_END;
                     //use for closing
                 }
             }
