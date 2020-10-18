@@ -88,7 +88,7 @@ _END;
                             <tbody>
 _END;
 
-$q = "SELECT * FROM activities";
+$q = "SELECT * FROM activities where is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))
