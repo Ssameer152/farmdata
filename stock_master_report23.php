@@ -14,23 +14,37 @@ function getDimensionValue($db, $table, $gid, $name)
 
 function getOpeningStock($db, $rid)
 {
-    $q = "select COALESCE(sum(qty),0) consumed from log_resource WHERE logid in (select id from logs WHERE cast(doe as date)<cast(current_timestamp as date) and cast(doe as date)>='2020-10-01' and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
+    $q = "select COALESCE(sum(qty),0) consumed , costperunit from log_resource WHERE logid in (select id from logs WHERE cast(doe as date)<cast(current_timestamp as date) and cast(doe as date)>='2020-10-01' and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
     $r = mysqli_query($db, $q);
     $res = mysqli_fetch_assoc($r);
     $consumed = $res['consumed'];
+    $costperunit1 = $res['costperunit'];
 
     $q2 = "select COALESCE(sum(qty),0) produced from log_output WHERE logid in (select id from logs WHERE cast(doe as date)<cast(current_timestamp as date) and cast(doe as date)>='2020-10-01' and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
     $r2 = mysqli_query($db, $q2);
     $re2 = mysqli_fetch_assoc($r2);
     $produced = $re2['produced'];
 
-    $q3 = "select COALESCE(sum(qty),0) as purchased from purchase_items WHERE pid in (select id from purchases WHERE is_deleted=0 and cast(dop as date)<cast(current_timestamp as date)) and cast(doe as date)>='2020-10-01' and resourceid='$rid' and is_deleted=0";
+    $q3 = "select costperunit, COALESCE(sum(qty),0) as purchased from purchase_items WHERE pid in (select id from purchases WHERE is_deleted=0 and cast(dop as date)<cast(current_timestamp as date)) and cast(doe as date)>='2020-10-01' and resourceid='$rid' and is_deleted=0";
     $r3 = mysqli_query($db, $q3);
     $re3 = mysqli_fetch_assoc($r3);
     $purchased = $re3['purchased'];
-    return $purchased + $produced - $consumed;
-}
+    $costperunit3 = $re3['costperunit'];
 
+    //$closeCost = $costperunit3 - $costperunit1;
+    $closeQty = $purchased - $consumed;
+    $closeCost = $closeQty * $costperunit3;
+    $opening_stock = $purchased + $produced - $consumed;
+
+    if ($closeCost == NULL) {
+        //$closeCost = 0;
+        $average = 0;
+        return [$closeCost, $closeQty, $opening_stock, $average];
+    } else {
+        $average = $closeCost / $closeQty;
+        return [$closeCost, $closeQty, $opening_stock, $average];
+    }
+}
 if (isset($_SESSION['user'])) {
     include_once 'db.php';
     echo <<<_END
@@ -41,7 +55,6 @@ if (isset($_SESSION['user'])) {
             <link rel="stylesheet" href="css/bootstrap.min.css">
             <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         </head>
-        
         <body>    
 _END;
     include_once 'nav.php';
@@ -66,6 +79,10 @@ _END;
                     <th>Produced</th>
                     <th>Consumed</th>
                     <th>Balance</th>
+                    <th>Close Quantity</th>
+                    <th>Close Cost</th>
+                    <th>Average</th>
+                   
                 </tr>
             </thead>
             <tbody>
@@ -78,8 +95,12 @@ _END;
         $resourcename = $res['resourcename'];
         $unit = $res['unit'];
         $rid = $res['id'];
-
-        $opening_stock = getOpeningStock($db, $rid);
+        [$a, $b, $c, $d] = getOpeningStock($db, $rid);
+        // $array = getOpeningStock($db, $rid);
+        //$closeCost = $array['x'];
+        //$closeQty = $array['y'];
+        //$opening_stock = $array['z'];
+        //$average = ($closeQty / $closeCost);
 
         $qc = "select COALESCE(sum(qty),0) consumed from log_resource WHERE logid in (select id from logs WHERE cast(doe as date)=cast(current_timestamp as date) and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
         $rc = mysqli_query($db, $qc);
@@ -99,17 +120,20 @@ _END;
         $repur = mysqli_fetch_assoc($rpur);
         $purchased = $repur['purchased'];
 
-        $balance = $opening_stock + $produced + $purchased - $consumed;
+        $balance = $c + $produced + $purchased - $consumed;
 
         echo <<<_END
         <tr>
             <td>$sn</td>
             <th>$resourcename</th>
-            <th>$opening_stock $unit</th>
+            <th>$c $unit</th>
             <td>$purchased $unit</td>
             <td>$produced $unit</td>
             <td>$consumed $unit</td>
             <th>$balance $unit</th>
+            <td>$b</td>
+            <td>$a</td>  
+            <td>$d </td>
         </tr>
 _END;
         $sn = $sn + 1;

@@ -96,6 +96,7 @@ _END;
     					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
     						<a class="dropdown-item" href="reports.php">Individual Report</a>
 							<a class="dropdown-item" href="stock_master_report.php">Inventory Snapshot</a>
+							<a class="dropdown-item" href="stock_master_report23.php">Inventory Snapshot23</a>
                             <a class="dropdown-item" href="stock_report.php">Inventory</a>
 							<a class="dropdown-item" href="stock_report2.php">Inventory <sup>Beta</sup></a>
 							<a class="dropdown-item" href="cattle_activity_report.php">Cattle Report</a>
