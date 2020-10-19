@@ -240,7 +240,6 @@ _END;
                                     <th>Area</th>
                                     <th>Particular</th>
                                     <th>Transaction Account</th>
-                                    <th>Transaction catrgory</th>
                                     <th>Received</th>
                                     <th>Paid</th>
                                     <th>Actions</th>
@@ -262,7 +261,7 @@ while($res = mysqli_fetch_assoc($r))
     $part = $res['particular'];
     $area = getDimensionValue($db,'areas',$res['area'],'sitename');
     $tr_account=getDimensionValue($db,'transactions_accounts',$res['transaction_account'],'account');
-    $tr_category=getDimensionValue($db,'transactions_category',$res['transaction_category'],'category');
+   // $tr_category=getDimensionValue($db,'transactions_category',$res['transaction_category'],'category');
     echo <<<_END
     <tr>
         <td>$sn</td>
@@ -270,7 +269,6 @@ while($res = mysqli_fetch_assoc($r))
         <td>$area</td>
         <td>$part</td>
         <td>$tr_account</td>
-        <td>$tr_category</td>
         <td>&#8377; $received</td>
         <td>&#8377; $paid</td>
         <td><a href="transactions.php?table=transactions&return=transactions&tid=$sn">Modify</a> | <a href="delete.php?table=transactions&rid=$sn&return=transactions">Delete</a></td>

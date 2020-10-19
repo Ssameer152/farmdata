@@ -132,6 +132,7 @@ while($res = mysqli_fetch_assoc($r))
 {
     $sn = $res['id'];
     $dop = $res['dop'];
+    $dop=date("d/m/Y",strtotime($dop));
     $dod = $res['dod'];
     $vendorid = getDimensionValue($db,'vendor',$res['vendorid'],'name');
     $delivery_status = $res['delivery_status'];

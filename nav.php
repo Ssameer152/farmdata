@@ -191,6 +191,7 @@ if($transactions == 1){
     						<a class="dropdown-item" href="transaction_account.php">Transaction Account</a>
 							<a class="dropdown-item" href="transaction_category.php">Transaction Category</a>
 							<a class="dropdown-item" href="transaction_report.php">Transaction Report</a>
+							<a class="dropdown-item" href="trial_balance.php">Trial Balance</a>
     					</div>
     				</li>
 _END;
