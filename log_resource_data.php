@@ -29,6 +29,21 @@ include_once 'nav.php';
 
     echo <<<_END
     <div class="container">
+_END;
+if(isset($_GET['msg']) && $_GET['msg']!=''){
+    $msg = $_GET['msg'];
+    echo<<<_END
+<div class="col-lg-6">
+    <div class="alert alert-primary" role="alert">
+$msg
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+</div>
+_END;
+} 
+    echo <<<_END
     <div class="row">
         <div class="col-lg-6">
 _END;
@@ -129,7 +144,7 @@ _END;
                     <tbody>
 _END;
         $sn=0;
-        $q = "SELECT id,sum(qty) as qty,resourceid,person FROM log_output WHERE  cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0 GROUP BY resourceid,person";
+        $q = "SELECT id,sum(qty) as qty,resourceid,person FROM log_output WHERE logid in (select id from logs where cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0) AND is_deleted=0 GROUP BY resourceid,person";
       $r=mysqli_query($db,$q);
 //       $q1="SELECT sum(qty) as total FROM log_output WHERE  cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0 group by logid, resourceid,person";
 // $r1=mysqli_query($db,$q1);
@@ -175,7 +190,7 @@ _END;
 
 _END;
 $sn1=0;
-$q = "SELECT id,sum(qty) as qty,resourceid,person FROM log_resource WHERE  cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0 GROUP BY resourceid,person";
+$q = "SELECT id,sum(qty) as qty,resourceid,person FROM log_resource WHERE  logid in (select id from logs where cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0) and is_deleted=0 GROUP BY resourceid,person";
 $r=mysqli_query($db,$q);
 // $q1="SELECT sum(qty) as total FROM log_resource WHERE  cast(doe as date)=cast(current_timestamp() as date) AND is_deleted=0";
 // $r1=mysqli_query($db,$q1);

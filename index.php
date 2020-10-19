@@ -47,6 +47,9 @@ _END;
 <div class="col-lg-12">
     <div class="alert alert-primary" role="alert">
 $msg
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
 </div>
 </div>
 _END;

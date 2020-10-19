@@ -44,8 +44,10 @@ if(isset($_SESSION['user']))
     <head>
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
     </head>
     
     <body>    
@@ -55,7 +57,22 @@ include_once 'nav.php';
 
 echo <<<_END
 
-		<div class="container">
+        <div class="container">
+_END;
+if(isset($_GET['msg']) && $_GET['msg']!=''){
+    $msg = $_GET['msg'];
+    echo<<<_END
+<div class="col-lg-6">
+    <div class="alert alert-primary" role="alert">
+$msg
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+</div>
+_END;
+}
+            echo <<<_END
 			<div class="row">
                 <div class="col-lg-12">
                     <h2>Transactions</h2>
@@ -215,7 +232,7 @@ _END;
                 <div class="col-lg-12">
                     <div class="row">
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table id="table" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>S.No.</th>
@@ -239,6 +256,7 @@ while($res = mysqli_fetch_assoc($r))
 {
     $sn = $res['id'];
     $dot = $res['dot'];
+    $dot=date("d-m-Y", strtotime($dot));
     $paid = $res['amt_paid'];
     $received = $res['amt_received'];
     $part = $res['particular'];
@@ -274,6 +292,13 @@ _END;
 include_once 'foot.php';
 
 echo <<<_END
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script> 
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(document).ready(function() {
+$('#table').DataTable();
+});
+</script> 
     </body>
 </html>
 _END;

@@ -30,7 +30,22 @@ include_once 'nav.php';
 
 echo <<<_END
 
-		<div class="container">
+        <div class="container">
+_END;
+if(isset($_GET['msg']) && $_GET['msg']!=''){
+    $msg = $_GET['msg'];
+    echo<<<_END
+<div class="col-lg-6">
+    <div class="alert alert-primary" role="alert">
+$msg
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+</div>
+_END;
+} 
+            echo <<<_END
             <div class="row">
                 <div class="col-lg-6">
                     <h2>Activity</h2>
@@ -73,7 +88,7 @@ _END;
                             <tbody>
 _END;
 
-$q = "SELECT * FROM activities";
+$q = "SELECT * FROM activities where is_deleted=0";
 $r = mysqli_query($db,$q);
 
 while($res = mysqli_fetch_assoc($r))

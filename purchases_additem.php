@@ -46,7 +46,22 @@ include_once 'nav.php';
 
 echo <<<_END
 
-		<div class="container">
+        <div class="container">
+_END;
+if(isset($_GET['msg']) && $_GET['msg']!=''){
+    $msg = $_GET['msg'];
+    echo<<<_END
+<div class="col-lg-6">
+    <div class="alert alert-primary" role="alert">
+$msg
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+</div>
+_END;
+} 
+            echo <<<_END
             <div class="row">
                 <div class="col-lg-6">
                     <h2>Purchase #$pid</h2>
@@ -162,7 +177,7 @@ _END;
     <tr>
     <td colspan="5" class="text-right">$st1</td>
     </tr>
-_END; 
+_END;
 echo <<<_END
             </tbody>
         </table>

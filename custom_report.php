@@ -44,7 +44,7 @@ echo <<<_END
 		<div class="container">
             <div class="row">
                 <div class="col-lg-12" id="report">
-                    <h2 class="h2">Custom Report</h2><br>
+                    <h2 class="h2">Daily Activity Report</h2><br>
                     <form action="custom_report.php" method="get">
                         <div class="row">
                             <div class="col-lg">

@@ -42,6 +42,7 @@ if(isset($_SESSION['user']))
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
     </head>
     
     <body>    
@@ -51,6 +52,21 @@ include_once 'nav.php';
 
 echo <<<_END
         <div class="container">
+_END;
+if(isset($_GET['msg']) && $_GET['msg']!=''){
+    $msg = $_GET['msg'];
+    echo<<<_END
+<div class="col-lg-6">
+    <div class="alert alert-primary" role="alert">
+$msg
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+</div>
+_END;
+}
+            echo <<<_END
             <div class="row">
                 <div class="col-lg-6">
                     <h2>Cattle Activity Log</h2>
@@ -164,7 +180,7 @@ _END;
                 echo <<<_END
                 <div class="col-lg-12">
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table id="table" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>S.No.</th>
@@ -233,6 +249,13 @@ echo <<<_END
       $('#cattle').select2();
     });
 </script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script> 
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(document).ready(function() {
+$('#table').DataTable();
+});
+</script> 
     </body>
 </html>
 _END;

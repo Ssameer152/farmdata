@@ -27,6 +27,21 @@ if(isset($_SESSION['user']))
 
 <?php include_once 'nav.php';?>
 		<div class="container">
+<?php
+if(isset($_GET['msg']) && $_GET['msg']!=''){
+    $msg = $_GET['msg'];
+    echo<<<_END
+<div class="col-lg-6">
+    <div class="alert alert-primary" role="alert">
+$msg
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+</div>
+_END;
+}
+?>
             <div class="row">
                 <div class="col-lg-12 mb-4">
                     <h2 class="mb-4">Evening Delivery Log</h2>
