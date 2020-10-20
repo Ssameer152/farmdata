@@ -203,6 +203,7 @@ _END;
     echo <<<_END
     <tr>
     <td colspan="5" class="text-right">$st1</td>
+    <td></td>
     </tr>
 _END;
 echo <<<_END
