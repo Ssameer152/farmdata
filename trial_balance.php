@@ -105,7 +105,7 @@ _END;
     }
     echo <<<_END
     <tr>
-    <th></th>
+    <th>Grand Total</th>
     <th>$total1</th>
     <th>$total2</th>
     </tr>

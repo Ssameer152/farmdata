@@ -74,14 +74,23 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
     $customer=mysqli_real_escape_string($db,$_GET['custname']);
+    $q2="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk , case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1  and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date' and cd.cid='$customer' ORDER by cd.delivered_qty) as t ORDER by cast(t.dod as date)";
+    $r2=mysqli_query($db,$q2);
+    $res3=mysqli_fetch_assoc($r2);
+    $total1=$res3['cow_milk'];
+    $total2=$res3['sahiwal_milk'];
+    $total3=$res3['buffalo_milk'];
 
-    $q="SELECT id,cast(dod as date) as d ,cid,csid,delivered_qty from customer_delivery_log where cast(dod as date)>='$start_date' and cast(dod as date)<='$end_date' and cid='$customer' and is_deleted=0";
+    $q="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(t.CowMilk,0) as cow_milk, COALESCE(t.sCowMilk,0) as s_cow_milk, COALESCE(t.Sahiwal,0) as sahiwal_milk,COALESCE(t.sSahiwalMilk,0) as s_sahiwal_milk, COALESCE(t.buffalo,0) as buffalo_milk,COALESCE(t.sBuffaloMilk,0) as s_buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=1 then cd.qty end as sCowMilk, case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=2 then cd.qty end as sSahiwalMilk ,case when cs.milktype=3 then cd.delivered_qty end as buffalo, case when cs.milktype=3 then cd.qty end as sBuffaloMilk FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1  and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date' and cd.cid='$customer') as t order by cast(t.dod as date)";
     $r=mysqli_query($db,$q);
     if(mysqli_num_rows($r)>0){
-    $q1="SELECT fname from customer where id='$customer' and is_deleted=0";
+    $q1="SELECT fname,lname,price_cow_milk,price_sahiwal_milk,price_buffalo_milk from customer where id='$customer' and is_deleted=0";
     $r1=mysqli_query($db,$q1);
     $re1=mysqli_fetch_assoc($r1);
-    $cname=$re1['fname'];
+    $cname=$re1['fname'].' '.$re1['lname'];
+    $amt1=$re1['price_cow_milk'];
+    $amt2=$re1['price_sahiwal_milk'];
+    $amt3=$re1['price_buffalo_milk'];
     $date='';
     echo <<<_END
         <div class="col-lg-12">
@@ -91,62 +100,56 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
             <thead>
             <tr>
             <th>Date</th>
-           <th>Milk type</th>
-           <th>Quantity</th>
-            <th>Amount</th>
+            <th>Cow</th>
+            <th>Sahiwal</th>
+            <th>Buffalo</th>
+            <th>Price Cow Milk</th>
+            <th>Price Sahiwal Milk</th>
+            <th>Price Buffalo Milk</th>
             </tr>
             </thead>
             <tbody>
 _END;
-    $q1="SELECT milktype from customer_subscription where id='$customer' and is_deleted=0";
-    $r1=mysqli_query($db,$q1);
-    $res1=mysqli_fetch_assoc($r1);
-    $milktype=$res1['milktype'];
-    if($milktype==1){
-        $milktype='Cow Milk';
-    }
-    elseif($milktype==2){
-        $milktype='Sahiwal Milk';
-    }
-    elseif($milktype==3){
-        $milktype='Buffalo Milk';
-    }
-    $q2="SELECT sum(delivered_qty) as total from customer_delivery_log where cid='$customer'";
-    $r2=mysqli_query($db,$q2);
-    $res2=mysqli_fetch_assoc($r2);
-    $total=$res2['total'];
-    while($res=mysqli_fetch_assoc($r)){
-        $d=$res['d'];
-        $dt=date("d-m-Y", strtotime($d));
-                if($d!=$date){
-                echo <<<_END
-                <tr>
-                <td>$dt</td>
-_END;
-                }
-           $qty=$res['delivered_qty'];
-           if($milktype=='Cow Milk'){
-               $amt=50*$qty;
-           }
-                    echo <<<_END
-                <td>$milktype</td>
-                 <td>$qty</td>
-                 <td>$amt</td>      
+        $prcow1=0;
+        $sacow1=0;
+        $bflo1=0;
+        while($res=mysqli_fetch_assoc($r)){
+            $cqty=$res['cow_milk'];
+            $d=$res['d'];
+            $d=date('d/m/Y',strtotime($d));
+            $sqty=$res['sahiwal_milk'];
+            $bqty=$res['buffalo_milk'];
+            $prcow=$cqty*$amt1;
+            $sacow=$sqty*$amt2;
+            $bflo=$bqty*$amt3;
+            $prcow1+=$prcow;
+            $sacow1+=$sacow;
+            $bflo1+=$bflo;
+            echo <<<_END
+            <tr>
+            <td>$d</td>
+            <td>$cqty</td>
+            <td>$sqty</td>
+            <td>$bqty</td>
+            <td>$prcow</td>
+            <td>$sacow</td>
+            <td>$bflo</td>
+            </tr>
 _END;
         }
         echo <<<_END
         <tr>
-        <th colspan='2'>Total</th>
-        <td>$total</td>
-        <td>
-_END;
-        $TotalAmt=50*$total;
-        echo <<<_END
-        $TotalAmt
-        </td>
+        <th>Grand Total</th>
+        <th>$total1</th>
+        <th>$total2</th>
+        <th>$total3</th>
+        <th>$prcow1</th>
+        <th>$sacow1</th>
+        <th>$bflo1</th>
         </tr>
 _END;
-}
+                  
+    }
 }
 else{
     echo 'No record found';
