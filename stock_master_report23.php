@@ -14,35 +14,48 @@ function getDimensionValue($db, $table, $gid, $name)
 
 function getOpeningStock($db, $rid)
 {
-    $q = "select COALESCE(sum(qty),0) consumed , costperunit from log_resource WHERE logid in (select id from logs WHERE cast(doe as date)<cast(current_timestamp as date) and cast(doe as date)>='2020-10-01' and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
+
+
+    $q = "SELECT qty, COALESCE(sum(qty),0) as consumed from log_resource WHERE logid in (select id from logs WHERE cast(doe as date)<cast(current_timestamp as date) and cast(doe as date)>='2020-10-01' and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
     $r = mysqli_query($db, $q);
     $res = mysqli_fetch_assoc($r);
-    $consumed = $res['consumed'];
-    $costperunit1 = $res['costperunit'];
+    echo $consumed = $res['consumed'];
 
-    $q2 = "select COALESCE(sum(qty),0) produced from log_output WHERE logid in (select id from logs WHERE cast(doe as date)<cast(current_timestamp as date) and cast(doe as date)>='2020-10-01' and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
+
+    $q2 = "SELECT COALESCE(sum(qty),0) as produced from log_output WHERE logid in (select id from logs WHERE cast(doe as date)<cast(current_timestamp as date) and cast(doe as date)>='2020-10-01' and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
     $r2 = mysqli_query($db, $q2);
     $re2 = mysqli_fetch_assoc($r2);
     $produced = $re2['produced'];
 
-    $q3 = "select costperunit, COALESCE(sum(qty),0) as purchased from purchase_items WHERE pid in (select id from purchases WHERE is_deleted=0 and cast(dop as date)<cast(current_timestamp as date)) and cast(doe as date)>='2020-10-01' and resourceid='$rid' and is_deleted=0";
+    $q3 = "SELECT sum(costperunit) as purprice, COALESCE(sum(qty),0) as purchased,qty,costperunit from purchase_items WHERE pid in (select id from purchases WHERE is_deleted=0 and cast(dop as date)<cast(current_timestamp as date)) and cast(doe as date)>='2020-10-01' and resourceid='$rid' and is_deleted=0";
     $r3 = mysqli_query($db, $q3);
     $re3 = mysqli_fetch_assoc($r3);
     $purchased = $re3['purchased'];
-    $costperunit3 = $re3['costperunit'];
+    $new_pdpqty = $re3['qty'];
+    $newpurprice = $re3['costperunit'];
 
-    //$closeCost = $costperunit3 - $costperunit1;
-    $closeQty = $purchased - $consumed;
-    $closeCost = $closeQty * $costperunit3;
+    //Use formula Purchased-Consume Qty For Remained quantity ....
+    $remainedQty = $purchased - $consumed;
+
+    $remainedQtyprice = $remainedQty * $newpurprice;
+
+    // Use formula RemainedConsumeCost + PerDayPurchasedCost for Total Purchase Cost..
+    $totalpurCost = $newpurprice + $remainedQtyprice;
+
+
+    // Use formula RemainedQuantity + PerDayPurchasedQuantity for Total Purchase Quantity..
+    $totalpurQty = $remainedQty + $new_pdpqty;
+
     $opening_stock = $purchased + $produced - $consumed;
+    @$average = $totalpurCost / $totalpurQty;
 
-    if ($closeCost == NULL) {
-        //$closeCost = 0;
-        $average = 0;
-        return [$closeCost, $closeQty, $opening_stock, $average];
+    $string = substr($average, 0, 5);
+    if ($totalpurQty == NULL) {
+        $string = 0;
+        return [$totalpurCost, $totalpurQty, $opening_stock, $string];
     } else {
-        $average = $closeCost / $closeQty;
-        return [$closeCost, $closeQty, $opening_stock, $average];
+
+        return [$totalpurCost, $totalpurQty, $opening_stock, $string];
     }
 }
 if (isset($_SESSION['user'])) {
@@ -58,12 +71,12 @@ if (isset($_SESSION['user'])) {
         <body>    
 _END;
     include_once 'nav.php';
-    $d = date("Y/m/d");
+    $d1 = date("Y/m/d");
     echo <<<_END
         <div class="container">
         <div class="row">
                 <div class="col-lg-12">
-                    <h2 class="h2">Inventory as on $d</h2><br>
+                    <h2 class="h2">Inventory as on $d1</h2><br>
 _END;
 
 
@@ -79,8 +92,8 @@ _END;
                     <th>Produced</th>
                     <th>Consumed</th>
                     <th>Balance</th>
-                    <th>Close Quantity</th>
-                    <th>Close Cost</th>
+                    <th>Total Cost</th>
+                    <th>Total ConQty+PDPQty</th>
                     <th>Average</th>
                    
                 </tr>
@@ -96,12 +109,6 @@ _END;
         $unit = $res['unit'];
         $rid = $res['id'];
         [$a, $b, $c, $d] = getOpeningStock($db, $rid);
-        // $array = getOpeningStock($db, $rid);
-        //$closeCost = $array['x'];
-        //$closeQty = $array['y'];
-        //$opening_stock = $array['z'];
-        //$average = ($closeQty / $closeCost);
-
         $qc = "select COALESCE(sum(qty),0) consumed from log_resource WHERE logid in (select id from logs WHERE cast(doe as date)=cast(current_timestamp as date) and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
         $rc = mysqli_query($db, $qc);
 
@@ -119,8 +126,12 @@ _END;
 
         $repur = mysqli_fetch_assoc($rpur);
         $purchased = $repur['purchased'];
-
         $balance = $c + $produced + $purchased - $consumed;
+
+
+
+
+
 
         echo <<<_END
         <tr>
@@ -131,9 +142,9 @@ _END;
             <td>$produced $unit</td>
             <td>$consumed $unit</td>
             <th>$balance $unit</th>
-            <td>$b</td>
-            <td>$a</td>  
-            <td>$d </td>
+            <td>$a</td>
+            <td>$b</td>  
+            <td><b>$d</b></td>
         </tr>
 _END;
         $sn = $sn + 1;
