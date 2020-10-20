@@ -10,7 +10,16 @@ if(isset($_SESSION['user']))
         $qty = mysqli_real_escape_string($db,$_POST['qty']);
         $cpu = mysqli_real_escape_string($db,$_POST['cpu']);
         $pid = mysqli_real_escape_string($db,$_POST['pid']);
-        
+
+        if(isset($_POST['mid']) && $_POST['mid']!='')
+        {
+            $mid = $_POST['mid'];
+            $q="UPDATE purchase_items set resourceid='$resource',qty='$qty',costperunit='$cpu' where id='$mid' LIMIT 1";
+            $r=mysqli_query($db,$q);
+            $msg="Items Updated";
+        }
+        else
+        {
         $q = "INSERT INTO purchase_items(resourceid,qty,costperunit,pid) VALUES('$resource','$qty','$cpu','$pid')";
         $r = mysqli_query($db,$q);
         
@@ -18,7 +27,8 @@ if(isset($_SESSION['user']))
             echo mysqli_error($db);
         }
         
-        $msg = "Added";
+        $msg = "Items Added";
+    }
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=purchases_additem.php?pid=$pid&msg=$msg'>
 _END;

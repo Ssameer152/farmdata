@@ -20,13 +20,14 @@ if(isset($_GET['pid']) && $_GET['pid']!='')
         
         $db_qty = $res['qty'];
         $db_resource = $res['resourceid'];
-        
+        $db_cpu=$res['costperunit'];
         
     }
     else
     {
         $db_resource = '';
         $db_qty = '';
+        $db_cpu='';
     }
     
     
@@ -103,11 +104,33 @@ echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
+_END;
+                        if($db_qty==''){
+                            echo <<<_END
+                            <input type="text" name="qty" class="form-control">
+_END;
+                        }
+                        else{
+                            echo <<<_END
                             <input type="text" name="qty" value="$db_qty" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
                         <div class="form-group">
                             <label for="quantity">Cost Per Unit</label>
+_END;
+                        if($db_cpu==''){
+                            echo <<<_END
                             <input type="text" name="cpu" class="form-control">
+_END;
+                        }
+                        else {
+                            echo <<<_END
+                            <input type="text" name="cpu" value="$db_cpu" class="form-control">
+_END;
+                        }
+                        echo <<<_END
                         </div>
                         <input type="hidden" name="pid" value="$pid">
 _END;
@@ -136,6 +159,7 @@ echo <<<_END
                     <th>Quantity</th>
                     <th>Cost Per Unit</th>
                     <th>Total</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -147,6 +171,8 @@ $sn = 0;
 $st1=0;
 while($res = mysqli_fetch_assoc($r))
 {
+    $pid=$res['pid'];
+    $id=$res['id'];
     $qty = $res['qty'];
     $rid = $res['resourceid'];
     $cpu = $res['costperunit'];
@@ -169,6 +195,7 @@ while($res = mysqli_fetch_assoc($r))
         <td>$qty $unit</td>
         <td>&#8377; $cpu</td>
         <td>&#8377; $st</td>
+        <td><a href="purchases_additem.php?table=purchase_items&return=purchases_additem&pid=$pid&id=$id">Modify</a> | <a href="delete.php?table=purchase_items&return=purchases_additem&rid=$id&pid=$pid">Delete</a></td>
        
     </tr>
 _END;
@@ -176,6 +203,7 @@ _END;
     echo <<<_END
     <tr>
     <td colspan="5" class="text-right">$st1</td>
+    <td></td>
     </tr>
 _END;
 echo <<<_END
@@ -183,14 +211,7 @@ echo <<<_END
         </table>
     </div>
 
-</div>
-
-
-
-
-
-
-                
+</div>                
             </div>
         </div>
 
@@ -208,7 +229,7 @@ else
 {
     $msg = "Please select a work log";
     echo <<<_END
-    <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
+    <meta http-equiv='refresh' content='0;url=purchases_additem.php?msg=$msg'>
 _END;
 }
 

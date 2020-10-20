@@ -46,7 +46,7 @@ if (isset($_SESSION['user'])) {
         <body>    
 _END;
     include_once 'nav.php';
-    $d = date("Y/m/d");
+    $d = date("d/m/Y");
     echo <<<_END
         <div class="container">
         <div class="row">
