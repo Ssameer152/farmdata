@@ -117,7 +117,7 @@ _END;
             $q5 = "SELECT r.id, a.resourceid,b.resourceid,c.resourceid,sum(a.produced) as produced, sum(b.consumed) as con, sum(c.purchase) as pur  from resources r
             LEFT JOIN (select resourceid,sum(qty) as produced from log_output where logid in (SELECT id FROM `logs` where cast(doe as date)>='$start_date' and TIMESTAMP(cast(doe as date))<='$end_date' and is_deleted=0) and is_deleted=0 GROUP BY resourceid) a on r.id = a.resourceid
             LEFT JOIN (select resourceid,sum(qty) as consumed from log_resource where  logid in (SELECT id FROM `logs` where cast(doe as date)>='$start_date' and TIMESTAMP(cast(doe as date))<='$end_date' and is_deleted=0) and is_deleted=0 GROUP BY resourceid) b on r.id = b.resourceid
-            LEFT JOIN (select resourceid,sum(qty) as purchase from purchase_items where TIMESTAMP(cast(doe as date))>='$start_date' and TIMESTAMP(cast(doe as date))<='$end_date' and is_deleted=0 GROUP BY resourceid) c on r.id = c.resourceid where id='$id'";
+            LEFT JOIN (select resourceid,sum(qty) as purchase from purchase_items WHERE pid in (select id from purchases WHERE is_deleted=0 and TIMESTAMP(cast(doe as date))>='$start_date' and TIMESTAMP(cast(doe as date))<='$end_date') and is_deleted=0 GROUP BY resourceid) c on r.id = c.resourceid where id='$id'";
 
             $r1 = mysqli_query($db, $q5);
             if (isset($r1)) {
@@ -132,8 +132,8 @@ _END;
                     //$extra = $opening + $produced1;
                     echo <<<_END
 
-                    <td>$opening</td>
-                <td>$consumed $unit</td>
+            <td>$opening</td>
+            <td>$consumed $unit</td>
             <td>$purchase $unit</td>
             <td>$produced $unit</td>
             <td>$opening $unit</td>
@@ -145,11 +145,11 @@ _END;
             }
 
 
-            if (date("Y/m/d") == $start_date) {
+            if (date("d-m-Y") == $start_date) {
                 //use for opening
-                $q6 = "SELECT CURDATE()-1,r.id, a.resourceid,b.resourceid,c.resourceid,sum(a.produced) as produced, sum(b.consumed) as con, sum(c.purchase) as pur  from resources r
-            LEFT JOIN (select resourceid,sum(qty) as produced from log_output where logid in (SELECT CURDATE()-1,id FROM `logs` where  is_deleted=0) and is_deleted=0 GROUP BY resourceid) a on r.id = a.resourceid
-            LEFT JOIN (select resourceid,sum(qty) as consumed from log_resource where  logid in (SELECT CURDATE()-1,id FROM `logs` where  is_deleted=0) and is_deleted=0 GROUP BY resourceid) b on r.id = b.resourceid
+                $q6 = "SELECT a.CURDATE()-1,b.CURDATE()-1,c.CURDATE()-1,r.id, a.resourceid,b.resourceid,c.resourceid,sum(a.produced) as produced, sum(b.consumed) as con, sum(c.purchase) as pur  from resources r
+            LEFT JOIN (select CURDATE()-1,resourceid,sum(qty) as produced from log_output where logid in (SELECT CURDATE()-1,id FROM `logs` where  is_deleted=0) and is_deleted=0 GROUP BY resourceid) a on r.id = a.resourceid
+            LEFT JOIN (select CURDATE()-1,resourceid,sum(qty) as consumed from log_resource where  logid in (SELECT CURDATE()-1,id FROM `logs` where  is_deleted=0) and is_deleted=0 GROUP BY resourceid) b on r.id = b.resourceid
             LEFT JOIN (select CURDATE()-1,resourceid,sum(qty) as purchase from purchase_items where is_deleted=0 GROUP BY resourceid) c on r.id = c.resourceid where id='$id'";
 
                 $r2 = mysqli_query($db, $q6);
