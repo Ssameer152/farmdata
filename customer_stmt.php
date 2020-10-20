@@ -21,7 +21,7 @@ if(isset($_SESSION['user'])){
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <style>
         @media print { 
-            header,#report { 
+            header,#report,#btn { 
                display:none; 
             } 
          } 
@@ -94,7 +94,8 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     $date='';
     echo <<<_END
         <div class="col-lg-12">
-        <h4>Customer: $cname</h4>
+        <h4 class="mb-4">Customer: $cname</h4>
+        <button class="btn btn-primary" id="btn" style="position: absolute;right:10;top:0;" onclick="window.print()">Print Statement</button>
         <div class="table table-responsive">
         <table class="table table-bordered">
             <thead>
