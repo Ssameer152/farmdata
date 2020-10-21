@@ -22,7 +22,7 @@ if (isset($_SESSION['user'])) {
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <style>
         @media print { 
-            header,#report { 
+            header,#report,#btn { 
                display:none; 
             } 
          } 
@@ -53,12 +53,12 @@ _END;
                  <select id="myselect" class="form-control" name="custname">
                  <option value="">--Select customer--</option>
 _END;
-    $q = "SELECT id,fname from customer where is_deleted=0 order by fname asc";
-    $r = mysqli_query($db, $q);
-    while ($res = mysqli_fetch_assoc($r)) {
-        $name = $res['fname'];
-        $id = $res['id'];
-        echo <<<_END
+            $q="SELECT id,fname,lname from customer where is_deleted=0 order by fname asc";
+            $r=mysqli_query($db,$q);
+            while($res=mysqli_fetch_assoc($r)){
+                $name=$res['fname'].' '.$res['lname'];
+                $id=$res['id'];
+                echo <<<_END
             <option value="$id">$name</option>
 _END;
     }
@@ -96,7 +96,8 @@ _END;
             $date = '';
             echo <<<_END
         <div class="col-lg-12">
-        <h4>Customer: $cname</h4>
+        <h4 class="mb-4">Customer: $cname</h4>
+        <button class="btn btn-primary" id="btn" style="position: absolute;right:10;top:0;" onclick="window.print()">Print Statement</button>
         <div class="table table-responsive">
         <table class="table table-bordered">
             <thead>
