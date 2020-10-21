@@ -19,7 +19,7 @@ function getOpeningStock($db, $rid)
     $q = "SELECT qty, COALESCE(sum(qty),0) as consumed from log_resource WHERE logid in (select id from logs WHERE cast(doe as date)<cast(current_timestamp as date) and cast(doe as date)>='2020-10-01' and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
     $r = mysqli_query($db, $q);
     $res = mysqli_fetch_assoc($r);
-    echo $consumed = $res['consumed'];
+    $consumed = $res['consumed'];
 
 
     $q2 = "SELECT COALESCE(sum(qty),0) as produced from log_output WHERE logid in (select id from logs WHERE cast(doe as date)<cast(current_timestamp as date) and cast(doe as date)>='2020-10-01' and is_deleted=0) AND resourceid='$rid' and is_deleted=0";
