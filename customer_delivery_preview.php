@@ -47,7 +47,7 @@ _END;
         <div class="row">
         <div class="col-lg-12" id="report">
         <h3 class="mb-4">Customer Delivery Report</h3>
-        <form action="customer_update.php" method="get">
+        <form action="customer_delivery_preview.php" method="get">
                         <div class="row">
                             <div class="col-lg">
                                 <input type="date" class="form-control" name="start_date">
@@ -65,35 +65,30 @@ _END;
         $start_date = mysqli_real_escape_string($db, $_GET['start_date']);
         $end_date = mysqli_real_escape_string($db, $_GET['end_date']);
 
-        $q = "SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, 
+        $q = "SELECT t.cid,t.csid,delivery_time,subid,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, 
         COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, 
         COALESCE(sum(t.buffalo),0) as buffalo_milk from 
-        (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk , 
+        (SELECT cd.csid,cd.id,cd.cid,cs.delivery_time,cs.id as subid,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk , 
         case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,case when cs.milktype=3 then cd.delivered_qty end as buffalo 
         FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=1 and 
          cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
         $r = mysqli_query($db, $q);
-        $q1 = "SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=2 then cd.delivered_qty end as Sahiwal,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=1 and cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t";
-        $r1 = mysqli_query($db, $q1);
-        $res1 = mysqli_fetch_assoc($r1);
-        $total1 = $res1['cow_milk'];
-        $total2 = $res1['sahiwal_milk'];
-        $total3 = $res1['buffalo_milk'];
-        echo $sdt = date("d-m-Y", strtotime($start_date));
+
+        $sdt = date("d-m-Y", strtotime($start_date));
         $edt = date("d-m-Y", strtotime($end_date));
         $date = '';
         $sn = 0;
         echo <<<_END
 <div class="col-lg-12">
 <div class="row">
-<h4 class="mb-4">From $sdt to $edt</h4>
+<h4 class="mb-4">From $sdt To $edt</h4>
 <button class="btn btn-primary" id="btn" style="position: absolute;right:10;" onclick="window.print()">Print Report</button>
 </div>
 _END;
         if (mysqli_num_rows($r) > 0) {
             echo <<<_END
         <div class="row">
-        <form>
+        <form action="customer_delivery_update.php" method="post">
         <table id="t" class="table table-bordered table-sm">
         <tr>
         <th class="text-center">
@@ -110,6 +105,8 @@ _END;
             while ($res = mysqli_fetch_assoc($r)) {
                 $sn = $sn + 1;
                 $cid = $res['cid'];
+                $csid = $res['csid'];
+                $subId = $res['subid'];
                 $qty = $res['cow_milk'];
                 $qty1 = $res['sahiwal_milk'];
                 $qty2 = $res['buffalo_milk'];
@@ -118,9 +115,11 @@ _END;
             <tr>
             <td>$sn</td>
             <td>$cust</td>
-            <td><input type="text" id="wh" name="cow-qty" value="$qty"></td>
-            <td><input type="text" id="wh" name="sahi-qty" value="$qty1"></td>
-            <td><input type="text" id="wh" name="buf-qty" value="$qty2"></td>
+            <td><input type="text" id="wh" name="cow_qty" value="$qty"></td>
+            <td><input type="text" id="wh" name="sahi_qty" value="$qty1"></td>
+            <td><input type="text" id="wh" name="buf_qty" value="$qty2"></td>
+            <input type="hidden" id="wh" name="sub_hide" value="$subId">
+            <input type="hidden" id="wh" name="csid_hide" value="$csid">
             </tr>
 _END;
             }
@@ -147,28 +146,14 @@ _END;
             $q2 = "SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk,
              COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk 
              from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 
-               then cd.delivered_qty end as CowMilk , case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,
+               then cd.delivered_qty end as CowMilk , case when cs.milktype=2 then cd.delivered_qty end as Sahiwal,
                case when cs.milktype=3 then cd.delivered_qty end as buffalo  FROM customer_delivery_log cd
                   INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=2 and 
                    cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t
                     group by t.cid order by t.dod";
 
             $r2 = mysqli_query($db, $q2);
-
-            $q3 = "SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,
-            COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, 
-            COALESCE(sum(t.buffalo),0) as buffalo_milk 
-            from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,
-            case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,case when cs.milktype=3 then cd.delivered_qty end as buffalo 
-            FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid 
-            where cs.is_active=1 and cs.delivery_time=2 and cs.is_deleted=0 and 
-            cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t";
-            $r3 = mysqli_query($db, $q3);
             $sn1 = 0;
-            $res3 = mysqli_fetch_assoc($r3);
-            $total1 = $res3['cow_milk'];
-            $total2 = $res3['sahiwal_milk'];
-            $total3 = $res3['buffalo_milk'];
             while ($res2 = mysqli_fetch_assoc($r2)) {
                 $sn1 = $sn1 + 1;
                 $cid = $res2['cid'];
@@ -180,9 +165,11 @@ _END;
         <tr>
         <td>$sn1</td>
         <td>$cust</td>
-        <td><input type="text" id="wh" name="cow-mlk-qty" value="$qty"></td>
-        <td><input type="text" id="wh" name="sahi-mlk-qty" value="$qty1"></td>
-        <td><input type="text" id="wh" name="buf-mlk-qty" value="$qty2"></td>
+        <td><input type="text" id="wh" name="cow_mlk_qty" value="$qty"></td>
+        <td><input type="text" id="wh" name="sahi_mlk_qty" value="$qty1"></td>
+        <td><input type="text" id="wh" name="buf_mlk_qty" value="$qty2"></td>
+        <input type="hidden" id="wh" name="sub_hide" value="$subId">
+        <input type="hidden" id="wh" name="csid_hide" value="$csid">
         </tr>
 _END;
             }
@@ -199,7 +186,7 @@ _END;
     </th>
     
     </tr>
-    <tr><td colspan="2"><input type="submit" class="btn btn-info btn-block" name="update" value="update"></td></tr>
+    <tr><td colspan="2"><input type="submit" class="btn btn-info btn-block" name="user" value="update"></td></tr>
 </table>
 </form>
 </div>
