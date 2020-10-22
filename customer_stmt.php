@@ -52,10 +52,10 @@ _END;
                  <select id="myselect" class="form-control" name="custname">
                  <option value="">--Select customer--</option>
 _END;
-            $q="SELECT id,fname from customer where is_deleted=0 order by fname asc";
+            $q="SELECT id,fname,lname from customer where is_deleted=0 order by fname asc";
             $r=mysqli_query($db,$q);
             while($res=mysqli_fetch_assoc($r)){
-                $name=$res['fname'];
+                $name=$res['fname'].' '.$res['lname'];
                 $id=$res['id'];
                 echo <<<_END
             <option value="$id">$name</option>

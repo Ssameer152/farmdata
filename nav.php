@@ -108,7 +108,8 @@ _END;
 							<a class="dropdown-item" href="cattle_activity_report.php">Cattle Report</a>
 							<a class="dropdown-item" href="cattle_activity_report2.php">Cattle Report 2</a>
     						<a class="dropdown-item" href="custom_report.php">Daily Activity Report</a>
-    						<a class="dropdown-item" href="custom_report2.php">Daily TotalWise Report</a>
+							<a class="dropdown-item" href="custom_report2.php">Daily TotalWise Report</a>
+							<a class="dropdown-item" href="delivery_report_price.php">Delivery Report in Excel</a>
 							<a class="dropdown-item" href="customer_delivery_report.php">Customer Delivery Report</a>
 							<a class="dropdown-item" href="customer_delivery_reportBeta.php">Customer Delivery Report<sup>Beta</sup></a>
 							<a class="dropdown-item" href="stats.php">Stats</a>
@@ -153,6 +154,7 @@ _END;
     						<a class="dropdown-item" href="customer.php">Add Customer</a>
     						<a class="dropdown-item" href="customer_subscription_report.php">Customer Subscription Report</a>
 							<a class="dropdown-item" href="customer_stmt.php">Customer Statement</a>
+							<a class="dropdown-item" href="customer_total.php">Customers Total</a>
 							<a class="dropdown-item" href="ledger_account.php">Ledger account</a>
     					</div>
     				</li>

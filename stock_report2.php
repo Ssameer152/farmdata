@@ -18,8 +18,11 @@ if (isset($_SESSION['user'])) {
         <head>
             <title>FarmDB</title>
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <link rel="stylesheet" href="css/bootstrap.min.css">
-            <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+            <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css"/>
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>            
+            <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>      
         </head>
         
         <body>    
@@ -54,7 +57,7 @@ _END;
         <div class="row">
         <div class="col-lg-12">
         <div class="table table-responsive">
-        <table class="table table-bordered">
+        <table id="table" class="table table-bordered">
         <thead>
         <tr>
         <th>Sno.</th>
@@ -82,38 +85,7 @@ _END;
         <td>$id</td>
         <td>$resource</td>      
 _END;
-            //if (isset($id)) {
-            /*  $q1 = "SELECT t.qty ,COALESCE(sum(t.qty),0) as q1 from (select qty from log_resource where cast(doe as date)>='$start_date' and cast(doe as date)<='$end_date' and resourceid='$id' and is_deleted=0) as t";
-            $r1 = mysqli_query($db, $q1);
-            while ($res1 = mysqli_fetch_assoc($r1)) {
-                $consumed2 = $res1['q1'];
-                echo <<<_END
         
-_END;
-            }
-            $q2 = "SELECT t.qty,COALESCE(sum(t.qty),0) as q2 from (select qty from purchase_items where cast(doe as date)>='$start_date' and cast(doe as date)<='$end_date' and resourceid='$id' and is_deleted=0) as t";
-            $r2 = mysqli_query($db, $q2);
-            while ($res2 = mysqli_fetch_assoc($r2)) {
-                $purchase2 = $res2['q2'];
-                echo <<<_END
-    
-_END;
-            }
-            $q3 = "SELECT t.qty ,COALESCE(sum(t.qty),0) as q3 from (select qty from log_output where cast(doe as date)>='$start_date' and cast(doe as date)<='$end_date' and resourceid='$id' and is_deleted=0) as t";
-            $r3 = mysqli_query($db, $q3);
-            while ($res3 = mysqli_fetch_assoc($r3)) {
-                $produced2 = $res3['q3'];
-                // $left = $purchase2 + $produced2 - $consumed2;
-                echo <<<_END
-    
-    
-_END;
-            }*/
-            // }
-            /*SELECT a.resourceid,produced,consumed from (select resourceid,sum(qty) as produced from log_output where logid in (SELECT id FROM `logs` where cast(doe as date)<='2020-10-07' and is_deleted=0) and is_deleted=0 GROUP by resourceid) a 
-            inner join (select resourceid,sum(qty) as consumed from log_resource where logid in (SELECT id FROM `logs` where cast(doe as date)<='2020-10-07' and is_deleted=0) and is_deleted=0 GROUP by resourceid ) b on a.resourceid=b.resourceid*/
-
-
             $q5 = "SELECT r.id, a.resourceid,b.resourceid,c.resourceid,sum(a.produced) as produced, sum(b.consumed) as con, sum(c.purchase) as pur  from resources r
             LEFT JOIN (select resourceid,sum(qty) as produced from log_output where logid in (SELECT id FROM `logs` where cast(doe as date)>='$start_date' and TIMESTAMP(cast(doe as date))<='$end_date' and is_deleted=0) and is_deleted=0 GROUP BY resourceid) a on r.id = a.resourceid
             LEFT JOIN (select resourceid,sum(qty) as consumed from log_resource where  logid in (SELECT id FROM `logs` where cast(doe as date)>='$start_date' and TIMESTAMP(cast(doe as date))<='$end_date' and is_deleted=0) and is_deleted=0 GROUP BY resourceid) b on r.id = b.resourceid
@@ -140,8 +112,6 @@ _END;
             </tr> 
 _END;
                 }
-                // }
-                // }
             }
 
 
@@ -160,6 +130,7 @@ _END;
                     $opening = ($produced + $purchase) - $consumed;
                     $closing = ($opening + $produced + $purchase) - $consumed;
                     echo <<<_END
+                    <tr>
                 <td>$opening</td>
                 <td>$consumed $unit</td>
                 <td>$purchase $unit</td>
@@ -183,12 +154,31 @@ _END;
     include_once 'foot.php';
     echo <<<_END
     
-    <tr>
             </tbody>
         </table>
         </div>
         </div>
         </div>
+        <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script> 
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.4/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js"></script>
+
+<script>
+$(document).ready(function() {
+$('#table').DataTable({
+    dom: 'Bfrtip',
+    buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+    ]
+});
+});
+</script> 
         </body>
         </html>
 _END;
