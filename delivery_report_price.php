@@ -13,7 +13,7 @@ if(isset($_SESSION['user'])){
     echo <<<_END
 <html>
     <head>
-        <title>FarmDB</title>
+        <title>Delivery Report</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <link rel="stylesheet" href="css/bootstrap.min.css"/>
@@ -72,10 +72,10 @@ $sn=0;
 echo <<<_END
 <h4 class="mb-4">From $sdt to $edt</h4>
 <div class="col-lg-12">
-<div class="row">
+<div class="table table-responsive">
         <table id="" class="table table-bordered display"> 
         <thead>
-        <tr><th>Morning</th></tr>
+        <tr><th>Morning Delivery</th></tr>
         <tr>
         <th>S.no</th>
         <th>Customer</th>
@@ -145,7 +145,7 @@ _END;
     echo <<<_END
     <table id="" class="table table-bordered display"> 
     <thead>
-        <tr><th>Evening Milk Delivery</th></tr>
+        <tr><th>Evening Delivery</th></tr>
         <tr>
         <th>S.no</th>
         <th>Customer</th>
