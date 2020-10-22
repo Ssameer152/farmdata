@@ -108,7 +108,8 @@ _END;
 							<a class="dropdown-item" href="cattle_activity_report.php">Cattle Report</a>
 							<a class="dropdown-item" href="cattle_activity_report2.php">Cattle Report 2</a>
     						<a class="dropdown-item" href="custom_report.php">Daily Activity Report</a>
-    						<a class="dropdown-item" href="custom_report2.php">Daily TotalWise Report</a>
+							<a class="dropdown-item" href="custom_report2.php">Daily TotalWise Report</a>
+							<a class="dropdown-item" href="delivery_report_price.php">Delivery Report in Excel</a>
 							<a class="dropdown-item" href="customer_delivery_report.php">Customer Delivery Report</a>
 							<a class="dropdown-item" href="customer_delivery_reportBeta.php">Customer Delivery Report<sup>Beta</sup></a>
 							<a class="dropdown-item" href="stats.php">Stats</a>
