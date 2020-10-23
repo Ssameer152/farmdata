@@ -1,43 +1,54 @@
 <?php
+function getDimensionValue($db, $table, $gid, $name)
+{
+    $q = "SELECT * FROM $table WHERE id=$gid";
+    $r = mysqli_query($db, $q);
 
+    $res = mysqli_fetch_assoc($r);
+
+    $value = $res[$name];
+
+    return $value;
+}
 session_start();
 if (isset($_SESSION['user'])) {
     include_once 'db.php';
     if (
-        isset($_POST['cow_qty']) && $_POST['cow_qty'] != ''
-        && isset($_POST['sahi_qty']) && $_POST['sahi_qty'] != ''
-        && isset($_POST['buf_qty']) && $_POST['buf_qty'] != ''
-        && isset($_POST['cow_mlk_qty']) && $_POST['cow_mlk_qty'] != ''
-        && isset($_POST['sahi_mlk-qty']) && $_POST['sahi_mlk-qty'] != ''
-        && isset($_POST['buf_mlk_qty']) && $_POST['buf_mlk_qty'] != ''
-        && isset($_POST['sub_hide'])
-        && isset($_POST['csid_hide'])
+        isset($_POST['dlqty']) && $_POST['dlqty'] != '' && isset($_POST['id_hide']) && isset($_POST['start_date'])
+        && isset($_POST['end_date']) && isset($_POST['cid'])
     ) {
-
-        $cow_qty = mysqli_real_escape_string($db, $_POST['cow_qty']);
-        $sahi_qty = mysqli_real_escape_string($db, $_POST['sahi_qty']);
-        $buf_qty = mysqli_real_escape_string($db, $_POST['buf_qty']);
-        $cow_mlk_qty = mysqli_real_escape_string($db, $_POST['cow_mlk_qty']);
-        $sahi_mlk_qty = mysqli_real_escape_string($db, $_POST['sahi_mlk_qty']);
-        $buf_mlk_qty = mysqli_real_escape_string($db, $_POST['buf_mlk_qty']);
-        $sub_hide = mysqli_real_escape_string($db, $_POST['sub_hide']);
-        $csid_hide = mysqli_real_escape_string($db, $_POST['csid_hide']);
-
-        $q = "UPDATE customer_delivery_log cdl JOIN customer_subscription cs
-            ON  cdl.csid = cs.id
-            SET delivered_qty = CASE WHEN cs.milktype=1 and cs.delivery_time=1 THEN $cow_qty END,
-                delivered_qty = CASE WHEN cs.milktype=2 and cs.delivery_time=1 THEN  $sahi_qty END,
-                delivered_qty = CASE WHEN cs.milktype=3 and cs.delivery_time=1 THEN $buf_qty END,
-                delivered_qty = CASE WHEN cs.milktype=1 and cs.delivery_time=2 THEN $cow_mlk_qty END,
-                delivered_qty = CASE WHEN cs.milktype=2 and cs.delivery_time=2 THEN $sahi_mlk_qty END,
-                delivered_qty = CASE WHEN cs.milktype=3 and cs.delivery_time=2 THEN $buf_mlk_qty END 
-                WHERE csid='$csid_hide'";
+        $del_qty = mysqli_real_escape_string($db, $_POST['dlqty']);
+        $id_hide = mysqli_real_escape_string($db, $_POST['id_hide']);
+        $cid = mysqli_real_escape_string($db, $_POST['cid']);
+        $start_date = mysqli_real_escape_string($db, $_POST['start_date']);
+        $end_date = mysqli_real_escape_string($db, $_POST['end_date']);
+        if ($id_hide) {
+            $alert = "select * from customer_delivery_log where id='$id_hide'";
+            $r = mysqli_query($db, $alert);
+            $res = mysqli_fetch_array($r);
+            $a = getDimensionValue($db, 'customer_subscription', $res['csid'], 'milktype');
+            $b = getDimensionValue($db, 'customer', $res['cid'], 'fname');
+        }
+        $q = "UPDATE customer_delivery_log SET delivered_qty ='$del_qty' WHERE id='$id_hide' limit 1";
         $r = mysqli_query($db, $q);
         $msg = 'Updated';
+        if ($a == 1) {
+            echo <<<_END
+        <meta http-equiv='refresh' content='0;url=customer_delivery_preview.php?start_date=$start_date&end_date=$end_date&msg=Cow Milk Delivery Quantity of $b has been $msg'>
+_END;
+        } elseif ($a == 2) {
+            echo <<<_END
+        <meta http-equiv='refresh' content='0;url=customer_delivery_preview.php?start_date=$start_date&end_date=$end_date&msg=Sahiwal Milk Delivery Quantity of $b has been $msg'>
+_END;
+        } elseif ($a == 3) {
+            echo <<<_END
+    <meta http-equiv='refresh' content='0;url=customer_delivery_preview.php?start_date=$start_date&end_date=$end_date&msg=Buffalo Milk Delivery Quantity of $b has been $msg'>
+_END;
+        }
     }
 } else {
     $msg = "Please Login";
     echo <<<_END
         <meta http-equiv='refresh' content='0;url=?msg=$msg'>
-    _END;
+_END;
 }
