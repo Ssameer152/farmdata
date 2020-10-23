@@ -56,8 +56,9 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
     $q="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk,COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk , case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1  and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
     $r=mysqli_query($db,$q);
+    $sn=0;
     if(mysqli_num_rows($r)>0){
-    
+
     $date='';
     echo <<<_END
         <div class="col-lg-12">
@@ -66,6 +67,7 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
         <table id="table" class="table table-bordered">
             <thead>
             <tr>
+            <th>S.no</th>
             <th>Customer</th>
             <th>Cow</th>
             <th>Sahiwal</th>
@@ -84,6 +86,7 @@ _END;
         $total2=0;
         $total3=0;
         while($res=mysqli_fetch_assoc($r)){
+            $sn=$sn+1;
             $cqty=$res['cow_milk'];
             $cid=$res['cid'];
             $cname=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
@@ -105,6 +108,7 @@ _END;
             $total3+=$bqty;
             echo <<<_END
             <tr>
+            <th>$sn</th>
             <th>$cname</th>
             <td>$cqty</td>
             <td>$sqty</td>
@@ -117,6 +121,7 @@ _END;
         }
         echo <<<_END
         <tr>
+        <th>$sn</th>
         <th>Grand Total</th>
         <th>$total1</th>
         <th>$total2</th>

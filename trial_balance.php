@@ -55,15 +55,35 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
     $q="SELECT sum(amt_paid) as debit,sum(amt_received) as credit,particular,transaction_account,transaction_category,cast(dot as date) as d from transactions where is_deleted=0 and cast(dot as date)>='$start_date' and cast(dot as date)<='$end_date' group by transaction_account order by cast(dot as date)";
     $r=mysqli_query($db,$q);
-    $q1="SELECT sum(amt_paid) as total1 ,sum(amt_received) as total2 from transactions where is_deleted=0 and cast(dot as date)>='$start_date' and cast(dot as date)<='$end_date'";
+    $q1="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk,COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk , case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1  and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
     $r1=mysqli_query($db,$q1);
-    $res1=mysqli_fetch_assoc($r1);
-    $total1=$res1['total1'];
-    $total2=$res1['total2'];
+    
+    $prcow1=0;
+    $sacow1=0;
+    $bflo1=0;
+    while($res1=mysqli_fetch_assoc($r1)){
+        $cqty=$res1['cow_milk'];
+        $sqty=$res1['sahiwal_milk'];
+            $bqty=$res1['buffalo_milk'];
+            $cid=$res1['cid'];
+            $amt1=getDimensionValue($db,'customer',$res1['cid'],'price_cow_milk');
+            $amt2=getDimensionValue($db,'customer',$res1['cid'],'price_sahiwal_milk');
+            $amt3=getDimensionValue($db,'customer',$res1['cid'],'price_buffalo_milk');
+            $prcow=$cqty*$amt1;
+            $sacow=$sqty*$amt2;
+            $bflo=$bqty*$amt3;
+            $prcow1+=$prcow;
+            $sacow1+=$sacow;
+            $bflo1+=$bflo;
+    }
+        $debators=$prcow1+$sacow1+$bflo1;
+
     $sdt=date("d-m-Y", strtotime($start_date));
-        $edt=date("d-m-Y", strtotime($end_date));
-$date='';
-$sn=0;
+    $edt=date("d-m-Y", strtotime($end_date));
+    $date='';
+    $sn=0;
+    $total1=0;
+    $total2=0;
 echo <<<_END
 <div class="col-lg-12">
 <div class="row">
@@ -83,6 +103,15 @@ _END;
         <th>Purchases Accounts -- Yet to be calculated</th>
         </tr>
         <tr>
+        <th>Sundry Debtors</th>
+        <th>Debit</th>
+        <th>Credit</th>
+        </tr>
+        <tr>
+        <th></th>
+        <td>$debators</td>
+        </tr>
+        <tr>
         <th>Indirect Expenses</th>
         <th>Debit</th>
         <th>Credit</th>
@@ -93,6 +122,8 @@ while($res=mysqli_fetch_assoc($r)){
     $account=getDimensionValue($db,'transactions_accounts',$res['transaction_account'],'account');
     $debit=$res['debit'];
     $credit=$res['credit'];
+    $total1+=$debit;
+    $total2+=$credit;
     $balance=$credit-$debit;
     echo <<<_END
         <tr>
