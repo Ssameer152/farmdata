@@ -53,16 +53,10 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
 
     $q="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.sCowMilk),0) as s_cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk,COALESCE(sum(t.sSahiwalMilk),0) as s_sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk,COALESCE(sum(t.sBuffaloMilk),0) as s_buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=1 then cd.qty end as sCowMilk, case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=2 then cd.qty end as sSahiwalMilk ,case when cs.milktype=3 then cd.delivered_qty end as buffalo, case when cs.milktype=3 then cd.qty end as sBuffaloMilk FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1  and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
     $r=mysqli_query($db,$q);
-    $q1="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=2 then cd.delivered_qty end as Sahiwal,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t";
-    $r1=mysqli_query($db,$q1);
-    $res1=mysqli_fetch_assoc($r1);
-    $total1=$res1['cow_milk'];
-    $total2=$res1['sahiwal_milk'];
-    $total3=$res1['buffalo_milk'];
     $sdt=date("d-m-Y", strtotime($start_date));
-        $edt=date("d-m-Y", strtotime($end_date));
-$date='';
-$sn=0;
+    $edt=date("d-m-Y", strtotime($end_date));
+    $date='';
+    $sn=0;
 
 echo <<<_END
 <h4 class="mb-4">From $sdt to $edt</h4>
@@ -83,19 +77,22 @@ echo <<<_END
         </thead>
         <tbody>
 _END;
+    $cqty=0;
+    $sqty=0;
+    $bqty=0;
     while($res=mysqli_fetch_assoc($r)){
         $sn=$sn+1;
         $cid=$res['cid'];
         $qty=$res['cow_milk'];
-        $sqty=$res['s_cow_milk'];
-        $sqty1=$res['s_sahiwal_milk'];
         $qty1=$res['sahiwal_milk'];
-        $sqty2=$res['s_buffalo_milk'];
         $qty2=$res['buffalo_milk'];
         $cust=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
         $price_cow=getDimensionValue($db,'customer',$res['cid'],'price_cow_milk');
         $price_sahiwal=getDimensionValue($db,'customer',$res['cid'],'price_sahiwal_milk');
         $price_buffalo=getDimensionValue($db,'customer',$res['cid'],'price_buffalo_milk');
+        $cqty+=$qty;
+        $sqty+=$qty1;
+        $bqty+=$qty2;
             echo <<<_END
             <tr>
             <td>$sn</td>
@@ -113,16 +110,15 @@ _END;
            <tr>
            <th>$sn</th>
            <th>Total</th>
-           <th>$total1</th>
+           <th>$cqty</th>
            <th></th>
-           <th>$total2</th>
+           <th>$sqty</th>
            <th></th>
-           <th>$total3</th>
+           <th>$bqty</th>
            <th></th>
            </tr>
 _END;
     }
-   
     else {
         echo 'No deliveries found';
     }
@@ -144,8 +140,6 @@ echo <<<_END
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js"></script>
-
-
 <script>
 $(document).ready(function() {
 $('table.display').DataTable({
