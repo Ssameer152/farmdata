@@ -202,7 +202,8 @@ _END;
     					</a>
     					<div class="dropdown-menu dropdown-menu-left animate slideIn" aria-labelledby="navbarDropdown">
     						<a class="dropdown-item" href="customer_delivery_log.php">Morning Delivery</a>
-    						<a class="dropdown-item" href="customer_delivery_log2.php">Evening Delivery</a>
+							<a class="dropdown-item" href="customer_delivery_log2.php">Evening Delivery</a>
+							<a class="dropdown-item" href="customer_delivery_preview.php">Customer Delivery Preview</a>
 							<a class="dropdown-item" href="customer_delivery_reportBeta.php">Delivery Report</a>
     					</div>
     				</li>

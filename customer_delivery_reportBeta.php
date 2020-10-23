@@ -186,7 +186,7 @@ _END;
 
     </th>
     </tr>
-    <tr><td><a href="customer_delivery_Prieve.php?start_date=$start_date&end_date=$end_date" class="btn btn-info" role="button">Prieve</a></td></tr>
+    <tr><td><a href="customer_delivery_preview.php?start_date=$start_date&end_date=$end_date" class="btn btn-info" role="button">Preview</a></td></tr>
 </table>
 </div>
 </div>

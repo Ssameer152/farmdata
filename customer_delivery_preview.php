@@ -4,50 +4,54 @@ function getDimensionValue($db, $table, $gid, $name)
 {
     $q = "SELECT * FROM $table WHERE id=$gid";
     $r = mysqli_query($db, $q);
+
     $res = mysqli_fetch_assoc($r);
+
     $value = $res[$name];
+
     return $value;
 }
 if (isset($_SESSION['user'])) {
     include_once 'db.php';
 
+
     echo <<<_END
-<html>
+    <html>
+
     <head>
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
-        <style>
-        @media print { 
-            header,#report,#btn{ 
-               display:none; 
-            } 
-            #t{
-                border: solid white !important;
-            }
-            #fnt{
-                font-size:12px;
-            }
-         } 
-         #wh{
-            width: 55px;
-            height: 35px;
-
-         }
-         </style>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+      
     </head>
-    
-    <body>    
+<body>
 _END;
-
     include_once 'nav.php';
     echo <<<_END
+   
         <div class="container">
-        <div class="row">
-        <div class="col-lg-12" id="report">
-        <h3 class="mb-4">Customer Delivery Report</h3>
-        <form action="customer_update.php" method="get">
+_END;
+    if (isset($_GET['msg']) && $_GET['msg'] != '') {
+        $msg = $_GET['msg'];
+        echo <<<_END
+    <div class="col-lg-6">
+    <div class="alert alert-primary" role="alert">
+<b>$msg</b>
+ <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        </div>
+_END;
+    }
+    echo <<<_END
+<div class="row">
+                <div class="col-lg-12" id="report">
+                    <h3 class="mb-4">Customer Delivery Preview</h3>
+                        <form action="customer_delivery_preview.php" method="get">
                         <div class="row">
                             <div class="col-lg">
                                 <input type="date" class="form-control" name="start_date">
@@ -59,158 +63,99 @@ _END;
                         <br>
                         <button type="submit" class="btn btn-primary">Show Report</button>
                     </form>
-                    </div>
+                </div>
 _END;
     if (isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date'] != '' && $_GET['end_date'] != '') {
         $start_date = mysqli_real_escape_string($db, $_GET['start_date']);
         $end_date = mysqli_real_escape_string($db, $_GET['end_date']);
-
-        $q = "SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, 
-        COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, 
-        COALESCE(sum(t.buffalo),0) as buffalo_milk from 
-        (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk , 
-        case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,case when cs.milktype=3 then cd.delivered_qty end as buffalo 
-        FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=1 and 
-         cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
-        $r = mysqli_query($db, $q);
-        $q1 = "SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=2 then cd.delivered_qty end as Sahiwal,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=1 and cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t";
-        $r1 = mysqli_query($db, $q1);
-        $res1 = mysqli_fetch_assoc($r1);
-        $total1 = $res1['cow_milk'];
-        $total2 = $res1['sahiwal_milk'];
-        $total3 = $res1['buffalo_milk'];
-        echo $sdt = date("d-m-Y", strtotime($start_date));
-        $edt = date("d-m-Y", strtotime($end_date));
-        $date = '';
-        $sn = 0;
         echo <<<_END
-<div class="col-lg-12">
-<div class="row">
-<h4 class="mb-4">From $sdt to $edt</h4>
-<button class="btn btn-primary" id="btn" style="position: absolute;right:10;" onclick="window.print()">Print Report</button>
-</div>
+                <div class="col-lg-12 mb-4">
+                    <h2 class="mb-4"></h2>
+                    <div class="table-responsive">
+                        <table id="table" class="table table-striped">
 _END;
-        if (mysqli_num_rows($r) > 0) {
+
+        echo <<<_END
+                            <!-- <h4 class="mb-4">Deliveries Left: <b> </b></h4> -->
+                            
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Milktype</th>
+                                    <th>preview Quantity</th>
+                                    <th>Delivered Quantity</th>
+                                    <th>Action</th>    
+                                </tr>
+                                </thead>
+                                <tbody>
+_END;
+        //-- - - -----Select All data  - -- - - --   
+
+        $q = "SELECT * from customer_delivery_log where cast(dod as date)>='$start_date' and cast(dod as date)<='$end_date' and is_deleted=0 order by cid";
+        $r = mysqli_query($db, $q);
+        while ($res = mysqli_fetch_assoc($r)) {
+            $id = $res['id'];
+            $cid =  $res['cid'];
+            $csid =  $res['csid'];
+            $cid_name = getDimensionValue($db, 'customer', $res['cid'], 'fname');
+            $csid_milktype = getDimensionValue($db, 'customer_subscription', $res['csid'], 'milktype');
+            $delivered_qty = $res['delivered_qty'];
+            $sub_qty = $res['qty'];
             echo <<<_END
-        <div class="row">
-        <form>
-        <table id="t" class="table table-bordered table-sm">
-        <tr>
-        <th class="text-center">
-        <h5>Morning</h5>
-        <table class="table table-bordered">
-        <tr>
-        <th>S.no</th>
-        <th>Customer</th>
-        <th>Cow</th>
-        <th>Sahiwal</th>
-        <th>Buffalo</th>
-        </tr>
-_END;
-            while ($res = mysqli_fetch_assoc($r)) {
-                $sn = $sn + 1;
-                $cid = $res['cid'];
-                $qty = $res['cow_milk'];
-                $qty1 = $res['sahiwal_milk'];
-                $qty2 = $res['buffalo_milk'];
-                $cust = getDimensionValue($db, 'customer', $res['cid'], 'fname') . ' ' . getDimensionValue($db, 'customer', $res['cid'], 'lname');
-                echo <<<_END
             <tr>
-            <td>$sn</td>
-            <td>$cust</td>
-            <td><input type="text" id="wh" name="cow-qty" value="$qty"></td>
-            <td><input type="text" id="wh" name="sahi-qty" value="$qty1"></td>
-            <td><input type="text" id="wh" name="buf-qty" value="$qty2"></td>
-            </tr>
-_END;
-            }
-            echo <<<_END
-           
-           </table>
-           </th>
-_END;
-            echo <<<_END
-           <th id="t">
-           <!-- 2nd table -->
-           <table class="table table-bordered">
-           <tr>
-           <h5 class="text-center">Evening</h5>
-           </tr>
-           <tr>
-        <th>S.no</th>
-        <th>Customer</th>
-        <th>Cow</th>
-        <th>Sahiwal</th>
-        <th>Buffalo</th>
-           </tr>
-_END;
-            $q2 = "SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk,
-             COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk 
-             from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 
-               then cd.delivered_qty end as CowMilk , case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,
-               case when cs.milktype=3 then cd.delivered_qty end as buffalo  FROM customer_delivery_log cd
-                  INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=2 and 
-                   cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t
-                    group by t.cid order by t.dod";
+            <td>$cid_name</td>
+            _END;
 
-            $r2 = mysqli_query($db, $q2);
-
-            $q3 = "SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,
-            COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, 
-            COALESCE(sum(t.buffalo),0) as buffalo_milk 
-            from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,
-            case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,case when cs.milktype=3 then cd.delivered_qty end as buffalo 
-            FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid 
-            where cs.is_active=1 and cs.delivery_time=2 and cs.is_deleted=0 and 
-            cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t";
-            $r3 = mysqli_query($db, $q3);
-            $sn1 = 0;
-            $res3 = mysqli_fetch_assoc($r3);
-            $total1 = $res3['cow_milk'];
-            $total2 = $res3['sahiwal_milk'];
-            $total3 = $res3['buffalo_milk'];
-            while ($res2 = mysqli_fetch_assoc($r2)) {
-                $sn1 = $sn1 + 1;
-                $cid = $res2['cid'];
-                $qty = $res2['cow_milk'];
-                $qty1 = $res2['sahiwal_milk'];
-                $qty2 = $res2['buffalo_milk'];
-                $cust = getDimensionValue($db, 'customer', $res2['cid'], 'fname') . ' ' . getDimensionValue($db, 'customer', $res2['cid'], 'lname');
+            if ($csid_milktype == 1) {
                 echo <<<_END
-        <tr>
-        <td>$sn1</td>
-        <td>$cust</td>
-        <td><input type="text" id="wh" name="cow-mlk-qty" value="$qty"></td>
-        <td><input type="text" id="wh" name="sahi-mlk-qty" value="$qty1"></td>
-        <td><input type="text" id="wh" name="buf-mlk-qty" value="$qty2"></td>
-        </tr>
+                     <td class="mt-4">Cow Milk</td>
+_END;
+            } else if ($csid_milktype == 2) {
+                echo <<<_END
+                    <td class="mt-4">Sahiwal Milk</td> 
+_END;
+            } elseif ($csid_milktype == 3) {
+                echo <<<_END
+                    <td class="mt-4">Buffalo Milk</td>
 _END;
             }
             echo <<<_END
-   
-        
+                    <form  action="customer_delivery_update.php" method="post">
+                    <td class="text-primary">$delivered_qty</td>
+                    <td>    
+                    <input type="text" name="dlqty" value="$delivered_qty" class="form-control">
+                    <input type="hidden" name="id_hide" value="$id" class="form-control">
+                    <input type="hidden" name="start_date" value="$start_date" class="form-control">
+                    <input type="hidden" name="end_date" value="$end_date" class="form-control">
+                    <input type="hidden" name="cid" value="$cid" class="form-control">
+                    </td>
+                        <td> 
+                        <button type="submit" name="update" class="btn btn-primary btn-block">Update</button>          
+                        </td>
+                        </form>
+                    </tr>
 _END;
-        } else {
-            echo 'No deliveries found';
         }
         echo <<<_END
-    </table>
-    
-    </th>
-    
-    </tr>
-    <tr><td colspan="2"><input type="submit" class="btn btn-info btn-block" name="update" value="update"></td></tr>
-</table>
-</form>
-</div>
-</div>
-</div>
-</div>
+                          
+                    </tbody>
+                    </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
 _END;
 
         include_once 'foot.php';
 
         echo <<<_END
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script> 
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(document).ready(function() {
+$('#table').DataTable();
+});
+</script> 
     </body>
 </html>
 _END;
