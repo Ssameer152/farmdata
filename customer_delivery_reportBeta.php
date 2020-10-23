@@ -60,14 +60,8 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
     $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
 
-    $q="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.sCowMilk),0) as s_cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk,COALESCE(sum(t.sSahiwalMilk),0) as s_sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk,COALESCE(sum(t.sBuffaloMilk),0) as s_buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=1 then cd.qty end as sCowMilk, case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=2 then cd.qty end as sSahiwalMilk ,case when cs.milktype=3 then cd.delivered_qty end as buffalo, case when cs.milktype=3 then cd.qty end as sBuffaloMilk FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=1 and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
+    $q="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk , case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=1 and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
     $r=mysqli_query($db,$q);
-    $q1="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=2 then cd.delivered_qty end as Sahiwal,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=1 and cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t";
-    $r1=mysqli_query($db,$q1);
-    $res1=mysqli_fetch_assoc($r1);
-    $total1=$res1['cow_milk'];
-    $total2=$res1['sahiwal_milk'];
-    $total3=$res1['buffalo_milk'];
     $sdt=date("d-m-Y", strtotime($start_date));
         $edt=date("d-m-Y", strtotime($end_date));
 $date='';
@@ -95,15 +89,18 @@ _END;
         <th>Buffalo</th>
         </tr>
 _END;
+    $cqty=0;
+    $sqty=0;
+    $bqty=0;
     while($res=mysqli_fetch_assoc($r)){
         $sn=$sn+1;
         $cid=$res['cid'];
         $qty=$res['cow_milk'];
-        $sqty=$res['s_cow_milk'];
-        $sqty1=$res['s_sahiwal_milk'];
         $qty1=$res['sahiwal_milk'];
-        $sqty2=$res['s_buffalo_milk'];
         $qty2=$res['buffalo_milk'];
+        $cqty+=$qty;
+        $sqty+=$qty1;
+        $bqty+=$qty2;
         $cust=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
             echo <<<_END
             <tr>
@@ -118,9 +115,9 @@ _END;
            echo <<<_END
            <tr>
            <th colspan="2">Total</th>
-           <th>$total1</th>
-           <th>$total2</th>
-           <th>$total3</th>
+           <th>$cqty</th>
+           <th>$sqty</th>
+           <th>$bqty</th>
            </tr>
            </table>
            </th>
@@ -140,24 +137,21 @@ _END;
         <th>Buffalo</th>
            </tr>
 _END;
-        $q2="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.sCowMilk),0) as s_cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk,COALESCE(sum(t.sSahiwalMilk),0) as s_sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk,COALESCE(sum(t.sBuffaloMilk),0) as s_buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=1 then cd.qty end as sCowMilk, case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=2 then cd.qty end as sSahiwalMilk ,case when cs.milktype=3 then cd.delivered_qty end as buffalo, case when cs.milktype=3 then cd.qty end as sBuffaloMilk FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=2 and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
+        $ecqty=0;
+        $esqty=0;
+        $ebqty=0;
+        $sn1=0;
+        $q2="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk , case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=2 and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
         $r2=mysqli_query($db,$q2);
-        $q3="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=2 and cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t";
-    $r3=mysqli_query($db,$q3);
-    $sn1=0;
-    $res3=mysqli_fetch_assoc($r3);
-    $total1=$res3['cow_milk'];
-    $total2=$res3['sahiwal_milk'];
-    $total3=$res3['buffalo_milk'];
     while($res2=mysqli_fetch_assoc($r2)){
         $sn1=$sn1+1;
         $cid=$res2['cid'];
-        $sqty=$res2['s_cow_milk'];
         $qty=$res2['cow_milk'];
-        $sqty1=$res2['s_sahiwal_milk'];
         $qty1=$res2['sahiwal_milk'];
-        $sqty2=$res2['s_buffalo_milk'];
         $qty2=$res2['buffalo_milk'];
+        $ecqty+=$qty;
+        $esqty+=$qty1;
+        $ebqty+=$qty2;
         $cust=getDimensionValue($db,'customer',$res2['cid'],'fname').' '.getDimensionValue($db,'customer',$res2['cid'],'lname');
         echo <<<_END
         <tr>
@@ -172,9 +166,9 @@ _END;
     echo <<<_END
     <tr>
            <th colspan="2">Total</th>
-           <th>$total1</th>
-           <th>$total2</th>
-           <th>$total3</th>
+           <th>$ecqty</th>
+           <th>$esqty</th>
+           <th>$ebqty</th>
            </tr>
         
 _END;
