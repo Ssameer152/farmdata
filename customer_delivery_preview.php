@@ -22,41 +22,38 @@ if (isset($_SESSION['user'])) {
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
-      
     </head>
-<body>
+    <body>
 _END;
     include_once 'nav.php';
     echo <<<_END
-   
         <div class="container">
+        <div class="row">
 _END;
     if (isset($_GET['msg']) && $_GET['msg'] != '') {
         $msg = $_GET['msg'];
         echo <<<_END
-    <div class="col-lg-6">
-    <div class="alert alert-primary" role="alert">
-<b>$msg</b>
- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
+        <div class="col-lg-8">
+            <div class="alert alert-success alert-dismissible" role="alert">
+                    <b>$msg</b>
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
         </div>
 _END;
     }
     echo <<<_END
-<div class="row">
+    
                 <div class="col-lg-12" id="report">
                     <h3 class="mb-4">Customer Delivery Preview</h3>
                         <form action="customer_delivery_preview.php" method="get">
                         <div class="row">
-                            <div class="col-lg">
+                            <div class="col-lg-6">
                                 <input type="date" class="form-control" name="start_date">
                             </div>
-                            <div class="col-lg">
+                            <div class="col-lg-6">
                                 <input type="date" class="form-control" name="end_date">
                             </div>
                         </div>
@@ -69,25 +66,21 @@ _END;
         $start_date = mysqli_real_escape_string($db, $_GET['start_date']);
         $end_date = mysqli_real_escape_string($db, $_GET['end_date']);
         echo <<<_END
-                <div class="col-lg-12 mb-4">
-                    <h2 class="mb-4"></h2>
+                <div class="col-lg-12 mb-4"> 
                     <div class="table-responsive">
                         <table id="table" class="table table-striped">
 _END;
-
         echo <<<_END
-                            <!-- <h4 class="mb-4">Deliveries Left: <b> </b></h4> -->
-                            
-                            <thead>
-                                <tr>
-                                    <th>Customer</th>
-                                    <th>Milktype</th>
-                                    <th>preview Quantity</th>
-                                    <th>Delivered Quantity</th>
-                                    <th>Action</th>    
-                                </tr>
+                                <thead>
+                                    <tr>
+                                        <th>Customer</th>
+                                        <th>Milktype</th>
+                                        <th>preview Quantity</th>
+                                        <th>Delivered Quantity</th>
+                                        <th>Action</th>    
+                                    </tr>
                                 </thead>
-                                <tbody>
+                        <tbody>
 _END;
         //-- - - -----Select All data  - -- - - --   
 
@@ -102,38 +95,38 @@ _END;
             $delivered_qty = $res['delivered_qty'];
             $sub_qty = $res['qty'];
             echo <<<_END
-            <tr>
-            <td>$cid_name</td>
+                <tr>
+                        <td>$cid_name</td>
             _END;
 
             if ($csid_milktype == 1) {
                 echo <<<_END
-                     <td class="mt-4">Cow Milk</td>
+                        <td class="mt-4">Cow Milk</td>
 _END;
-            } else if ($csid_milktype == 2) {
+            } elseif ($csid_milktype == 2) {
                 echo <<<_END
-                    <td class="mt-4">Sahiwal Milk</td> 
+                        <td class="mt-4">Sahiwal Milk</td> 
 _END;
             } elseif ($csid_milktype == 3) {
                 echo <<<_END
-                    <td class="mt-4">Buffalo Milk</td>
+                        <td class="mt-4">Buffalo Milk</td>
 _END;
             }
             echo <<<_END
-                    <form  action="customer_delivery_update.php" method="post">
-                    <td class="text-primary">$delivered_qty</td>
-                    <td>    
-                    <input type="text" name="dlqty" value="$delivered_qty" class="form-control">
-                    <input type="hidden" name="id_hide" value="$id" class="form-control">
-                    <input type="hidden" name="start_date" value="$start_date" class="form-control">
-                    <input type="hidden" name="end_date" value="$end_date" class="form-control">
-                    <input type="hidden" name="cid" value="$cid" class="form-control">
-                    </td>
-                        <td> 
-                        <button type="submit" name="update" class="btn btn-primary btn-block">Update</button>          
-                        </td>
+                        <form action="customer_delivery_update.php" method="post">
+                            <td class="text-primary">$delivered_qty</td>
+                            <td>    
+                            <input type="text" name="dlqty" value="$delivered_qty" class="form-control">
+                            <input type="hidden" name="id_hide" value="$id" class="form-control">
+                            <input type="hidden" name="start_date" value="$start_date" class="form-control">
+                            <input type="hidden" name="end_date" value="$end_date" class="form-control">
+                            <input type="hidden" name="cid" value="$cid" class="form-control">
+                            </td>
+                            <td> 
+                            <button type="submit" name="update" class="btn  btn-outline-success btn-block">Update</button>          
+                            </td>
                         </form>
-                    </tr>
+                </tr>
 _END;
         }
         echo <<<_END
@@ -149,14 +142,14 @@ _END;
         include_once 'foot.php';
 
         echo <<<_END
-<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script> 
-<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
-<script>
-$(document).ready(function() {
-$('#table').DataTable();
-});
-</script> 
-    </body>
+        <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+        <script>
+        $(document).ready(function() {
+        $('#table').DataTable();
+        });
+        </script>
+</body>
 </html>
 _END;
     }

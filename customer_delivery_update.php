@@ -35,16 +35,19 @@ if (isset($_SESSION['user'])) {
         if ($a == 1) {
             echo <<<_END
         <meta http-equiv='refresh' content='0;url=customer_delivery_preview.php?start_date=$start_date&end_date=$end_date&msg=Cow Milk Delivery Quantity of $b has been $msg'>
+        
 _END;
         } elseif ($a == 2) {
             echo <<<_END
-        <meta http-equiv='refresh' content='0;url=customer_delivery_preview.php?start_date=$start_date&end_date=$end_date&msg=Sahiwal Milk Delivery Quantity of $b has been $msg'>
+            <meta http-equiv='refresh' content='0;url=customer_delivery_preview.php?start_date=$start_date&end_date=$end_date&msg=Sahiwal Milk Delivery Quantity of $b has been $msg'>
 _END;
         } elseif ($a == 3) {
             echo <<<_END
-    <meta http-equiv='refresh' content='0;url=customer_delivery_preview.php?start_date=$start_date&end_date=$end_date&msg=Buffalo Milk Delivery Quantity of $b has been $msg'>
+            <meta http-equiv='refresh' content='0;url=customer_delivery_preview.php?start_date=$start_date&end_date=$end_date&msg=Buffalo Milk Delivery Quantity of $b has been $msg'>
 _END;
         }
+        //rawurldecode ( string $u )
+        // $shorturl = shortenurl();
     }
 } else {
     $msg = "Please Login";
