@@ -108,15 +108,17 @@ _END;
             <td>$cid_name</td>
             _END;
 
-            if ($csid_milktype == 1) {
+            if($csid_milktype == 1) {
                 echo <<<_END
                      <td class="mt-4">Cow Milk</td>
 _END;
-            } else if ($csid_milktype == 2) {
+            } 
+            elseif($csid_milktype == 2) {
                 echo <<<_END
                     <td class="mt-4">Sahiwal Milk</td> 
 _END;
-            } elseif ($csid_milktype == 3) {
+            } 
+            elseif($csid_milktype == 3) {
                 echo <<<_END
                     <td class="mt-4">Buffalo Milk</td>
 _END;
