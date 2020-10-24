@@ -17,12 +17,18 @@ if (isset($_SESSION['user'])) {
     <html>
         <head>
             <title>FarmDB</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">     
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            <link rel="stylesheet" href="css/bootstrap.min.css"/>
-            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
             <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>   
+            
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
+           
+            
+           
+             
         </head>
 _END;
     include_once 'nav.php';
@@ -65,7 +71,7 @@ _END;
         $start_date = mysqli_real_escape_string($db, $_GET['start_date']);
         $end_date = mysqli_real_escape_string($db, $_GET['end_date']);
         echo <<<_END
-                <div class="col-lg-12 mb-4"> 
+                <div class="col-lg-12 mb-4">
                     <div class="table-responsive">
                         <table id="table" class="table table-striped">
 _END;
@@ -76,7 +82,7 @@ _END;
                                         <th>Milktype</th>
                                         <th>preview Quantity</th>
                                         <th>Delivered Quantity</th>
-                                        <th>Action</th>    
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                         <tbody>
@@ -140,6 +146,11 @@ _END;
 
         include_once 'foot.php';
         echo <<<_END
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
         <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script> 
         <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
         <script>
@@ -147,6 +158,8 @@ _END;
         $('#table').DataTable();
         });
         </script>
+        
+
 </body>
 </html>
 _END;
