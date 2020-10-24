@@ -73,16 +73,10 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
 
     $q="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.sCowMilk),0) as s_cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk,COALESCE(sum(t.sSahiwalMilk),0) as s_sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk,COALESCE(sum(t.sBuffaloMilk),0) as s_buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=1 then cd.qty end as sCowMilk, case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=2 then cd.qty end as sSahiwalMilk ,case when cs.milktype=3 then cd.delivered_qty end as buffalo, case when cs.milktype=3 then cd.qty end as sBuffaloMilk FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=1 and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
     $r=mysqli_query($db,$q);
-    $q1="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=2 then cd.delivered_qty end as Sahiwal,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=1 and cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t";
-    $r1=mysqli_query($db,$q1);
-    $res1=mysqli_fetch_assoc($r1);
-    $total1=$res1['cow_milk'];
-    $total2=$res1['sahiwal_milk'];
-    $total3=$res1['buffalo_milk'];
     $sdt=date("d-m-Y", strtotime($start_date));
-        $edt=date("d-m-Y", strtotime($end_date));
-$date='';
-$sn=0;
+    $edt=date("d-m-Y", strtotime($end_date));
+    $date='';
+    $sn=0;
 echo <<<_END
 <div class="col-lg-12">
 <div class="row">
@@ -127,6 +121,9 @@ _END;
         </th>
         </tr>
 _END;
+    $t1=0;
+    $t2=0;
+    $t3=0;
     while($res=mysqli_fetch_assoc($r)){
         $sn=$sn+1;
         $cid=$res['cid'];
@@ -136,8 +133,10 @@ _END;
         $qty1=$res['sahiwal_milk'];
         $sqty2=$res['s_buffalo_milk'];
         $qty2=$res['buffalo_milk'];
+        $t1+=$qty;
+        $t2+=$qty1;
+        $t3+=$qty2;
         $cust=getDimensionValue($db,'customer',$res['cid'],'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
-            
             echo <<<_END
             <tr>
             <td id="fnt">$sn</td>
@@ -202,9 +201,9 @@ _END;
            echo <<<_END
            <tr>
            <th colspan="2">Total</th>
-           <th id="fnt" class="text-right">$total1</th>
-           <th id="fnt" class="text-right">$total2</th>
-           <th id="fnt" class="text-right">$total3</th>
+           <th id="fnt" class="text-right">$t1</th>
+           <th id="fnt" class="text-right">$t2</th>
+           <th id="fnt" class="text-right">$t3</th>
            </tr>
            </table>
            </th>
@@ -244,16 +243,13 @@ _END;
         </th>
            </tr>
 _END;
+        $t4=0;
+        $t5=0;
+        $t6=0;
         $q2="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.sCowMilk),0) as s_cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk,COALESCE(sum(t.sSahiwalMilk),0) as s_sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk,COALESCE(sum(t.sBuffaloMilk),0) as s_buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=1 then cd.qty end as sCowMilk, case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=2 then cd.qty end as sSahiwalMilk ,case when cs.milktype=3 then cd.delivered_qty end as buffalo, case when cs.milktype=3 then cd.qty end as sBuffaloMilk FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=2 and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
         $r2=mysqli_query($db,$q2);
-        $q3="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk, COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk ,case when cs.milktype=2 then cd.delivered_qty end as Sahiwal ,case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1 and cs.delivery_time=2 and cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t";
-    $r3=mysqli_query($db,$q3);
-    $res3=mysqli_fetch_assoc($r3);
-    $total1=$res3['cow_milk'];
-    $total2=$res3['sahiwal_milk'];
-    $total3=$res3['buffalo_milk'];
-    $sn1=0;
-    while($res2=mysqli_fetch_assoc($r2)){
+        $sn1=0;
+        while($res2=mysqli_fetch_assoc($r2)){
         $sn1=$sn1+1;
         $cid=$res2['cid'];
         $sqty=$res2['s_cow_milk'];
@@ -262,6 +258,9 @@ _END;
         $qty1=$res2['sahiwal_milk'];
         $sqty2=$res2['s_buffalo_milk'];
         $qty2=$res2['buffalo_milk'];
+        $t4+=$qty;
+        $t5+=$qty1;
+        $t6+=$qty2;
         $cust=getDimensionValue($db,'customer',$res2['cid'],'fname').' '.getDimensionValue($db,'customer',$res2['cid'],'lname');
         echo <<<_END
         <tr>
@@ -327,9 +326,9 @@ _END;
     echo <<<_END
     <tr>
            <th colspan="2">Total</th>
-           <th id="fnt" class="text-right">$total1</th>
-           <th id="fnt" class="text-right">$total2</th>
-           <th id="fnt" class="text-right">$total3</th>
+           <th id="fnt" class="text-right">$t4</th>
+           <th id="fnt" class="text-right">$t5</th>
+           <th id="fnt" class="text-right">$t6</th>
            </tr>
 _END;
     }

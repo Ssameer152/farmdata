@@ -131,21 +131,18 @@ $r1=mysqli_query($db,$q1);
 $q4 = "SELECT * from log_resource lr inner join people pe on lr.person=pe.id WHERE lr.is_deleted=0 and logid='$logid'";
 $r4 = mysqli_query($db,$q4);
     $row4 = mysqli_num_rows($r4);
-    $q7="SELECT SUM(lr.qty) as total,r.unit as unit from log_resource lr inner join resources r on r.id=lr.resourceid WHERE lr.is_deleted=0 and lr.logid IN (SELECT id FROM logs  WHERE cast(doe as date) ='$d' and activity='$activity') group by lr.logid";
-    $r7=mysqli_query($db,$q7);
-    if(mysqli_num_rows($r7)>0){
-$re7=mysqli_fetch_assoc($r7);
-$total=$re7['total'].''.$re7['unit'];
-    }
-    
+    $t=0;
     echo '<td><h5>Resources</h5>';
     if(mysqli_num_rows($r4)>0)
     {
         echo '<table border="0" class="table-striped table-responsive" cellspacing="0"><tr><th>Person</th><th>Resource</th><th>Qty</th></tr>';
         while($re4 = mysqli_fetch_assoc($r4)){
             $resourceId = getDimensionValue($db,'resources',$re4['resourceid'],'resourcename');
-            $qty = $re4['qty'] . '' . getDimensionValue($db,'resources',$re4['resourceid'],'unit');
+            $qty=$re4['qty'];
+            $unit=getDimensionValue($db,'resources',$re4['resourceid'],'unit');
+            // $qty = $re4['qty'] . '' . getDimensionValue($db,'resources',$re4['resourceid'],'unit');
             $pname=$re4['fname'] . ' ' . $re4['lname'];
+            $t+=$qty;
             echo <<<_END
      <tr>
         <td style="white-space:nowrap;">$pname</td>
@@ -157,7 +154,7 @@ _END;
 
         echo <<<_END
         <tr>
-        <td><b>Total:$total</b></td>
+        <td><b>Total:$t $unit</b></td>
         </tr>
         <tr>
         <th>Resource Total</th>
@@ -184,22 +181,18 @@ _END;
     
     $q5 = "SELECT * from log_output lo inner join people pe on lo.person=pe.id WHERE lo.is_deleted=0 and logid='$logid'";
     $r5 = mysqli_query($db,$q5);
-    $q8="SELECT SUM(lo.qty) as total ,r.unit as unit from log_output lo inner join resources r on r.id=lo.resourceid WHERE lo.is_deleted=0 and lo.logid IN (SELECT id FROM logs  WHERE cast(doe as date) ='$d' and activity='$activity') group by lo.logid";
-    $r8=mysqli_query($db,$q8);
-    if(mysqli_num_rows($r8)){
-    $re8=mysqli_fetch_assoc($r8);
-    $total=$re8['total'].''. $re8['unit'];
-    }
-
     echo '<td><h5>Output</h5>';
-
+    $t2=0;
     if(mysqli_num_rows($r5)>0)
     {
         echo '<table border="0" class="table-striped table-responsive" cellspacing="0"><tr><th>Person</th><th>Resource</th><th>Qty</th></tr>';
         while($re5 = mysqli_fetch_assoc($r5)){
             $resourceId = getDimensionValue($db,'resources',$re5['resourceid'],'resourcename');
-            $qty = $re5['qty'] . '' . getDimensionValue($db,'resources',$re5['resourceid'],'unit');
+            $qty=$re5['qty'];
+           // $qty = $re5['qty'] . '' . getDimensionValue($db,'resources',$re5['resourceid'],'unit');
             $pname=$re5['fname'] . ' ' . $re5['lname'];
+            $unit=getDimensionValue($db,'resources',$re5['resourceid'],'unit');
+            $t2+=$qty;
             echo <<<_END
      <tr>
         <td>$pname</td>
@@ -210,7 +203,7 @@ _END;
         }
         echo <<<_END
         <tr>
-        <td><b>Total:$total</b></td>
+        <td><b>Total:$t2 $unit</b></td>
         </tr>
         <tr>
         <th>Total Output</th>
@@ -242,21 +235,17 @@ _END;
 
     $q6 = "SELECT * from log_assets la inner join people pe on la.person=pe.id WHERE la.is_deleted=0 and logid='$logid'";
     $r6 = mysqli_query($db,$q6);
-    $q9="SELECT SUM(usage_time) as total from log_assets WHERE is_deleted=0 and logid IN (SELECT id FROM logs  WHERE cast(doe as date) ='$d' and activity='$activity') group by logid";
-    $r9=mysqli_query($db,$q9);
-    if(mysqli_num_rows($r9)){
-    $re9=mysqli_fetch_assoc($r9);
-    $total=$re9['total'];
-    }
+    
     
     echo '<td><h5>Assets</h5>';
-
+    $t3=0;
     if(mysqli_num_rows($r6)>0)
     {
         echo '<table border="0" class="table-striped table-responsive" cellspacing="0"><tr><th>Person</th><th>Resource</th><th>Qty</th></tr>';
         while($re6 = mysqli_fetch_assoc($r6)){
             $resourceId = getDimensionValue($db,'assets',$re6['assetid'],'assetname');
             $qty = $re6['usage_time'];
+            $t3+=$qty;
             $pname=$re6['fname']. ' ' . $re6['lname'];
             echo <<<_END
      <tr>
@@ -268,7 +257,7 @@ _END;
         }
         echo <<<_END
         <tr>
-        <td><b>Total:</b>$total</td>
+        <td><b>Total:</b>$t3</td>
         </tr>
 _END;
         echo '</table>';

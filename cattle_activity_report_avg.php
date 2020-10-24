@@ -177,17 +177,15 @@ elseif(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_da
     
     $q = "SELECT t.id,t.cid,t.caid,cast(t.doa as date) as d,COALESCE(sum(t.milkCollectionMorning),0) as milk_collection_morning, COALESCE(sum(t.milkCollectionEvening),0) as milk_collection_evening,COALESCE(sum(t.bhusaMorning),0) as bhusa_morning,COALESCE(sum(t.bhusaEvening),0) as bhusa_evening,COALESCE(sum(t.charaMorning),0) as chara_morning,COALESCE(sum(t.charaEvening),0) as chara_evening,COALESCE(sum(t.danaMorning),0) as dana_morning,COALESCE(sum(t.danaEvening),0) as dana_evening from (SELECT id,cid,caid,doa,case when caid=1 then activity_value end as milkCollectionMorning ,case when caid=10 then activity_value end as milkCollectionEvening,case WHEN caid=7 THEN activity_value end as bhusaMorning,case WHEN caid=11 then activity_value end as bhusaEvening,case WHEN caid=8 then activity_value end as charaMorning,case when caid=12 then activity_value end as charaEvening,case when caid=9 then activity_value end as danaMorning,case when caid=13 then activity_value end as danaEvening  FROM cattle_activity_log where cast(doa as date)>='$start_date' and cast(doa as date)<='$end_date'  and is_deleted=0 and cid in(66,67,71,72,77,78,79,80,81,82)) as t  group by t.cid ORDER by doa";
     $r=mysqli_query($db,$q);
-    $q1="SELECT t.id,t.cid,t.caid,cast(t.doa as date),COALESCE(sum(t.milkCollectionMorning),0) as milk_collection_morning, COALESCE(sum(t.milkCollectionEvening),0) as milk_collection_evening,COALESCE(sum(t.bhusaMorning),0) as bhusa_morning,COALESCE(sum(t.bhusaEvening),0) as bhusa_evening,COALESCE(sum(t.charaMorning),0) as chara_morning,COALESCE(sum(t.charaEvening),0) as chara_evening,COALESCE(sum(t.danaMorning),0) as dana_morning,COALESCE(sum(t.danaEvening),0) as dana_evening from (SELECT id,cid,caid,doa,case when caid=1 then activity_value end as milkCollectionMorning ,case when caid=10 then activity_value end as milkCollectionEvening,case WHEN caid=7 THEN activity_value end as bhusaMorning,case WHEN caid=11 then activity_value end as bhusaEvening,case WHEN caid=8 then activity_value end as charaMorning,case when caid=12 then activity_value end as charaEvening,case when caid=9 then activity_value end as danaMorning,case when caid=13 then activity_value end as danaEvening  FROM cattle_activity_log where cast(doa as date)>='$start_date' and cast(doa as date)<='$end_date'  and is_deleted=0 and cid in (66,67,71,72,77,78,79,80,81,82)) as t  ORDER by doa";
-    $r1=mysqli_query($db,$q1);
-    $res1=mysqli_fetch_assoc($r1);
-    $total1=$res1['milk_collection_morning'];
-    $total2=$res1['milk_collection_evening'];
-    $total3=$res1['bhusa_morning'];
-    $total4=$res1['bhusa_evening'];
-    $total5=$res1['chara_morning'];
-    $total6=$res1['chara_evening'];
-    $total7=$res1['dana_morning'];
-    $total8=$res1['dana_evening'];
+    
+    $total1=0;
+    $total2=0;
+    $total3=0;
+    $total4=0;
+    $total5=0;
+    $total6=0;
+    $total7=0;
+    $total8=0;
     $date='';
     $sdate=date("d-m-Y", strtotime($start_date));
     $edate=date("d-m-Y", strtotime($end_date));
@@ -230,6 +228,14 @@ _END;
             $cattle_activity_value6=$res['bhusa_evening'];
             $cattle_activity_value7=$res['chara_evening'];
             $cattle_activity_value8=$res['dana_evening'];
+            $total1+=$cattle_activity_value1;
+            $total2+=$cattle_activity_value2;
+            $total3+=$cattle_activity_value3;
+            $total4+=$cattle_activity_value4;
+            $total5+=$cattle_activity_value5;
+            $total6+=$cattle_activity_value6;
+            $total7+=$cattle_activity_value7;
+            $total8+=$cattle_activity_value8;
             $cattle_activity=getDimensionValue($db,'cattle_activity',$res['caid'],'name');
             if($d!=$date){
                 echo <<<_END
