@@ -37,12 +37,10 @@ _END;
     if (isset($_GET['msg']) && $_GET['msg'] != '') {
         $msg = $_GET['msg'];
         echo <<<_END
-    <div class="col-lg-6">
-    <div class="alert alert-primary" role="alert">
-    <b>$msg</b>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
+        <div class="col-lg-8">
+        <div class="alert alert-success alert-dismissible" role="alert">
+                <b>$msg</b>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
         </div>
         </div>
 _END;
@@ -134,7 +132,7 @@ _END;
                     <input type="hidden" name="cid" value="$cid" class="form-control">
                     </td>
                         <td> 
-                        <button type="submit" name="update" class="btn btn-primary btn-block">Update</button>          
+                        <button type="submit" name="update" class="btn  btn-outline-primary btn-block">Update</button>          
                         </td>
                         </form>
                     </tr>

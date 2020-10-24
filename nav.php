@@ -155,6 +155,7 @@ _END;
 							<a class="dropdown-item" href="customer_subscription_report.php">Customer Subscription Report</a>
 							<a class="dropdown-item" href="customer_delivery_preview.php">Customer Delivery Preview</a>
 							<a class="dropdown-item" href="customer_stmt.php">Customer Statement</a>
+							<a class="dropdown-item" href="customer_summary.php">Customer Summary</a>
 							<a class="dropdown-item" href="customer_total.php">Customers Total</a>
 							<a class="dropdown-item" href="ledger_account.php">Ledger account</a>
     					</div>
