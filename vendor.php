@@ -82,12 +82,12 @@ _END;
 _END;
                         if($db_name==''){
                             echo <<<_END
-                            <input type="text" name="vname" class="form-control">
+                            <input type="text" name="vname" class="form-control" required />
 _END;
                         }
                         else{
                             echo <<<_END
-                            <input type="text" name="vname" value="$db_name" class="form-control">
+                            <input type="text" name="vname" value="$db_name" class="form-control" required />
 _END;
                         }
                         echo <<<_END
