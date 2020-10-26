@@ -106,7 +106,7 @@ _END;
             <tr>
             <td>$sn</td>
             <td>$cid_name</td>
-            _END;
+_END;
 
             if($csid_milktype == 1) {
                 echo <<<_END
