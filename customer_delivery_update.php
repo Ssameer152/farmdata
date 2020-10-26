@@ -46,8 +46,6 @@ _END;
             <meta http-equiv='refresh' content='0;url=customer_delivery_preview.php?start_date=$start_date&end_date=$end_date&msg=Buffalo Milk Delivery Quantity of $b has been $msg'>
 _END;
         }
-        //rawurldecode ( string $u )
-        // $shorturl = shortenurl();
     }
 } else {
     $msg = "Please Login";

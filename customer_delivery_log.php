@@ -29,8 +29,8 @@ if (isset($_SESSION['user'])) {
                 // it will wait for 5 sec. and then will fire
                 // $("#successMessage").hide() function
                 setTimeout(function() {
-                    $("#successMessage").hide('blind', {}, 500)
-                }, 5000);
+                    $("#successMessage").hide('blind', {}, 200)
+                }, 2000);
             });
         </script>
     </head>
@@ -43,14 +43,14 @@ if (isset($_SESSION['user'])) {
             if (isset($_GET['msg']) && $_GET['msg'] != '') {
                 $msg = $_GET['msg'];
                 echo <<<_END
-<div class="col-lg-6">
-    <div class="alert alert-primary" id ="successMessage" role="alert">
-$msg
-<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-</div>
+            <div class="col-lg-6">
+            <div class="alert alert-primary" id ="successMessage" role="alert">
+            $msg
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            </div>
 _END;
             }
             ?>
@@ -97,7 +97,7 @@ _END;
 
                                 if ($milktype == 1) {
                                     echo <<<_END
-                     <td class="mt-4">Cow Milk</td>
+                    <td class="mt-4">Cow Milk</td>
 _END;
                                 } else if ($milktype == 2) {
                                     echo <<<_END
@@ -114,11 +114,11 @@ _END;
                     <td>    
                     <input type="text" name="dlqty" value="$qty" class="form-control">
                     </td>
-                    <input type="hidden" name="qty" value="$qty">
+                        <input type="hidden" name="qty" value="$qty">
                         <input type="hidden" name="csid" value="$csid">
                         <input type="hidden" name="cid" value="$cid"> 
                         <input type="hidden" name="returnpage" value="customer_delivery_log">
-                        <td>        
+                    <td>        
                         <button onclick="return confirm('Do you want to mark delivered?')" type="submit" class="btn btn-primary">Mark delivered</button>
                         </td>
                     </form>
