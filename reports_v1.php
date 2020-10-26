@@ -140,6 +140,7 @@ $date = '';
 while($res = mysqli_fetch_assoc($r)){
     $logid = $res['id'];
     $d = $res['d'];
+    $d=date("d-m-Y",strtotime($d));
     $activity = $res['activity'];
     $people = $res['people'];
     
@@ -305,6 +306,7 @@ $date = '';
 while($res = mysqli_fetch_assoc($r)){
     $logid = $res['id'];
     $d = $res['d'];
+    $d=date("d-m-Y",strtotime($d));
     $activity = $res['activity'];
     $people = $res['people'];
     

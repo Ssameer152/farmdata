@@ -22,6 +22,8 @@ if (isset($_SESSION['user'])) {
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
@@ -37,12 +39,10 @@ _END;
     if (isset($_GET['msg']) && $_GET['msg'] != '') {
         $msg = $_GET['msg'];
         echo <<<_END
-    <div class="col-lg-6">
-    <div class="alert alert-primary" role="alert">
-    <b>$msg</b>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
+        <div class="col-lg-8">
+        <div class="alert alert-success alert-dismissible" role="alert">
+                <b>$msg</b>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
         </div>
         </div>
 _END;
@@ -108,15 +108,17 @@ _END;
             <td>$cid_name</td>
             _END;
 
-            if ($csid_milktype == 1) {
+            if($csid_milktype == 1) {
                 echo <<<_END
                      <td class="mt-4">Cow Milk</td>
 _END;
-            } else if ($csid_milktype == 2) {
+            } 
+            elseif($csid_milktype == 2) {
                 echo <<<_END
                     <td class="mt-4">Sahiwal Milk</td> 
 _END;
-            } elseif ($csid_milktype == 3) {
+            } 
+            elseif($csid_milktype == 3) {
                 echo <<<_END
                     <td class="mt-4">Buffalo Milk</td>
 _END;
@@ -132,7 +134,7 @@ _END;
                     <input type="hidden" name="cid" value="$cid" class="form-control">
                     </td>
                         <td> 
-                        <button type="submit" name="update" class="btn btn-primary btn-block">Update</button>          
+                        <button type="submit" name="update" class="btn  btn-outline-primary btn-block">Update</button>          
                         </td>
                         </form>
                     </tr>
@@ -151,6 +153,9 @@ _END;
         include_once 'foot.php';
 
         echo <<<_END
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script> 
 <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script>

@@ -106,25 +106,25 @@ _END;
 _END;
         }
     }
-    echo <<<_END
-        
-_END;
+   
 }
 else {
     echo 'No items';
 }
     
-        
+echo <<<_END
+</tbody>
+</table>
+</div>
+</div>
+</div>  
+_END;   
    
 include_once 'foot.php';
     echo <<<_END
-            </tbody>
-        </table>
-        </div>
-        </div>
-        </div>
-        </body>
-        </html>
+            
+    </body>
+    </html>
 _END;
 }
 else

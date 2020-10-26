@@ -32,7 +32,7 @@ if(isset($_GET['msg']) && $_GET['msg']!=''){
     $msg = $_GET['msg'];
     echo<<<_END
 <div class="col-lg-6">
-    <div class="alert alert-primary" role="alert">
+    <div class="alert alert-primary" id ="successMessage" role="alert">
 $msg
 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">&times;</span>
