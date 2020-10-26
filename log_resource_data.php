@@ -13,9 +13,11 @@ function getDimensionValue($db,$table,$gid,$name){
 if(isset($_SESSION['user'])){
     include_once 'db.php';
     echo <<<_END
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>FarmDB</title>
+        <meta name="description" content="For quick entry">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>        
         <link rel="stylesheet" href="css/bootstrap.min.css" />

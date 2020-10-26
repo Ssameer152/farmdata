@@ -40,10 +40,10 @@ include_once 'nav.php';
         <form action="trial_balance.php" method="get">
                         <div class="row">
                             <div class="col-lg">
-                                <input type="date" class="form-control" name="start_date">
+                                <input type="date" class="form-control" name="start_date" placeholder="Start Date">
                             </div>
                             <div class="col-lg">
-                                <input type="date" class="form-control" name="end_date">
+                                <input type="date" class="form-control" name="end_date" placeholder="End Date">
                             </div>
                         </div>
                         <br>
@@ -56,7 +56,7 @@ if(isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date']
 {
     $start_date = mysqli_real_escape_string($db,$_GET['start_date']);
     $end_date = mysqli_real_escape_string($db,$_GET['end_date']);
-    $q="SELECT sum(amt_paid) as debit,sum(amt_received) as credit,particular,transaction_account,transaction_category,cast(dot as date) as d from transactions where is_deleted=0 and cast(dot as date)>='$start_date' and cast(dot as date)<='$end_date' group by transaction_account order by cast(dot as date)";
+    $q="SELECT sum(amt_paid) as debit,sum(amt_received) as credit,particular,transaction_account,transaction_category,cast(dot as date) as d from transactions where is_deleted=0 and cast(dot as date)>='$start_date' and cast(dot as date)<='$end_date' group by transaction_account order by dot";
     $r=mysqli_query($db,$q);
     $q1="SELECT t.cid,t.delivery_time,cast(t.dod as date) as d,COALESCE(sum(t.CowMilk),0) as cow_milk, COALESCE(sum(t.Sahiwal),0) as sahiwal_milk,COALESCE(sum(t.buffalo),0) as buffalo_milk from (SELECT cd.id,cd.cid,cs.delivery_time,cd.dod,case when cs.milktype=1 then cd.delivered_qty end as CowMilk , case when cs.milktype=2 then cd.delivered_qty end as Sahiwal , case when cs.milktype=3 then cd.delivered_qty end as buffalo FROM customer_delivery_log cd INNER JOIN customer_subscription cs on cs.id=cd.csid where cs.is_active=1  and  cs.is_deleted=0 and cast(cd.dod as date)>='$start_date' and cast(cd.dod as date)<='$end_date') as t group by t.cid order by t.dod";
     $r1=mysqli_query($db,$q1);
@@ -94,7 +94,6 @@ echo <<<_END
 <button class="btn btn-primary" id="btn" style="position: absolute;right:10;" onclick="window.print()">Print Report</button>
 </div>
 _END;
-    if(mysqli_num_rows($r)>0){
         echo <<<_END
         <div class="row">
         <table class="table table-bordered table-md">
@@ -136,14 +135,24 @@ while($res=mysqli_fetch_assoc($r)){
         </tr>
 _END;
 }
-    }
+
+    $grtotal1=$total1+$debators;
+    $grtotal1=number_format((float)$grtotal1, 2, '.', '');
+    $grtotal2=$total2;
+    $grtotal2=number_format((float)$grtotal2, 2, '.', '');
     echo <<<_END
     <tr>
+    <th>Total</th>
+    <td>$total1</td>
+    <td>$total2</td>
+    </tr>
+    <tr>
     <th>Grand Total</th>
-    <th>$total1</th>
-    <th>$total2</th>
+    <th>$grtotal1</th>
+    <th>$grtotal2</th>
     </tr>
 _END;
+
     echo <<<_END
     </table>
 </div>
