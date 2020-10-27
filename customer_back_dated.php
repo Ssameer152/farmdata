@@ -70,7 +70,6 @@ _END;
                         <tbody>
 _END;
     
-
     $q = "SELECT * from customer_subscription where is_deleted=0 order by cid";
     $r = mysqli_query($db, $q);
     while ($res = mysqli_fetch_assoc($r)) {
@@ -126,7 +125,7 @@ _END;
                             <input type="hidden" name="cid" value="$cid" class="form-control">
                             </td>
                             <td>
-                            <input type="submit" name="add" value="Add Back Dated" class="btn btn-outline-success btn-block">      
+                            <input type="submit" name="add" value="Add Back Dated" class="btn btn-outline-dark btn-block">      
                             </td>
                             </form>
                 </tr>
@@ -160,7 +159,8 @@ _END;
 </body>
 </html>
 _END;
-} else {
+} 
+else {
     $msg = "Please Login";
     echo <<<_END
     <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
