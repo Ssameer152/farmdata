@@ -109,7 +109,7 @@ _END;
 _END;
                                 }
                                 echo <<<_END
-                    <form  action="customer_delivery_log_ap.php"  method="post">
+                    <form  action="customer_delivery_log_ap.php" method="post">
                     <td class="text-primary">$qty</td>
                     <td>    
                     <input type="text" name="dlqty" value="$qty" class="form-control">

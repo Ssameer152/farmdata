@@ -45,37 +45,22 @@ _END;
         </div>
 _END;
     }
+    if (!isset($_GET['start_date'])) {
+        $start_date = NULL; //or use a "valuestring"
+    } elseif (isset($_GET['start_date'])) {
+        $start_date = $_GET['start_date'];
+    }
     echo <<<_END
-    
-                <div class="col-lg-12" id="report">
-                    <h3 class="mb-4">Add Customer Back Dated Delivery </h3>
-                        <form action="customer_back_dated.php" method="get">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <input type="date" class="form-control" name="start_date">
-                            </div>
-                            <div class="col-lg-6">
-                                <input type="date" class="form-control" name="end_date">
-                            </div>
-                        </div>
-                        <br>
-                        <button type="submit" class="btn btn-primary">Show Report</button>
-                    </form>
-                </div>
-_END;
-    if (isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date'] != '' && $_GET['end_date'] != '') {
-        $start_date = mysqli_real_escape_string($db, $_GET['start_date']);
-        $end_date = mysqli_real_escape_string($db, $_GET['end_date']);
-        echo <<<_END
                 <div class="col-lg-12 mb-4">
                     <div class="table-responsive">
                    
                         <table id="table" class="table table-striped">
 _END;
-        echo <<<_END
+    echo <<<_END
                                 <thead>
                                     <tr>
                                         <th>Date</th>
+                                        <th>Time</th>   
                                         <th>Customer</th>
                                         <th>Milktype</th>
                                         <th>Subscription Quantity</th>
@@ -85,42 +70,56 @@ _END;
                                 </thead>
                         <tbody>
 _END;
-        //-- - - -----Select All data  - -- - - --   
+    //-- - - -----Select All data  - -- - - --   
 
-        $q = "SELECT * from customer_delivery_log where cast(dod as date)>='$start_date' and cast(dod as date)<='$end_date' and is_deleted=0 order by cid";
-        $r = mysqli_query($db, $q);
-        while ($res = mysqli_fetch_assoc($r)) {
-            $id = $res['id'];
-            $cid =  $res['cid'];
-            $cid_name = getDimensionValue($db, 'customer', $res['cid'], 'fname');
-            $milktype =  getDimensionValue($db, 'customer_subscription', $res['csid'], 'milktype');
-            $qty = $res['qty'];
-            $delivered_qty = $res['delivered_qty'];
-            echo <<<_END
+    $q = "SELECT * from customer_subscription where is_deleted=0 order by cid";
+    $r = mysqli_query($db, $q);
+    while ($res = mysqli_fetch_assoc($r)) {
+        $id = $res['id'];
+        $cid =  $res['cid'];
+        $cid_name = getDimensionValue($db, 'customer', $res['cid'], 'fname');
+        $milktype =  $res['milktype'];
+        $qty = $res['qty'];
+        $delivery_time = $res['delivery_time'];
+        //$delivered_qty = $res['delivered_qty'];
+        echo <<<_END
                 <tr>
                 <form action="customer_back_dated_ap.php" method="post">
-                <td style="width:7%; height:20%;"><input type="date" class="form-control" name="sDate" ></td>
+                <td style="width:7%; height:20%;"><input type="date" class="form-control" value="$start_date" name="sDate" ></td>
+                _END;
+
+        if ($delivery_time == 1) {
+            echo <<<_END
+                        <td class="mt-4">Morning</td>
+_END;
+        } elseif ($delivery_time == 2) {
+            echo <<<_END
+                <td class="mt-4">Evening</td>
+_END;
+        }
+        echo <<<_END
                         <td>$cid_name</td>
  _END;
 
-            if ($milktype == 1) {
-                echo <<<_END
+        if ($milktype == 1) {
+            echo <<<_END
                         <td class="mt-4">Cow Milk</td>
 _END;
-            } elseif ($milktype == 2) {
-                echo <<<_END
+        } elseif ($milktype == 2) {
+            echo <<<_END
                         <td class="mt-4">Sahiwal Milk</td> 
 _END;
-            } elseif ($milktype == 3) {
-                echo <<<_END
+        } elseif ($milktype == 3) {
+            echo <<<_END
                         <td class="mt-4">Buffalo Milk</td>
 _END;
-            }
-            echo <<<_END
+        }
+        echo <<<_END
             
-                            <td class="text-primary">$qty</td>
-                            <td>    
-                            <input type="text" name="dlqty" value="$delivered_qty"class="form-control">
+                            <td class="text-primary">$qty<input type="hidden" name="sub_qty" value="$qty" class="form-control"></td>
+                            <td> 
+                            <input type="text" name="dlqty" class="form-control">
+                            <input type="hidden" name="delivery_time" value="$delivery_time" class="form-control"> 
                             <input type="hidden" name="id_hide" value="$id" class="form-control">
                             <input type="hidden" name="cid" value="$cid" class="form-control">
                             </td>
@@ -131,8 +130,8 @@ _END;
                 </tr>
                 
 _END;
-        }
-        echo <<<_END
+    }
+    echo <<<_END
                           
                     </tbody>
                     </table>
@@ -142,8 +141,8 @@ _END;
             </div>
 _END;
 
-        include_once 'foot.php';
-        echo <<<_END
+    include_once 'foot.php';
+    echo <<<_END
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -161,7 +160,6 @@ _END;
 </body>
 </html>
 _END;
-    }
 } else {
     $msg = "Please Login";
     echo <<<_END
