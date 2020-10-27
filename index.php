@@ -7,8 +7,19 @@ session_start();
 <head>
     <title>FarmDB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+    <script>
+        $(function() {
+            // setTimeout() function will be fired after page is loaded
+            // it will wait for 5 sec. and then will fire
+            // $("#successMessage").hide() function
+            setTimeout(function() {
+                $("#successMessage").hide('blind', {}, 500)
+            }, 5000);
+        });
+    </script>
     <script>
         function ask(anchor) {
             var conf = confirm("Do you want to delete?");
@@ -19,44 +30,46 @@ session_start();
 </head>
 
 <body>
-
     <?php include_once 'nav.php'; ?>
-
     <div class="container">
-        <div class="row">
-            <?php
+        <?php
 
-            if (isset($_SESSION['user'])) {
+        if (isset($_GET['msg']) && $_GET['msg'] != '') {
+            $msg = $_GET['msg'];
+            echo <<<_END
+            <div class="col-lg-6">
+            
+            <div class="alert alert-primary" id ="successMessage" role="alert">
+            $msg      
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            </div>
+_END;
+        }
+        ?>
 
-                echo <<<_END
-                        <h2 class="display-5">Work Log</h2>
+        <?php
+
+        if (isset($_SESSION['user'])) {
+
+            echo <<<_END
+                <div class="row">
+                    <h2 class="display-5">Work Log</h2>
                         <form method="get" class="form-inline" action="index.php">
                             <div class="form-row">
                                 <div class="form-group">
                                     <div class="form-group col-md-5"><input type="date" name="start_date" placeholder="Start Date"></div>
                                     <div class="form-group col-md-5"><input type="date" name="end_date" placeholder="End Date"></div>
                                     <div class="col"><input type="submit" class="btn btn-primary"></div>
-                                </div>
+                                
                             </div>
                         </form>
 _END;
 
-                if (isset($_GET['msg']) && $_GET['msg'] != '') {
-                    $msg = $_GET['msg'];
-                    echo <<<_END
-<div class="col-lg-12">
-    <div class="alert alert-primary" role="alert">
-$msg
-<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-</div>
-_END;
-                }
 
-                echo <<<_END
-               
+            echo <<<_END
                 <div class="col-lg-12">
                 <div class="row">
                 <div class="table-responsive">
@@ -75,68 +88,68 @@ _END;
                         </thead>
                         <tbody>
 _END;
-                include_once 'db.php';
+            include_once 'db.php';
 
-                if (isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date'] != '' && $_GET['end_date'] != '') {
-                    $start_date = $_GET['start_date'];
-                    $end_date = $_GET['end_date'];
+            if (isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date'] != '' && $_GET['end_date'] != '') {
+                $start_date = $_GET['start_date'];
+                $end_date = $_GET['end_date'];
 
-                    $q = "SELECT * FROM logs WHERE cast(doe as date) between '$start_date' and '$end_date' AND is_deleted=0 ORDER BY doe DESC LIMIT 50";
-                } else if (isset($_GET['start_date']) && $_GET['start_date'] != '') {
-                    $start_date = $_GET['start_date'];
-                    $q = "SELECT * FROM logs WHERE cast(doe as date)='$start_date' AND is_deleted=0 ORDER BY doe DESC LIMIT 50";
-                } else {
-                    $q = "SELECT * FROM logs WHERE is_deleted=0 ORDER BY doe DESC LIMIT 50";
+                $q = "SELECT * FROM logs WHERE cast(doe as date) between '$start_date' and '$end_date' AND is_deleted=0 ORDER BY doe DESC LIMIT 50";
+            } else if (isset($_GET['start_date']) && $_GET['start_date'] != '') {
+                $start_date = $_GET['start_date'];
+                $q = "SELECT * FROM logs WHERE cast(doe as date)='$start_date' AND is_deleted=0 ORDER BY doe DESC LIMIT 50";
+            } else {
+                $q = "SELECT * FROM logs WHERE is_deleted=0 ORDER BY doe DESC LIMIT 50";
+            }
+            $r = mysqli_query($db, $q);
+
+            while ($res = mysqli_fetch_assoc($r)) {
+                $sid = $res['id'];
+                $area = $res['area'];
+
+                $q2 = "SELECT * FROM areas WHERE id='$area'";
+                $r2 = mysqli_query($db, $q2);
+
+                $re2 = mysqli_fetch_assoc($r2);
+
+                $sitename = $re2['sitename'];
+                $location = $re2['location'];
+
+                $activity = $res['activity'];
+
+                $q3 = "SELECT * FROM activities WHERE id='$activity'";
+                $r3 = mysqli_query($db, $q3);
+
+                $re3 = mysqli_fetch_assoc($r3);
+
+                $activity = $re3['activity'];
+
+                $people = $res['people'];
+
+                $q4 = "SELECT * FROM people WHERE id='$people'";
+                $r4 = mysqli_query($db, $q4);
+
+                $re4 = mysqli_fetch_assoc($r4);
+
+                $people = $re4['fname'] . ' ' . $re4['lname'];
+
+                $status = $res['status'];
+
+                if ($status == 0) {
+                    $status = "Open";
+                } else if ($status == 1) {
+                    $status = "Complete";
+                } else if ($status == 2) {
+                    $status = "Cancelled";
                 }
-                $r = mysqli_query($db, $q);
 
-                while ($res = mysqli_fetch_assoc($r)) {
-                    $sid = $res['id'];
-                    $area = $res['area'];
+                $doe = $res['doe'];
+                $doe = date("d-m-Y", strtotime($doe));
+                $dou = $res['dou'];
 
-                    $q2 = "SELECT * FROM areas WHERE id='$area'";
-                    $r2 = mysqli_query($db, $q2);
+                $link = 'report_viewer.php?areas=' . $area . '&dates=' . explode(' ', $doe)[0];
 
-                    $re2 = mysqli_fetch_assoc($r2);
-
-                    $sitename = $re2['sitename'];
-                    $location = $re2['location'];
-
-                    $activity = $res['activity'];
-
-                    $q3 = "SELECT * FROM activities WHERE id='$activity'";
-                    $r3 = mysqli_query($db, $q3);
-
-                    $re3 = mysqli_fetch_assoc($r3);
-
-                    $activity = $re3['activity'];
-
-                    $people = $res['people'];
-
-                    $q4 = "SELECT * FROM people WHERE id='$people'";
-                    $r4 = mysqli_query($db, $q4);
-
-                    $re4 = mysqli_fetch_assoc($r4);
-
-                    $people = $re4['fname'] . ' ' . $re4['lname'];
-
-                    $status = $res['status'];
-
-                    if ($status == 0) {
-                        $status = "Open";
-                    } else if ($status == 1) {
-                        $status = "Complete";
-                    } else if ($status == 2) {
-                        $status = "Cancelled";
-                    }
-
-                    $doe = $res['doe'];
-                    $doe = date("d-m-Y", strtotime($doe));
-                    $dou = $res['dou'];
-
-                    $link = 'report_viewer.php?areas=' . $area . '&dates=' . explode(' ', $doe)[0];
-
-                    echo <<<_END
+                echo <<<_END
                         <tr>
                             <td>$sid</td>
                             <td><a href="$link">$doe</a></td>
@@ -150,16 +163,16 @@ _END;
                             </td>
                         </tr>
 _END;
-                }
-                echo <<<_END
+            }
+            echo <<<_END
 					</tbody>
 					</table>
                     </div>
                     </div>
                     </div>
 _END;
-            } else {
-                echo <<<_END
+        } else {
+            echo <<<_END
 				<div class="col-lg-6">
 					<h2>Login</h2>
 					<form action="login.php" method="post">
@@ -176,14 +189,14 @@ _END;
 					</form>
 				</div>
 _END;
-            }
+        }
 
-            ?>
+        ?>
 
 
-            <?php
-            include_once 'foot.php';
-            ?>
+        <?php
+        include_once 'foot.php';
+        ?>
 </body>
 
 </html>
