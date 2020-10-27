@@ -22,6 +22,14 @@ if(isset($_SESSION['user']))
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
+    <script>
+     $(function() {
+                setTimeout(function() {
+                    $("#successMessage").hide('blind', {}, 200)
+                }, 3000);
+            });
+
+    </script>
     </head>
     <body>    
 
