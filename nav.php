@@ -113,7 +113,8 @@ _END;
 							<a class="dropdown-item" href="customer_delivery_report.php">Customer Delivery Report</a>
 							<a class="dropdown-item" href="customer_delivery_reportBeta.php">Customer Delivery Report<sup>Beta</sup></a>
 							<a class="dropdown-item" href="stats.php">Stats</a>
-    						<a class="dropdown-item" href="reports_v1.php">Report<sup>Beta</sup></a>
+							<a class="dropdown-item" href="reports_v1.php">Report<sup>Beta</sup></a>
+							<a class="dropdown-item" href="customer_back_dated.php">Customer Back Dated Deliveries</a>
     					</div>
     				</li>
 _END;
