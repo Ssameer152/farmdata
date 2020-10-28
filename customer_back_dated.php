@@ -25,6 +25,13 @@ if (isset($_SESSION['user'])) {
             <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>   
             
             <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>  
+            <script>
+            $(function(){
+            setTimeout(function(){
+            $('#success').hide('blind',{},400);
+            },4000);
+        });
+            </script>
         </head>
 _END;
     include_once 'nav.php';
@@ -38,18 +45,14 @@ _END;
         $msg = $_GET['msg'];
         echo <<<_END
         <div class="col-lg-8">
-            <div class="alert alert-success alert-dismissible" role="alert">
+            <div class="alert alert-success alert-dismissible" id="success" role="alert">
                     <b>$msg</b>
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
             </div>
         </div>
 _END;
     }
-    if (!isset($_GET['start_date'])) {
-        $start_date = NULL; //or use a "valuestring"
-    } elseif (isset($_GET['start_date'])) {
-        $start_date = $_GET['start_date'];
-    }
+
     echo <<<_END
                 <div class="col-lg-12 mb-4">
                     <div class="table-responsive">
@@ -70,8 +73,7 @@ _END;
                                 </thead>
                         <tbody>
 _END;
-    //-- - - -----Select All data  - -- - - --   
-
+    //-- - - -----Select All data  - -- - - -- 
     $q = "SELECT * from customer_subscription where is_deleted=0 order by cid";
     $r = mysqli_query($db, $q);
     while ($res = mysqli_fetch_assoc($r)) {
@@ -85,9 +87,19 @@ _END;
         echo <<<_END
                 <tr>
                 <form action="customer_back_dated_ap.php" method="post">
-                <td style="width:7%; height:20%;"><input type="date" class="form-control" value="$start_date" name="sDate" ></td>
                 _END;
+        if (!isset($_GET['start_date'])) {
+            $start_date = NULL;
+            echo <<<_END
+            <td style="width:7%; height:20%;"><input type="date" class="form-control" value="$start_date" name="sDate" required></td>
+            _END;
+        } elseif (isset($_GET['start_date'])) {
 
+            $start_date = $_GET['start_date'];
+            echo <<<_END
+            <td style="width:7%; height:20%;"><input type="date" class="form-control" value="$start_date" name="sDate" ></td>
+            _END;
+        }
         if ($delivery_time == 1) {
             echo <<<_END
                         <td class="mt-4">Morning</td>

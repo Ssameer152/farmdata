@@ -1,75 +1,78 @@
 <?php
 session_start();
 
-if(isset($_SESSION['user']))
-{
+if (isset($_SESSION['user'])) {
     include_once 'db.php';
 
 
-if(isset($_GET['logid']) && $_GET['logid']!='')
-{    
-    $logid = $_GET['logid'];
-    
-    if(isset($_GET['id']) && $_GET['id']!=''){
-        $mid = $_GET['id'];
-        $q = "select * from log_resource WHERE id='$mid'";
-        $r = mysqli_query($db,$q);
-        
-        $res = mysqli_fetch_assoc($r);
-        
-        $db_person = $res['person'];
-        $db_resource = $res['resourceid'];
-        $db_qty = $res['qty'];
-        $db_cpu = $res['costperunit'];
-        
-    }
-    else
-    {
-        $db_person = '';
-        $db_resource = '';
-        $db_qty = '';
-        $db_cpu = '';
-    }
-    
-    echo <<<_END
+    if (isset($_GET['logid']) && $_GET['logid'] != '') {
+        $logid = $_GET['logid'];
+
+        if (isset($_GET['id']) && $_GET['id'] != '') {
+            $mid = $_GET['id'];
+            $q = "select * from log_resource WHERE id='$mid'";
+            $r = mysqli_query($db, $q);
+            $res = mysqli_fetch_assoc($r);
+            $db_person = $res['person'];
+            $db_resource = $res['resourceid'];
+            $db_qty = $res['qty'];
+            $db_cpu = $res['costperunit'];
+        } else {
+            $db_person = '';
+            $db_resource = '';
+            $db_qty = '';
+            $db_cpu = '';
+        }
+
+        echo <<<_END
 <html>
     <head>
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <script>
+        $(function(){
+        setTimeout(function() {
+        $("#success").hide('blind', {}, 500)
+        }, 5000);
+    });
+       </script>
+
+
     </head>
-    
     <body>    
 _END;
 
-include_once 'nav.php';
+        include_once 'nav.php';
 
-echo <<<_END
+        echo <<<_END
 
         <div class="container">
 _END;
-if(isset($_GET['msg']) && $_GET['msg']!=''){
-    $msg = $_GET['msg'];
-    echo<<<_END
+        if (isset($_GET['msg']) && $_GET['msg'] != '') {
+            $msg = $_GET['msg'];
+            echo <<<_END
 <div class="col-lg-6">
-    <div class="alert alert-primary" role="alert">
+    <div class="alert alert-primary" id="success" role="alert">
 $msg
 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span><img src="img/tenor.gif" style="width:30px; height=30px;"></span>
 <span aria-hidden="true">&times;</span>
 </button>
 </div>
 </div>
 _END;
-} 
-            echo <<<_END
+        }
+        echo <<<_END
             <div class="row">
                 <div class="col-lg-6">
                     <h2>Log Resources</h2>
 _END;
 
 
-    echo <<<_END
+        echo <<<_END
                         <form action="log_resource_ap.php" method="post">
                         <div class="form-group">
                         <label for="person">Person</label>
@@ -78,23 +81,21 @@ _END;
 _END;
 
         $q = "SELECT * FROM people WHERE is_deleted=0 order by fname asc";
-        $r = mysqli_query($db,$q);
-        while($res = mysqli_fetch_assoc($r))
-        {
+        $r = mysqli_query($db, $q);
+        while ($res = mysqli_fetch_assoc($r)) {
             $sid = $res['id'];
             $rname = $res['fname'] . ' ' . $res['lname'];
-            if($sid == $db_person){
+            if ($sid == $db_person) {
                 echo <<<_END
             <option value="$sid" selected="selected">$rname</option>
 _END;
-            }
-            else{
-        echo <<<_END
+            } else {
+                echo <<<_END
             <option value="$sid">$rname</option>
 _END;
             }
-        }    
-        
+        }
+
         echo <<<_END
         </select>
     </div>
@@ -104,29 +105,26 @@ _END;
             <option value="">--Select Resource--</option>
 _END;
 
-$q = "SELECT * FROM resources WHERE is_deleted=0 order by resourcename asc";
-$r = mysqli_query($db,$q);
+        $q = "SELECT * FROM resources WHERE is_deleted=0 order by resourcename asc";
+        $r = mysqli_query($db, $q);
 
-while($res = mysqli_fetch_assoc($r))
-{
-    $sid = $res['id'];
-    $rname = $res['resourcename'];
-    $unit = $res['unit'];
-    
-    if($sid == $db_resource){
-        echo <<<_END
+        while ($res = mysqli_fetch_assoc($r)) {
+            $sid = $res['id'];
+            $rname = $res['resourcename'];
+            $unit = $res['unit'];
+
+            if ($sid == $db_resource) {
+                echo <<<_END
     <option value="$sid" selected="selected">$rname ($unit)</option>
 _END;
-    }
-    else{
-    echo <<<_END
+            } else {
+                echo <<<_END
     <option value="$sid">$rname ($unit)</option>
 _END;
-    }
+            }
+        }
 
-}
-
-echo <<<_END
+        echo <<<_END
                             </select>
                         </div>
                         <div class="form-group">
@@ -137,35 +135,34 @@ echo <<<_END
                             <label for="Cost">Cost Per Unit(if resource is measured in kg then cost of 1 kg)</label>
 _END;
 
-if($db_cpu == ''){
-    echo <<<_END
+        if ($db_cpu == '') {
+            echo <<<_END
        <input type="text" name="cpu" value="0.00" class="form-control"> 
 _END;
-}
-else{
-    echo <<<_END
+        } else {
+            echo <<<_END
       <input type="text" name="cpu" value="$db_cpu" class="form-control">
 _END;
-}
+        }
 
-echo <<<_END
+        echo <<<_END
                         </div>
                         <input type="hidden" name="logid" value="$logid">
 _END;
 
-if(isset($mid)){
-    echo <<<_END
+        if (isset($mid)) {
+            echo <<<_END
     <input type="hidden" name="mid" value="$mid">
 _END;
-}
+        }
 
-echo <<<_END
+        echo <<<_END
 						<button type="submit" class="btn btn-primary">Add Resource</button>
                     </form>
 _END;
 
 
-echo <<<_END
+        echo <<<_END
                 </div>
 <div class="col-lg-12">
     <div class="table-responsive">
@@ -181,38 +178,37 @@ echo <<<_END
             <tbody>
 _END;
 
-$q = "SELECT sum(qty) as qty,resourceid,person FROM log_resource WHERE logid='$logid' AND is_deleted=0 GROUP BY resourceid,person";
-$r = mysqli_query($db,$q);
-$sn = 0;
-$q1="SELECT sum(qty) as total FROM log_resource WHERE logid='$logid' AND is_deleted=0";
-$r1=mysqli_query($db,$q1);
-$res1=mysqli_fetch_assoc($r1);
-$total=$res1['total'];
+        $q = "SELECT sum(qty) as qty,resourceid,person FROM log_resource WHERE logid='$logid' AND is_deleted=0 GROUP BY resourceid,person";
+        $r = mysqli_query($db, $q);
+        $sn = 0;
+        $q1 = "SELECT sum(qty) as total FROM log_resource WHERE logid='$logid' AND is_deleted=0";
+        $r1 = mysqli_query($db, $q1);
+        $res1 = mysqli_fetch_assoc($r1);
+        $total = $res1['total'];
 
-while($res = mysqli_fetch_assoc($r))
-{
-    $qty = $res['qty'];
-    $rid = $res['resourceid'];
-    
-    $q2 = "SELECT resourcename,unit FROM resources WHERE id='$rid' and is_deleted=0";
-    $r2 = mysqli_query($db,$q2);
-    
-    $re2 = mysqli_fetch_assoc($r2);
-    
-    $unit = $re2['unit'];
-    $resourcename  = $re2['resourcename'];
-    $sn = $sn + 1;
+        while ($res = mysqli_fetch_assoc($r)) {
+            $qty = $res['qty'];
+            $rid = $res['resourceid'];
 
-    $person = $res['person'];
-    
-    $q3 = "SELECT * FROM people WHERE id='$person' and is_deleted=0";
-    $r3 = mysqli_query($db,$q3);
-    
-    $re3 = mysqli_fetch_assoc($r3);
-    
-    $fullname = $re3['fname'] . ' ' . $re3['lname'];
+            $q2 = "SELECT resourcename,unit FROM resources WHERE id='$rid' and is_deleted=0";
+            $r2 = mysqli_query($db, $q2);
 
-    echo <<<_END
+            $re2 = mysqli_fetch_assoc($r2);
+
+            $unit = $re2['unit'];
+            $resourcename  = $re2['resourcename'];
+            $sn = $sn + 1;
+
+            $person = $res['person'];
+
+            $q3 = "SELECT * FROM people WHERE id='$person' and is_deleted=0";
+            $r3 = mysqli_query($db, $q3);
+
+            $re3 = mysqli_fetch_assoc($r3);
+
+            $fullname = $re3['fname'] . ' ' . $re3['lname'];
+
+            echo <<<_END
     <tr>
         <td>$sn</td>
         <td>$fullname</td>
@@ -220,8 +216,8 @@ while($res = mysqli_fetch_assoc($r))
         <td>$qty $unit</td>
     </tr>  
 _END;
-}
-echo <<<_END
+        }
+        echo <<<_END
             </tbody>
         </table>
         <h6 class="text-primary" style="float:right; padding-right:200px"><b>Total : $total $unit</b></h6>
@@ -245,34 +241,33 @@ echo <<<_END
             <tbody>
 _END;
 
-$q = "SELECT id,qty,resourceid,person FROM log_resource WHERE logid='$logid' AND is_deleted=0";
-$r = mysqli_query($db,$q);
-$sn = 0;
-while($res = mysqli_fetch_assoc($r))
-{
-    $qty = $res['qty'];
-    $rid = $res['resourceid'];
-    
-    $id = $res['id'];
-    
-    $q2 = "SELECT resourcename,unit FROM resources WHERE id='$rid' and is_deleted=0";
-    $r2 = mysqli_query($db,$q2);
-    
-    $re2 = mysqli_fetch_assoc($r2);
-    
-    $unit = $re2['unit'];
-    $resourcename  = $re2['resourcename'];
-    $sn = $sn + 1;
+        $q = "SELECT id,qty,resourceid,person FROM log_resource WHERE logid='$logid' AND is_deleted=0";
+        $r = mysqli_query($db, $q);
+        $sn = 0;
+        while ($res = mysqli_fetch_assoc($r)) {
+            $qty = $res['qty'];
+            $rid = $res['resourceid'];
 
-    $person = $res['person'];
-    
-    $q3 = "SELECT * FROM people WHERE id='$person' and is_deleted=0";
-    $r3 = mysqli_query($db,$q3);
-    
-    $re3 = mysqli_fetch_assoc($r3);
-    
-    $fullname = $re3['fname'] . ' ' . $re3['lname'];
-    echo <<<_END
+            $id = $res['id'];
+
+            $q2 = "SELECT resourcename,unit FROM resources WHERE id='$rid' and is_deleted=0";
+            $r2 = mysqli_query($db, $q2);
+
+            $re2 = mysqli_fetch_assoc($r2);
+
+            $unit = $re2['unit'];
+            $resourcename  = $re2['resourcename'];
+            $sn = $sn + 1;
+
+            $person = $res['person'];
+
+            $q3 = "SELECT * FROM people WHERE id='$person' and is_deleted=0";
+            $r3 = mysqli_query($db, $q3);
+
+            $re3 = mysqli_fetch_assoc($r3);
+
+            $fullname = $re3['fname'] . ' ' . $re3['lname'];
+            echo <<<_END
     <tr>
         <td>$sn</td>
         <td>$fullname</td>
@@ -281,9 +276,9 @@ while($res = mysqli_fetch_assoc($r))
         <td><a href="log_resource.php?logid=$logid&id=$id">Modify</a> | <a href="delete.php?table=log_resource&return=log_resource&rid=$id&logid=$logid">Delete</a></td>
     </tr>
 _END;
-}
+        }
 
-echo <<<_END
+        echo <<<_END
             </tbody>
         </table>
     </div>
@@ -296,30 +291,21 @@ echo <<<_END
 
 _END;
 
-include_once 'foot.php';
+        include_once 'foot.php';
 
-echo <<<_END
+        echo <<<_END
     </body>
 </html>
 _END;
-
-}
-else
-{
-    $msg = "Please select a work log";
-    echo <<<_END
+    } else {
+        $msg = "Please select a work log";
+        echo <<<_END
     <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
 _END;
-}
-
-
-}
-else
-{
+    }
+} else {
     $msg = "Please Login";
     echo <<<_END
     <meta http-equiv='refresh' content='0;url=index.php?msg=$msg'>
 _END;
 }
-
-?>	
