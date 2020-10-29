@@ -23,24 +23,12 @@ if (isset($_SESSION['user'])) {
         if (isset($_POST['add'])) {
             $q = "INSERT INTO customer_delivery_log(dod , qty , delivered_qty , cid , csid) VALUES('$sdate','$sub_qty','$dlqty','$cid','$id_hide')";
             $r = mysqli_query($db, $q);
-            $msg = "Added";
+            $msg1 = "Added";
 
             // This query used for Record already exist.....
 
-            $q1 = "SELECT * FROM customer_delivery_log WHERE csid='$id_hide' AND cast(dod as date)='$sdate'";
-            $r1 = mysqli_query($db, $q1);
-            $row1 = mysqli_num_rows($r1);
-
-            if ($row1 >= 1) {
-                $msg = "Record already exist";
-                echo <<<_END
-                <meta http-equiv='refresh' content='0;url=customer_back_dated11.php?msg=Customer delivery quantity $dlqty $msg&start_date=$sdate'>
-_END;
-            }
-
-            //  - -  - --- - - - Close---------  - - - - - - - 
             echo <<<_END
-                    <meta http-equiv='refresh' content='0;url=customer_back_dated11.php?msg=Customer delivery quantity $dlqty $msg&start_date=$sdate'>
+                    <meta http-equiv='refresh' content='0;url=customer_back_dated.php?msg=Customer delivery quantity $dlqty $msg1&start_date=$sdate'>
 _END;
         }
     }

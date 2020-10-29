@@ -54,7 +54,7 @@ _END;
     
                 <div class="col-lg-12" id="report">
                     <h3 class="mb-4">Add Customer Back Dated Delivery </h3>
-                        <form action="customer_back_dated11.php" method="get">
+                        <form action="customer_back_dated.php" method="get">
                         <div class="row">
                             <div class="col-lg-6">
                                 <input type="date" class="form-control" name="start_date">
