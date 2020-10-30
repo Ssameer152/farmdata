@@ -28,9 +28,17 @@ if(isset($_SESSION['user']))
 <html>
     <head>
         <title>FarmDB</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <script>
+        $(function(){
+        setTimeout(function(){
+        $("#success").hide('blind',{},500);
+        }, 5000);
+        });
+        </script>
     </head>
     
     <body>    
@@ -46,7 +54,7 @@ if(isset($_GET['msg']) && $_GET['msg']!=''){
     $msg = $_GET['msg'];
     echo<<<_END
 <div class="col-lg-6">
-    <div class="alert alert-primary" role="alert">
+    <div class="alert alert-primary" id="success" role="alert">
 $msg
 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">&times;</span>

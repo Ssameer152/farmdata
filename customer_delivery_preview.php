@@ -76,8 +76,6 @@ _END;
 _END;
 
         echo <<<_END
-                            <!-- <h4 class="mb-4">Deliveries Left: <b> </b></h4> -->
-                            
                             <thead>
                                 <tr>
                                     <th>S.no</th>
