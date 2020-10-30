@@ -27,7 +27,7 @@ _END;
 
 include_once 'nav.php';
     echo <<<_END
-        <div class="container">
+        <div class="container-fluid">
         <div class="row">
         <div class="col-lg-12" id="report">
         <h3 class="mb-4">Customer Delivery Report</h3>
