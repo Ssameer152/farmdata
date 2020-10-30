@@ -187,7 +187,7 @@ _END;
             }
             else{
             echo <<<_END
-            <td>$T</td>
+            <th>$T</th>
 _END;
             }
             echo <<<_END
