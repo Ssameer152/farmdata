@@ -1,0 +1,22 @@
+#rb{
+text-align:right;
+}
+
+
+
+
+
+
+@media only screen and (max-width: 987px) {
+    #b{
+margin-bottom:10px;
+    } 
+    #d{ /*This id common for all date for any page*/
+        margin-bottom:10px;
+    }
+    #select{
+        margin-bottom:10px;
+    }
+    
+    
+  }

@@ -22,6 +22,7 @@ if (isset($_SESSION['user'])) {
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="css/media.css">
             <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
             <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
            
@@ -55,7 +56,7 @@ _END;
                         <form action="customer_delivery_preview.php" method="get">
                         <div class="row">
                             <div class="col-lg-6">
-                                <input type="date" class="form-control" name="start_date">
+                                <input type="date" class="form-control" name="start_date" id="d">
                             </div>
                             <div class="col-lg-6">
                                 <input type="date" class="form-control" name="end_date">

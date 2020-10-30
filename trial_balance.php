@@ -19,6 +19,7 @@ if (isset($_SESSION['user'])) {
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/media.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <style>
         @media print  { 
@@ -41,7 +42,7 @@ _END;
         <h3 class="mb-4">Trial Balance</h3>
         <form action="trial_balance.php" method="get">
                         <div class="row">
-                            <div class="col-lg">
+                            <div class="col-lg" id="d">
                                 <input type="date" class="form-control" name="start_date">
                             </div>
                             <div class="col-lg">
@@ -70,9 +71,13 @@ _END;
         $sn = 0;
         echo <<<_END
 <div class="col-lg-12">
-<div class="row">
-<h4 class="mb-4">From $sdt to $edt</h4>
-<button class="btn btn-primary" id="btn" style="position: absolute;right:10;" onclick="window.print()">Print Report</button>
+<div class="row" id="b">
+<div class="col-lg-6">
+    <h4 class="mb-4">From $sdt to $edt</h4>
+</div>
+<div class="col-lg-6" id="rb">
+    <button class="btn btn-primary" id="btn" onclick="window.print()">Print Report</button>
+</div>
 </div>
 _END;
         if (mysqli_num_rows($r) > 0) {
