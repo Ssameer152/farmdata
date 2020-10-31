@@ -36,8 +36,16 @@ if(isset($_GET['pid']) && $_GET['pid']!='')
     <head>
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <script>
+        $(function(){
+        setTimeout(function(){
+        $('#success').hide('blind',{},400);
+        },4000);
+        });
+        </script>
     </head>
     
     <body>    
@@ -53,7 +61,7 @@ if(isset($_GET['msg']) && $_GET['msg']!=''){
     $msg = $_GET['msg'];
     echo<<<_END
 <div class="col-lg-6">
-    <div class="alert alert-primary" role="alert">
+    <div class="alert alert-primary" id="success" role="alert">
 $msg
 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">&times;</span>
@@ -142,7 +150,7 @@ _END;
 }
 
 echo <<<_END
-						<button type="submit" class="btn btn-primary">Add</button>
+						<button type="submit" class="btn btn-primary">Add Items</button>
                     </form>
 _END;
 
