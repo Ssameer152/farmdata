@@ -72,12 +72,12 @@ _END;
         echo <<<_END
 <div class="col-lg-12">
 <div class="row" id="b">
-<div class="col-lg-6">
-    <h4 class="mb-4">From $sdt to $edt</h4>
-</div>
-<div class="col-lg-6" id="rb">
-    <button class="btn btn-primary" id="btn" onclick="window.print()">Print Report</button>
-</div>
+        <div class="col-lg-6">
+            <h4 class="mb-4">From $sdt to $edt</h4>
+        </div>
+        <div class="col-lg-6" id="rb">
+            <button class="btn btn-primary" id="btn" onclick="window.print()">Print Report</button>
+        </div>
 </div>
 _END;
         if (mysqli_num_rows($r) > 0) {

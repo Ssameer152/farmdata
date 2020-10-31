@@ -9,6 +9,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/media.css">
     <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
     <script>
         $(function() {
@@ -58,11 +59,18 @@ _END;
                 <div class="row">
                     <h2 class="display-5">Work Log</h2>
                         <form method="get" class="form-inline" action="index.php">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <div class="form-group col-md-5"><input type="date" name="start_date" placeholder="Start Date"></div>
-                                    <div class="form-group col-md-5"><input type="date" name="end_date" placeholder="End Date"></div>
-                                    <div class="col"><input type="submit" class="btn btn-primary"></div>
+                            <div class="col-lg-12">
+                                <div class="form-group ">
+                                    <div class="form-group col-lg-4 ml-4">
+                                        <input type="date" name="start_date" class="form-control" placeholder="Start Date">
+                                    </div>
+                                    <div class="form-group col-lg-4" ml-4>
+                                        <input type="date" name="end_date" class="form-control" placeholder="End Date">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input type="submit" class="btn btn-primary">
+                                    </div>
+                                </div>
                                 
                             </div>
                         </form>

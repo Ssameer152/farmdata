@@ -169,7 +169,7 @@ _END;
 _END;
     }
     echo <<<_END
-						<button type="submit" class="btn btn-primary">Add Cattle</button>
+						<button type="submit" class="btn btn-primary btn-block">Add Cattle</button>
                     </form>
 _END;
     echo <<<_END

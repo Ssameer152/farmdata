@@ -16,9 +16,9 @@ if (isset($_SESSION['user'])) {
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>        
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-    
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="css/media.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <style>
         @media print { 
@@ -40,7 +40,7 @@ _END;
  <h3 class="mb-4">Customer Statement</h3>
  <form action="customer_stmt.php" method="get">
                  <div class="row">
-                     <div class="col-lg">
+                     <div class="col-lg" id="d">
                          <input type="date" class="form-control" name="start_date">
                      </div>
                      <div class="col-lg">
@@ -49,16 +49,16 @@ _END;
                  </div>
                  <br>
                  <div class="col-lg-6">
-                 <div class="row">
-                 <select id="myselect" class="form-control" name="custname">
-                 <option value="">--Select customer--</option>
+                    <div class="row">
+                        <select id="myselect" class="form-control" name="custname">
+                        <option value="">--Select customer--</option>
 _END;
-            $q="SELECT id,fname,lname from customer where is_deleted=0 order by fname asc";
-            $r=mysqli_query($db,$q);
-            while($res=mysqli_fetch_assoc($r)){
-                $name=$res['fname'].' '.$res['lname'];
-                $id=$res['id'];
-                echo <<<_END
+    $q = "SELECT id,fname,lname from customer where is_deleted=0 order by fname asc";
+    $r = mysqli_query($db, $q);
+    while ($res = mysqli_fetch_assoc($r)) {
+        $name = $res['fname'] . ' ' . $res['lname'];
+        $id = $res['id'];
+        echo <<<_END
             <option value="$id">$name</option>
 _END;
     }
@@ -96,8 +96,14 @@ _END;
             $date = '';
             echo <<<_END
         <div class="col-lg-12">
-        <h4 class="mb-4">Customer: $cname</h4>
-        <button class="btn btn-primary" id="btn" style="position: absolute;right:10;top:0;" onclick="window.print()">Print Statement</button>
+        <div class="row" id="b">
+        <div class="col-lg-6">
+            <h4 class="mb-4">Customer: $cname</h4>
+        </div>
+        <div class="col-lg-6" id="rb">
+            <button class="btn btn-primary" id="btn" onclick="window.print()">Print Statement</button>
+        </div>
+        </div>
         <div class="table table-responsive">
         <table class="table table-bordered">
             <thead>

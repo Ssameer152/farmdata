@@ -19,16 +19,12 @@ if (isset($_SESSION['user'])) {
             <title>FarmDB</title>
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">     
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <link rel="stylesheet" href="css/media.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            <link rel="stylesheet" href="css/media.css">
             <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
-            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
-           
-            
-           
-             
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>    
         </head>
 _END;
     include_once 'nav.php';
@@ -79,6 +75,7 @@ _END;
                                 <thead>
                                     <tr>
                                         <th>Customer</th>
+                                        <th>Delivery Time</th>
                                         <th>Milktype</th>
                                         <th>preview Quantity</th>
                                         <th>Delivered Quantity</th>
@@ -97,12 +94,23 @@ _END;
             $csid =  $res['csid'];
             $cid_name = getDimensionValue($db, 'customer', $res['cid'], 'fname');
             $csid_milktype = getDimensionValue($db, 'customer_subscription', $res['csid'], 'milktype');
+            $delivery_time = getDimensionValue($db, 'customer_subscription', $res['csid'], 'delivery_time');
             $delivered_qty = $res['delivered_qty'];
             $sub_qty = $res['qty'];
             echo <<<_END
                 <tr>
                         <td>$cid_name</td>
-            _END;
+_END;
+            if ($delivery_time == 1) {
+                echo <<<_END
+                <td>Morning</td>
+_END;
+            } elseif ($delivery_time == 2) {
+                echo <<<_END
+                <td>Evening</td>
+_END;
+            }
+
 
             if ($csid_milktype == 1) {
                 echo <<<_END
@@ -128,7 +136,7 @@ _END;
                             <input type="hidden" name="cid" value="$cid" class="form-control">
                             </td>
                             <td> 
-                            <button type="submit" name="update" class="btn  btn-outline-success btn-block">Update</button>          
+                                <button type="submit" name="update" class="btn  btn-outline-success btn-block">Update</button>          
                             </td>
                         </form>
                 </tr>
