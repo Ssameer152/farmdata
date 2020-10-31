@@ -6,8 +6,16 @@ session_start();
     <head>
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <script>
+     $(function() {
+                setTimeout(function() {
+                    $("#successMessage").hide('blind', {}, 500)
+                }, 5000);
+            });
+    </script>
         <script>
             function ask(anchor){
                 var conf=confirm("Do you want to delete?");
@@ -22,6 +30,21 @@ session_start();
 <?php include_once 'nav.php'; ?>
 	
 		<div class="container">
+        <?php
+        if(isset($_GET['msg']) && $_GET['msg']!=''){
+    $msg = $_GET['msg'];
+    echo<<<_END
+<div class="col-lg-9">
+    <div class="alert alert-primary" id="successMessage" role="alert">
+$msg
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+</div>
+_END;
+}
+?>
 			<div class="row">
                 
 			<?php
@@ -42,19 +65,6 @@ session_start();
                         </form>
 _END;
 
-if(isset($_GET['msg']) && $_GET['msg']!=''){
-    $msg = $_GET['msg'];
-    echo<<<_END
-<div class="col-lg-12">
-    <div class="alert alert-primary" role="alert">
-$msg
-<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-</div>
-_END;
-}
 
 echo <<<_END
                

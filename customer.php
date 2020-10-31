@@ -58,6 +58,16 @@ if(isset($_SESSION['user']))
                 window.location=anchor.attr("href");
             }
         </script>
+         <script>
+            $(function() {
+                setTimeout(function() {
+                    $('#success').hide('blind', {}, 400);
+
+
+                }, 4000);
+
+            });
+        </script>
     </head>
     
     <body>  
@@ -73,7 +83,7 @@ if(isset($_GET['msg']) && $_GET['msg']!=''){
     $msg = $_GET['msg'];
     echo<<<_END
 <div class="col-lg-6">
-    <div class="alert alert-primary" role="alert">
+    <div class="alert alert-primary" id="success" role="alert">
 $msg
 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">&times;</span>

@@ -19,8 +19,16 @@ if(isset($_SESSION['user']))
     <head>
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
+        <script>
+        $(function(){
+        setTimeout(function(){
+        $('#success').hide('blind',{},400);
+        },4000);
+        });
+    </script>
     </head>
     
     <body>    
@@ -30,7 +38,22 @@ include_once 'nav.php';
 
 echo <<<_END
 
-		<div class="container">
+        <div class="container">
+_END;
+if (isset($_GET['msg']) && $_GET['msg'] != '') {
+    $msg = $_GET['msg'];
+    echo <<<_END
+<div class="col-lg-6">
+<div class="alert alert-primary" id="success" role="alert">
+$msg
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+</div>
+_END;
+}
+        echo <<<_END
             <div class="row">
                 <div class="col-lg-6">
                     <h2>Cattle Activity</h2>

@@ -76,12 +76,11 @@ _END;
 _END;
 
         echo <<<_END
-                            <!-- <h4 class="mb-4">Deliveries Left: <b> </b></h4> -->
-                            
                             <thead>
                                 <tr>
                                     <th>S.no</th>
                                     <th>Customer</th>
+                                    <th>Time</th>
                                     <th>Milktype</th>
                                     <th>Delivered Quantity</th>
                                     <th>Modify</th>
@@ -100,6 +99,7 @@ _END;
             $csid =  $res['csid'];
             $cid_name = getDimensionValue($db, 'customer', $res['cid'], 'fname').' '.getDimensionValue($db,'customer',$res['cid'],'lname');
             $csid_milktype = getDimensionValue($db, 'customer_subscription', $res['csid'], 'milktype');
+            $del_time=getDimensionValue($db,'customer_subscription',$res['csid'],'delivery_time');
             $delivered_qty = $res['delivered_qty'];
             $sub_qty = $res['qty'];
             echo <<<_END
@@ -107,6 +107,16 @@ _END;
             <td>$sn</td>
             <td>$cid_name</td>
 _END;
+            if($del_time==1){
+                echo <<<_END
+                <td>Morning</td>
+_END;       
+            }
+            elseif($del_time==2){
+                echo <<<_END
+                <td>Evening</td>
+_END;
+            }
 
             if($csid_milktype == 1) {
                 echo <<<_END

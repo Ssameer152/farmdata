@@ -180,7 +180,7 @@ _END;
     else{
         echo <<<_END
         <meta http-equiv='refresh' content='0;url=customer_summary.php?custname=$cid&msg=$msg'>
-    _END;
+_END;
     }
 }
 
