@@ -17,6 +17,7 @@ if (isset($_SESSION['user'])) {
         <title>FarmDB</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/media.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -59,10 +60,10 @@ _END;
         <h3 class="mb-4">Customer Delivery Report</h3>
         <form action="customer_delivery_report.php" method="get">
                         <div class="row">
-                            <div class="col-lg">
+                            <div class="col-lg-6" id="d">
                                 <input type="date" class="form-control" name="start_date">
                             </div>
-                            <div class="col-lg">
+                            <div class="col-lg-6">
                                 <input type="date" class="form-control" name="end_date">
                             </div>
                         </div>
@@ -89,10 +90,14 @@ _END;
         $sn = 0;
         echo <<<_END
 <div class="col-lg-12">
-<div class="row">
-<h4 class="mb-4">From $sdt to $edt</h4>
-<button class="btn btn-primary" id="btn" style="position: absolute;right:10;" onclick="window.print()">Print Report</button>
-</div>
+    <div class="row" id="b">
+        <div class="col-lg-6">
+            <h4 class="mb-4">From $sdt to $edt</h4>
+        </div>
+        <div class="col-lg-6" id="rb">
+            <button class="btn btn-primary" id="btn" onclick="window.print()">Print Report</button>
+        </div>
+    </div>
 _END;
         if (mysqli_num_rows($r) > 0) {
             echo <<<_END

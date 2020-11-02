@@ -117,12 +117,12 @@ _END;
         if (mysqli_num_rows($r) > 0) {
             echo <<<_END
     <div class="col-lg-12">
-        <div class="row mb-3">
+        <div class="row mb-3" id="b">
             <div class="col-lg-6">
                 <h2 style="margin-left:16px">Data</h2>
             </div>
-            <div class="col-lg-6">
-                <button class="btn btn-primary" style="position: absolute; right:10;" onclick="window.print()">Print Report</button>
+            <div class="col-lg-6" id="rb">
+                <button class="btn btn-primary"  onclick="window.print()">Print Report</button>
             </div>
         </div>
         <div class="table-responsive">

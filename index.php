@@ -24,8 +24,9 @@ session_start();
     <script>
         function ask(anchor) {
             var conf = confirm("Do you want to delete?");
-            if (conf)
+            if (conf) {
                 window.location = anchor.attr("href");
+            }
         }
     </script>
 </head>
@@ -34,44 +35,42 @@ session_start();
     <?php include_once 'nav.php'; ?>
     <div class="container">
         <?php
-
         if (isset($_GET['msg']) && $_GET['msg'] != '') {
             $msg = $_GET['msg'];
             echo <<<_END
             <div class="col-lg-6">
-            
-            <div class="alert alert-primary" id ="successMessage" role="alert">
-            $msg      
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
+                <div class="alert alert-primary" id ="successMessage" role="alert">
+                $msg      
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
 _END;
         }
+
         ?>
 
         <?php
 
         if (isset($_SESSION['user'])) {
-
             echo <<<_END
-                <div class="row">
-                    <h2 class="display-5">Work Log</h2>
+                <div class="row" ml-4 mt-4 pt-8>
+               
                         <form method="get" class="form-inline" action="index.php">
                             <div class="col-lg-12">
-                                <div class="form-group ">
-                                    <div class="form-group col-lg-4 ml-4">
-                                        <input type="date" name="start_date" class="form-control" placeholder="Start Date">
-                                    </div>
-                                    <div class="form-group col-lg-4" ml-4>
-                                        <input type="date" name="end_date" class="form-control" placeholder="End Date">
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <input type="submit" class="btn btn-primary">
-                                    </div>
-                                </div>
-                                
+                                <h2 class="display-5">Work Log</h2>
+                                    <div class="form-group ">
+                                        <div class="col-lg-4" id="d">
+                                            <input type="date" name="start_date" class="form-control" placeholder="Start Date">
+                                        </div>
+                                        <div class="col-lg-4" id="d">
+                                            <input type="date" name="end_date" class="form-control" placeholder="End Date">
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <input type="submit" class="btn btn-primary btn-block">
+                                        </div>
+                                    </div>    
                             </div>
                         </form>
 _END;
@@ -97,11 +96,9 @@ _END;
                         <tbody>
 _END;
             include_once 'db.php';
-
             if (isset($_GET['start_date']) && isset($_GET['end_date']) && $_GET['start_date'] != '' && $_GET['end_date'] != '') {
                 $start_date = $_GET['start_date'];
                 $end_date = $_GET['end_date'];
-
                 $q = "SELECT * FROM logs WHERE cast(doe as date) between '$start_date' and '$end_date' AND is_deleted=0 ORDER BY doe DESC LIMIT 50";
             } else if (isset($_GET['start_date']) && $_GET['start_date'] != '') {
                 $start_date = $_GET['start_date'];

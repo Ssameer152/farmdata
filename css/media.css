@@ -4,7 +4,11 @@ text-align:right;
 #b{
     margin-bottom:10px;
 } 
+#successMessage
+{
+color:red;
 
+}
 
 
 
