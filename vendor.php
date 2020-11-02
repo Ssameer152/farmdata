@@ -44,13 +44,18 @@ if (isset($_SESSION['user'])) {
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://use.fontawesome.com/d1f7bf0fea.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
+        <script>
+            $(function(){
+            setTimeout(function(){
+            $('#success').hide('blind',{},300)
+            },3000);
+            });
+        </script>
     </head>
-    
     <body>    
 _END;
 
     include_once 'nav.php';
-
     echo <<<_END
 
         <div class="container">
@@ -59,7 +64,7 @@ _END;
         $msg = $_GET['msg'];
         echo <<<_END
 <div class="col-lg-6">
-    <div class="alert alert-primary" role="alert">
+    <div class="alert alert-primary" id="success" role="alert">
 $msg
 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">&times;</span>
@@ -73,7 +78,6 @@ _END;
                 <div class="col-lg-12">
                     <h2>Vendors</h2>
                     <form action="vendors_add.php" method="post">
-                        
 						<div class="form-group">
                             <label for="particular">Name</label>
 _END;
@@ -88,8 +92,8 @@ _END;
     }
     echo <<<_END
 						</div>
-                        <div class="form-row">
-                            <div class="col">
+                        <div class="row">
+                            <div class="col-lg-6">
                                 <label for="particular">Mobile No.</label>
 _END;
     if ($db_phone == '') {
@@ -103,7 +107,7 @@ _END;
     }
     echo <<<_END
                             </div>
-                            <div class="col">
+                            <div class="col-lg-6">
                                 <label for="particular">Email</label>
 _END;
     if ($db_email == '') {
@@ -153,7 +157,7 @@ _END;
 _END;
     }
     echo <<<_END
-						<button type="submit" class="btn btn-primary">Add Vendor</button>
+						<button type="submit" class="btn btn-primary btn-block">Add Vendor</button>
 					</form>
                 </div>
                 

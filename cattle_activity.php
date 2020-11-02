@@ -76,7 +76,7 @@ _END;
 _END;
     }
     echo <<<_END
-						<button type="submit" class="btn btn-primary">Add Cattle Activity</button>
+						<button type="submit" class="btn btn-primary btn-block">Add Cattle Activity</button>
                     </form>
                 </div>
                 <div class="col-lg-6">
